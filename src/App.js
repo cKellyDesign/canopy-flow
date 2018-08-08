@@ -40,25 +40,30 @@ class Login extends Component {
     return (
       <div>
         <form>
-          <input
-            id="username"
-            ref="username"
-            type="text"
-            label="Username"
-            placeholder="Enter Username"
-          />
-          <input
-            id="password"
-            ref="password"
-            type="password"
-            label="Password"
-            placeholder="Enter Password"
-          />
+          <FormGroup>
+            <FormControl
+              id="username"
+              ref="username"
+              type="text"
+              label="Username"
+              placeholder="Enter Username"
+            />
+          </FormGroup>
+          <FormGroup>
+            <FormControl
+              id="password"
+              ref="password"
+              type="password"
+              label="Password"
+              placeholder="Enter Password"
+            />
+          </FormGroup>
           <Button
-          bsStyle="primary"
-          bsSize="lg"
-          type="submit"
-          onClick={(e) => this.handleClickEvent(e)}>Sign In</Button>
+            bsStyle="primary"
+            bsSize="lg"
+            type="submit"
+            onClick={(e) => this.handleClickEvent(e)}
+          >Sign In</Button>
           {this.props && this.props.errorMessage ? 
           <p>{this.props.errorMessage}</p>
         : null}
