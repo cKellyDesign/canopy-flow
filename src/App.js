@@ -37,8 +37,7 @@ class Login extends Component {
 
   handleClickEvent(e, dispatch) {
     e.preventDefault();
-    const username = this.refs.username;
-    const password = this.refs.password;
+    const { username, password } = this;
     const creds = { username: username.value.trim(), password: password.value.trim() }
     this.onLoginClick(creds, dispatch);
   }
@@ -49,20 +48,24 @@ class Login extends Component {
     return (
       <div>
         <form>
-          <input
-            id="username"
-            ref="username"
-            type="text"
-            label="Username"
-            placeholder="Enter Username"
-          />
-          <input
-            id="password"
-            ref="password"
-            type="password"
-            label="Password"
-            placeholder="Enter Password"
-          />
+          <FormGroup>
+            <FormControl
+              id="username"
+              inputRef={ref => { this.username = ref; }}
+              type="text"
+              label="Username"
+              placeholder="Enter Username"
+            />
+          </FormGroup>
+          <FormGroup>
+            <FormControl
+              id="password"
+              inputRef={ref => {this.password = ref; }}
+              type="password"
+              label="Password"
+              placeholder="Enter Password"
+            />
+          </FormGroup>
           <Button
           bsStyle="primary"
           bsSize="lg"
