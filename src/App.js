@@ -30,8 +30,7 @@ class Login extends Component {
 
   handleClickEvent(e) {
     e.preventDefault();
-    const username = this.refs.username;
-    const password = this.refs.password;
+    const { username, password } = this;
     const creds = { username: username.value.trim(), password: password.value.trim() }
     this.props.onLoginClick(creds)
   }
@@ -43,7 +42,7 @@ class Login extends Component {
           <FormGroup>
             <FormControl
               id="username"
-              ref="username"
+              inputRef={ref => { this.username = ref; }}
               type="text"
               label="Username"
               placeholder="Enter Username"
@@ -52,7 +51,7 @@ class Login extends Component {
           <FormGroup>
             <FormControl
               id="password"
-              ref="password"
+              inputRef={ref => {this.password = ref; }}
               type="password"
               label="Password"
               placeholder="Enter Password"
