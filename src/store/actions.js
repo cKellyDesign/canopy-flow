@@ -1,6 +1,7 @@
 // There are three possible states for our login
 // process and we need actions for each of them
-import { Base64 } from 'js-base64';
+import { Base64 } from 'js-base64'; 
+import { history } from '../helpers/history';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -62,7 +63,6 @@ export const loginUser = (credentials) => {
           // If there was a problem, we want to
           // dispatch the error condition
           dispatch(loginError(user.detail))
-          return Promise.reject(user)
         } else {
           // const usernames = user.users.map(u => u.user);
           // If login was successful, set the token in local storage
@@ -70,6 +70,7 @@ export const loginUser = (credentials) => {
           // localStorage.setItem('id_token', user.access_token)
           // Dispatch the success action
           dispatch(receiveLogin(user))
+          history.push('/');
         }
       }).catch(err => console.log("Error: ", err))
   }
