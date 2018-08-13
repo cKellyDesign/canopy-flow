@@ -47,34 +47,43 @@ class Login extends Component {
     const { dispatch } = this.props;
     return (
       <div>
-        <form>
-          <FormGroup>
-            <FormControl
-              id="username"
-              inputRef={ref => { this.username = ref; }}
-              type="text"
-              label="Username"
-              placeholder="Enter Username"
-            />
-          </FormGroup>
-          <FormGroup>
-            <FormControl
-              id="password"
-              inputRef={ref => {this.password = ref; }}
-              type="password"
-              label="Password"
-              placeholder="Enter Password"
-            />
-          </FormGroup>
-          <Button
-          bsStyle="primary"
-          bsSize="lg"
-          type="submit"
-          onClick={(e) => this.handleClickEvent(e, dispatch)}>Sign In</Button>
-          {this.props && this.props.errorMessage ? 
-          <p>{this.props.errorMessage}</p>
-        : null}
-        </form>
+        <Grid>
+            <Row className="header">
+              <Col sm={6} xsOffset={3}><h1 className="title">Login</h1></Col>
+            </Row>
+            <Row className="main">
+              <Col sm={6} xsOffset={3}>
+                <form>
+                  <FormGroup>
+                    <FormControl
+                      id="username"
+                      inputRef={ref => { this.username = ref; }}
+                      type="text"
+                      label="Username"
+                      placeholder="Enter Username"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormControl
+                      id="password"
+                      inputRef={ref => {this.password = ref; }}
+                      type="password"
+                      label="Password"
+                      placeholder="Enter Password"
+                    />
+                  </FormGroup>
+                  <Button
+                  bsStyle="primary"
+                  bsSize="lg"
+                  type="submit"
+                  onClick={(e) => this.handleClickEvent(e, dispatch)}>Sign In</Button>
+                  {this.props && this.props.errorMessage ? 
+                  <p>{this.props.errorMessage}</p>
+                : null}
+                </form>
+              </Col>
+            </Row>
+          </Grid>
       </div>
     );
   }
