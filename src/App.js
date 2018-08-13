@@ -45,7 +45,7 @@ class App extends Component {
           <div>
             <PrivateRoute exact path='/' component={connectedHomePage} />
             <PrivateRoute path='/new' component={connectedNewFlowPage} />
-            <PrivateRoute path='/flow' component={connectedFlowPage} />
+            <PrivateRoute path='/flow/:id' component={connectedFlowPage} />
             <Route path="/login" component={connectedLoginPage} />
           </div>
         </Router>

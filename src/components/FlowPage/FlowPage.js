@@ -14,6 +14,19 @@ import { logoutUser } from './../../store/actions';
 import Logout from './../Logout/Logout';
 
 class FlowPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      flowId: this.props.match.params.id,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      flowId: nextProps.match.params.id,
+    });
+  }
+
   render() {
     return (
       <div>
@@ -23,7 +36,7 @@ class FlowPage extends Component {
           </Row>
           <Row className="main">
             <Col sm={6} md={3}>
-              <h3>Flows</h3>
+              <h3>Flow: {this.state.flowId}</h3>
             </Col>
             <Col sm={6} md={9}>
               <h3>Flow Details</h3>
