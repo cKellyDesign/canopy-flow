@@ -1,30 +1,27 @@
+// Import Frameworks
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
 
+// Import components
 import Login from './components/Login/Login';
 import HomePage from './components/HomePage/HomePage';
 import FlowPage from './components/FlowPage/FlowPage';
 import NewFlowPage from './components/NewFlowPage/NewFlowPage';
 
+// Import helpters
 import { history } from './helpers/history';
 import { PrivateRoute } from './helpers/PrivateRoute';
+import { mapStateToProps } from './helpers/mapStateToProps';
 
+// Import styling
 import './App.css';
 
-// global map state to props
-const mapStateToProps = (state, ownProps) => {
-  console.log("sttae", state)
-  console.log("own props", ownProps);
-  return {
-    global: state,
-  }
-}
-
-export const connectedLoginPage = connect(mapStateToProps)(Login);
-export const connectedHomePage = connect(mapStateToProps)(HomePage);
-export const connectedNewFlowPage = connect(mapStateToProps)(NewFlowPage);
-export const connectedFlowPage = connect(mapStateToProps)(FlowPage);
+// Connect Components to the Store
+const connectedLoginPage = connect(mapStateToProps)(Login);
+const connectedHomePage = connect(mapStateToProps)(HomePage);
+const connectedNewFlowPage = connect(mapStateToProps)(NewFlowPage);
+const connectedFlowPage = connect(mapStateToProps)(FlowPage);
 
 class App extends Component {
   constructor(props) {
@@ -53,7 +50,5 @@ class App extends Component {
     );
   }
 }
-
-
 
 export default connect(mapStateToProps)(App);

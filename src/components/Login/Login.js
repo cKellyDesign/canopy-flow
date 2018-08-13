@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+
 import { 
   Grid,
   Row,
   Col,
   FormGroup,
-  // ControlLabel,
   FormControl,
   Button,
-  // HelpBlock,
 } from 'react-bootstrap';
 import { loginUser } from './../../store/actions';
 

@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import { 
-  // Grid,
-  // Row,
-  // Col,
-  // FormGroup,
-  // ControlLabel,
-  // FormControl,
-  Button,
-  // HelpBlock,
-} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 class Logout extends Component {
   render() {

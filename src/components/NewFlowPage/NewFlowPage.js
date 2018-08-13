@@ -1,26 +1,18 @@
 import React, { Component } from 'react';
+
 import { 
   Grid,
   Row,
   Col,
-  // FormGroup,
-  // ControlLabel,
-  // FormControl,
-  // Button,
-  // HelpBlock,
 } from 'react-bootstrap';
-
-import { logoutUser } from './../../store/actions';
-import Logout from './../Logout/Logout';
+import Header from './../Header/Header';
 
 class NewFlowPage extends Component {
   render() {
     return (
-      <div>
+      <div id="NewFlowPage">
+        <Header />
         <Grid>
-          <Row className="header">
-            <Col sm={12}><h1 className="title">Canopy Flow: Create New Flow View</h1></Col>
-          </Row>
           <Row className="main">
             <Col sm={6} md={3}>
               <h3>Flows</h3>
@@ -28,11 +20,6 @@ class NewFlowPage extends Component {
             <Col sm={6} md={9}>
               <h3>Create New Flow</h3>
             </Col>
-          </Row>
-          <Row>
-            <Logout
-              onLogoutClick={() => this.props.dispatch(logoutUser())}
-            />
           </Row>
         </Grid>
       </div>

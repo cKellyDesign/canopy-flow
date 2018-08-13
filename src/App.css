@@ -10,6 +10,14 @@
   color: white;
 }
 
+.header-wrapper {
+  background: #cccccc;
+}
+
+.header-wrapper h1.title {
+  margin: 0;
+}
+
 .App-title {
   font-size: 1.5em;
 }
