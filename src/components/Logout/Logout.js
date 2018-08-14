@@ -7,8 +7,7 @@ class Logout extends Component {
     return (
       <div>
         <Button
-          bsStyle="primary"
-          bsSize="lg"
+          bsSize="sm"
           onClick={() => onLogoutClick()}
           >Sign Out</Button>
       </div>

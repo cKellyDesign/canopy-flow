@@ -25,6 +25,48 @@ class Login extends Component {
 
   handleClickEvent(e, dispatch) {
     e.preventDefault();
+
+    const apiBase = 'https://api.ona.io';
+    const apiPath = '/o/authorize';
+
+
+    const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
+    const response_type = 'token';
+    const redirect_uri = 'http://localhost:8080';
+    const state = 'abc';
+
+    const url = `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}`
+    console.log('authCall - GET ', url);
+
+    // const authHeader = new Header();
+    // authHeader.append('Access-Control-Allow-Origin', '*')
+    // const authConfig = {
+    //   method: 'GET',
+    //   header: authHeader
+    // }
+
+    // const authRequest = new Request(url, authConfig);
+    // fetch(authRequest)
+    //   .catch(error => console.error('Error:', error))
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .catch(error => console.error('Error:', error))
+    //   .then((jres) => {
+    //     debugger;
+    //     console.log(jres);
+    //   });
+
+    // fetch(url, {
+    //   method: 'GET'
+    // }, (res) => {	
+    //   window.res = res;
+    //   console.log('res', res);
+    //   debugger;
+    // })
+
+    // return false;
+    
     const { username, password } = this;
     const creds = { username: username.value.trim(), password: password.value.trim() }
     this.onLoginClick(creds, dispatch);
