@@ -1,8 +1,9 @@
-import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS } from './actions';
+import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKENS } from './actions';
 
 export default function AUTH(state = {
   isFetching: false,
-  isAuthenticated: localStorage.getItem('success') ? true : false
+  isAuthenticated: localStorage.getItem('public_token') ? true : false,
+  triggerSpinner: false,
 }, action) {
   switch (action.type) {
     case LOGIN_REQUEST: {
@@ -37,6 +38,17 @@ export default function AUTH(state = {
       ...state,
       isFetching: true,
       isAuthenticated: false,
+      triggerSpinner: false,
+    }
+  }
+
+  case RECEIVE_TOKENS: {
+    return {
+      ...state,
+      triggerSpinner: true,
+      tokens: {
+        ...action.tokens
+      }
     }
   }
 

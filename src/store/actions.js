@@ -7,6 +7,7 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const RECEIVE_TOKENS = 'RECEIVE_TOKENS'
 
 export const requestLogin = (creds) => {
   return {
@@ -43,43 +44,84 @@ export const receiveLogout = () => {
   }
 }
 
-export const loginUser = (credentials) => {
+export const receiveTokens = tokens => {
+  return {
+    type: RECEIVE_TOKENS,
+    tokens,
+  }
+}
+
+export const authorizeUser = (credentials) => {
   let config = {
     method: 'GET',
     headers: {
       Accept: 'application/json',
       Authorization: `Basic ${Base64.encode(credentials.username + ':' + credentials.password)}}`,
     }
+  };
+  return dispatch => {
+    return fetch(`https://api.ona.io/api/v1/user`, config)
+      .then(response => response.json().then(user => ({ user, response })))
+      .then(({ user, response }) => {
+        if (!response.ok) {
+          dispatch(loginError(user.detail));
+          dispatch(receiveTokens(null))
+        } else {
+          const tokens = {
+            "public_token": user.api_token,
+            "temp_token": user.temp_token
+          };
+          dispatch(receiveTokens(tokens));
+          dispatch(loginUser(tokens.temp_token));
+        }
+      }).catch(err => console.log("Error: ", err));
+  }
+}
+
+export const loginUser = (tempToken) => {
+  let config = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `TempToken ${tempToken}`,
+    }
   }
 
-  return dispatch => {
+  return (dispatch, getState) => {
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(requestLogin(credentials))
-    return fetch(`https://api.ona.io/api/v1/projects/49200`, config)
+    dispatch(requestLogin(tempToken))
+    console.log("state>>>>>>>>>>>", getState()) 
+    return fetch(`https://api.ona.io/api/v1/orgs/unicef_bco`, config)
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) => {
         if (!response.ok) {
           // If there was a problem, we want to
           // dispatch the error condition
+          dispatch(receiveTokens(null))
           dispatch(loginError(user.detail))
         } else {
-          // const usernames = user.users.map(u => u.user);
-          // If login was successful, set the token in local storage
-          localStorage.setItem('success', response.status)
-          // localStorage.setItem('id_token', user.access_token)
-          // Dispatch the success action
-          dispatch(receiveLogin(user))
-          history.push('/');
+          if (!user.account_info) {
+            dispatch(loginError('Dont have sufficient permissions to view page, contact Admin'))
+          } else {
+            // const usernames = user.users.map(u => u.user);
+            // If login was successful, set the token in local storage
+            localStorage.setItem("public_token", getState().tokens.public_token)
+            // localStorage.setItem('id_token', user.access_token)
+            // Dispatch the success action
+            dispatch(receiveLogin(user))
+            history.push('/');
+          }
         }
-      }).catch(err => console.log("Error: ", err))
+      }).catch(err => console.log("Error: ", err));
   }
 }
 
 export const logoutUser = () => {
   return dispatch => {
-    localStorage.removeItem('success');
+    localStorage.removeItem('public_token');
     dispatch(receiveLogout());
+    history.push('/login')
   }
 }
 
@@ -90,4 +132,6 @@ export default {
   loginUser,
   receiveLogout,
   logoutUser,
+  receiveTokens,
+  authorizeUser,
 }
