@@ -7,13 +7,16 @@ import {
   FormGroup,
   FormControl,
   Button,
+  Alert,
 } from 'react-bootstrap';
 import { loginUser } from './../../store/actions';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {};  
+    this.state = {
+      show: false,
+    };
   }
 
   onLoginClick(creds, dispatch) {
@@ -27,6 +30,15 @@ class Login extends Component {
     this.onLoginClick(creds, dispatch);
   }
 
+  handleDismiss(e) {
+    e.preventDefault();
+    this.setState({ show: false });
+  }
+
+  handleShow() {
+    this.setState({ show: true });
+  }
+
   render() {
     console.log("props", this.props);
     const { dispatch } = this.props;
@@ -37,6 +49,14 @@ class Login extends Component {
               <Col sm={6} xsOffset={3}><h1 className="title">Login</h1></Col>
             </Row>
             <Row className="main">
+            {this.props.global.errorMessage ?
+            <Col sm={6} xsOffset={3}>
+            <Alert bsStyle="danger" onDismiss={(e) => this.handleDismiss(e)}>
+              <p>
+              {this.props.global.errorMessage}
+              </p>
+            </Alert>
+            </Col> : null}
               <Col sm={6} xsOffset={3}>
                 <form>
                   <FormGroup>
