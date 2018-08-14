@@ -9,7 +9,7 @@ import {
   Button,
   Alert,
 } from 'react-bootstrap';
-import { loginUser } from './../../store/actions';
+import { loginUser, loginError } from './../../store/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -30,9 +30,9 @@ class Login extends Component {
     this.onLoginClick(creds, dispatch);
   }
 
-  handleDismiss(e) {
+  handleDismiss(e, dispatch) {
     e.preventDefault();
-    this.setState({ show: false });
+    dispatch(loginError(null))
   }
 
   handleShow() {
@@ -51,7 +51,7 @@ class Login extends Component {
             <Row className="main">
             {this.props.global.errorMessage ?
             <Col sm={6} xsOffset={3}>
-            <Alert bsStyle="danger" onDismiss={(e) => this.handleDismiss(e)}>
+            <Alert bsStyle="danger" onDismiss={(e) => this.handleDismiss(e, dispatch)}>
               <p>
               {this.props.global.errorMessage}
               </p>
