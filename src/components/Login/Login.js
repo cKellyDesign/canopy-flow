@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { history } from '../../helpers/history';
 
 import { 
   Grid,
@@ -24,38 +25,38 @@ class Login extends Component {
   }
 
   handleClickEvent(e, dispatch) {
-    e.preventDefault();
+    // e.preventDefault();
 
     const apiBase = 'https://api.ona.io';
-    const apiPath = '/o/authorize';
+    const apiPath = '/o/authorize/';
 
 
     const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
     const response_type = 'token';
-    const redirect_uri = 'http://localhost:8080';
+    const redirect_uri = 'http://localhost:3000/callback';
     const state = 'abc';
-
-    const url = `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}`
+    const scope = 'read';
+    const url = `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}&scope=${scope}`
     console.log('authCall - GET ', url);
 
-    // const authHeader = new Header();
-    // authHeader.append('Access-Control-Allow-Origin', '*')
-    // const authConfig = {
-    //   method: 'GET',
-    //   header: authHeader
-    // }
+    const authHeader = new Headers();
+    authHeader.append('Access-Control-Allow-Origin', '*')
+    authHeader.append('mode', 'no-cors');
+    const authConfig = {
+      method: 'GET',
+      header: authHeader
+    }
 
-    // const authRequest = new Request(url, authConfig);
-    // fetch(authRequest)
-    //   .catch(error => console.error('Error:', error))
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .catch(error => console.error('Error:', error))
-    //   .then((jres) => {
-    //     debugger;
-    //     console.log(jres);
-    //   });
+    const authRequest = new Request(url, authConfig);
+    fetch(authRequest)
+      .catch(error => console.error('Error:', error))
+      .then((res) => {
+        return res.json();
+      })
+      .catch(error => console.error('Error:', error))
+      .then((jres) => {
+        localStorage.setItem("testingres", jres);
+      });
 
     // fetch(url, {
     //   method: 'GET'
@@ -64,12 +65,15 @@ class Login extends Component {
     //   console.log('res', res);
     //   debugger;
     // })
-
-    // return false;
+    localStorage.setItem("token_url", window.location.hash);
+    this.setState({
+      oauthURL: url,
+    });
+    return true;
     
-    const { username, password } = this;
-    const creds = { username: username.value.trim(), password: password.value.trim() }
-    this.onLoginClick(creds, dispatch);
+    // const { username, password } = this;
+    // const creds = { username: username.value.trim(), password: password.value.trim() }
+    // this.onLoginClick(creds, dispatch);
   }
 
   handleDismiss(e, dispatch) {
@@ -119,11 +123,12 @@ class Login extends Component {
                       placeholder="Enter Password"
                     />
                   </FormGroup>
-                  <Button
-                  bsStyle="primary"
-                  bsSize="lg"
-                  type="submit"
-                  onClick={(e) => this.handleClickEvent(e, dispatch)}>Sign In</Button>
+                  <a
+                  className="btn btn-primary"
+                  onClick={(e) => this.handleClickEvent(e)}
+                  href={this.state.oauthURL}>
+                  Sign In
+                  </a>
                   {this.props && this.props.errorMessage ? 
                   <p>{this.props.errorMessage}</p>
                 : null}
