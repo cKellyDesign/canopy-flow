@@ -105,7 +105,7 @@ class Login extends Component {
             </Col> : null}
               <Col sm={6} xsOffset={3}>
                 <form>
-                  <FormGroup>
+                  {/*<FormGroup>
                     <FormControl
                       id="username"
                       inputRef={ref => { this.username = ref; }}
@@ -122,16 +122,16 @@ class Login extends Component {
                       label="Password"
                       placeholder="Enter Password"
                     />
-                  </FormGroup>
+                  </FormGroup>*/}
                   <a
-                  className="btn btn-primary"
+                  className="btn btn-lg btn-primary"
                   onClick={(e) => this.handleClickEvent(e)}
                   href={this.state.oauthURL}>
                   Sign In
                   </a>
                   {this.props && this.props.errorMessage ? 
                   <p>{this.props.errorMessage}</p>
-                : null}
+                  : null}
                 </form>
               </Col>
             </Row>

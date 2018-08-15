@@ -8,7 +8,7 @@ import App from './App';
 import reducers from './store/reducers';
 import registerServiceWorker from './registerServiceWorker';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+export const store = createStore(reducers, applyMiddleware(thunk));
 
 const rootElement = document.getElementById('root');
 

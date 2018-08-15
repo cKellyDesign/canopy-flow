@@ -26,7 +26,8 @@ export default function AUTH(state = {
         ...state,
         isFetching: false,
         isAuthenticated: true,
-        errorMessage: ''
+        errorMessage: '',
+        userInfo: action.user,
       };
     }
 

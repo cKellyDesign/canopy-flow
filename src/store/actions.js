@@ -23,7 +23,7 @@ export const receiveLogin = (user) => {
     type: LOGIN_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
-    id_token: user.id_token
+    user
   }
 }
 
@@ -55,7 +55,7 @@ export const loginUser = (token) => {
   let config = {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     }
   }
@@ -63,7 +63,7 @@ export const loginUser = (token) => {
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(token))
-    return fetch(`https://api.ona.io/api/v1/orgs/unicef_bco`, config)
+    return fetch(`https://api.ona.io/api/v1/user`, config)
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) => {
@@ -73,7 +73,6 @@ export const loginUser = (token) => {
           dispatch(loginError(user.detail))
           history.push('/login');
         } else {
-          debugger;
           // const usernames = user.users.map(u => u.user);
           // If login was successful, set the token in local storage
           localStorage.setItem('access_token', token)
