@@ -8,6 +8,7 @@ import Login from './components/Login/Login';
 import HomePage from './components/HomePage/HomePage';
 import FlowPage from './components/FlowPage/FlowPage';
 import NewFlowPage from './components/NewFlowPage/NewFlowPage';
+import Callback from './components/Callback/Callback';
 
 // Import helpters
 import { history } from './helpers/history';
@@ -35,7 +36,6 @@ class App extends Component {
     }
   }
   render() {
-    console.log(this.props)
     return (
       <div className="App">
         <Router history={history}>
@@ -44,6 +44,10 @@ class App extends Component {
             <PrivateRoute path='/new' component={connectedNewFlowPage} />
             <PrivateRoute path='/flow/:id' component={connectedFlowPage} />
             <Route path="/login" component={connectedLoginPage} />
+            <Route
+              path='/callback'
+              component={Callback}
+            />
           </div>
         </Router>
       </div>
