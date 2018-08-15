@@ -7,6 +7,7 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 
 export const requestLogin = (creds) => {
   return {
@@ -43,19 +44,26 @@ export const receiveLogout = () => {
   }
 }
 
-export const loginUser = (credentials) => {
+export const receiveToken = (token) => {
+  return {
+    type: RECEIVE_TOKEN,
+    token,
+  }
+}
+
+export const loginUser = (token) => {
   let config = {
     method: 'GET',
     headers: {
       Accept: 'application/json',
-      Authorization: `Basic ${Base64.encode(credentials.username + ':' + credentials.password)}}`,
+      Authorization: `Bearer ${token}`,
     }
   }
 
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(requestLogin(credentials))
-    return fetch(`https://api.ona.io/api/v1/projects/49200`, config)
+    dispatch(requestLogin(token))
+    return fetch(`https://api.ona.io/api/v1/orgs/unicef_bco`, config)
       .then(response =>
         response.json().then(user => ({ user, response }))
       ).then(({ user, response }) => {
@@ -63,10 +71,12 @@ export const loginUser = (credentials) => {
           // If there was a problem, we want to
           // dispatch the error condition
           dispatch(loginError(user.detail))
+          history.push('/login');
         } else {
+          debugger;
           // const usernames = user.users.map(u => u.user);
           // If login was successful, set the token in local storage
-          localStorage.setItem('success', response.status)
+          localStorage.setItem('access_token', token)
           // localStorage.setItem('id_token', user.access_token)
           // Dispatch the success action
           dispatch(receiveLogin(user))
@@ -78,7 +88,7 @@ export const loginUser = (credentials) => {
 
 export const logoutUser = () => {
   return dispatch => {
-    localStorage.removeItem('success');
+    localStorage.removeItem('access_token');
     dispatch(receiveLogout());
   }
 }
@@ -90,4 +100,5 @@ export default {
   loginUser,
   receiveLogout,
   logoutUser,
+  receiveToken
 }

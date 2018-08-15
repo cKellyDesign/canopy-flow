@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS } from './actions';
+import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN } from './actions';
 
 export default function AUTH(state = {
   isFetching: false,
@@ -12,6 +12,13 @@ export default function AUTH(state = {
         isAuthenticated: false,
         user: action.creds
       };
+    }
+
+    case RECEIVE_TOKEN: {
+      return {
+        ...state,
+        access_token: action.token,
+      }
     }
 
     case LOGIN_SUCCESS: {
