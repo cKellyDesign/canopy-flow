@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { history } from '../../helpers/history';
 
 import { 
   Grid,
@@ -21,6 +22,13 @@ class Login extends Component {
       show: false,
       oauthURL: `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}&scope=${scope}`,
     };
+  }
+
+  componentWillMount() {
+    const { userInfo } = this.props.global;
+    if (userInfo) {
+      history.replace('/');
+    }
   }
 
   handleDismiss(e, dispatch) {
