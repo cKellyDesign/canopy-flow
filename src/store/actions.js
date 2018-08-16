@@ -2,6 +2,7 @@
 // process and we need actions for each of them
 import { Base64 } from 'js-base64'; 
 import { history } from '../helpers/history';
+import api from '../connectors/Ona/api';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -52,36 +53,24 @@ export const receiveToken = (token) => {
 }
 
 export const loginUser = (token) => {
-  let config = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    }
-  }
+  const reqConfig = {
+    token: token,
+    endpoint: 'user',
+  };
 
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(token))
-    return fetch(`https://api.ona.io/api/v1/user`, config)
-      .then(response =>
-        response.json().then(user => ({ user, response }))
-      ).then(({ user, response }) => {
-        if (!response.ok) {
-          // If there was a problem, we want to
-          // dispatch the error condition
-          dispatch(loginError(user.detail))
-          history.push('/login');
-        } else {
-          // const usernames = user.users.map(u => u.user);
-          // If login was successful, set the token in local storage
-          localStorage.setItem('access_token', token)
-          // localStorage.setItem('id_token', user.access_token)
-          // Dispatch the success action
-          dispatch(receiveLogin(user))
-          history.push('/');
-        }
-      }).catch(err => console.log("Error: ", err))
+    return api(reqConfig).then(({ user, res }) => {
+      if (!res.ok) {
+        dispatch(loginError(user.detail));
+        history.replace('/login');
+      } else {
+        localStorage.setItem("access_token", token);
+        dispatch(receiveLogin(user));
+        history.replace('/');
+      }
+    }).catch(err => console.log("Error: ", err));
   }
 }
 

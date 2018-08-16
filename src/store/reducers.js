@@ -1,9 +1,11 @@
 import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN } from './actions';
 
-export default function AUTH(state = {
+const defaultState = {
   isFetching: false,
-  isAuthenticated: localStorage.getItem('success') ? true : false
-}, action) {
+  isAuthenticated: localStorage.getItem('access-token') ? true : false,
+};
+
+export default function AUTH(state = defaultState, action) {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return {

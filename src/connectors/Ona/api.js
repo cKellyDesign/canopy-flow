@@ -40,8 +40,13 @@ var fetchAPI = (config) => {
 // config.params   - (optional) Additional parameters to be appeneded to API Path
 // callback        - (optional) Function to take JSON response, otherwise res is simply returned
 export default (config, callback) => callback
-  ? fetchAPI(config).then(res => res.json()).then(callback)
-  : fetchAPI(config).then(res => res.json()).then(res => res);
+  ? fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(callback)
+  : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({user, res}) => {
+    return {
+      user,
+      res
+    }
+  });
 
 // Slimed down variation:
 // export default (config) => fetchAPI(config).then(res => res.json());

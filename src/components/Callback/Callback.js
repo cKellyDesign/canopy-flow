@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { loginUser, receiveToken } from '../../store/actions';
+import { loginUser } from '../../store/actions';
 
 class Callback extends Component {
 
@@ -13,7 +13,6 @@ class Callback extends Component {
   componentWillMount() {
     const { dispatch } = this.props;
     const accessToken = this.getAccessToken();
-    dispatch(receiveToken(accessToken));
     dispatch(loginUser(accessToken));
   }
 
