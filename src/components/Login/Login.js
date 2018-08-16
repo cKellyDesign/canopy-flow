@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { history } from '../../helpers/history';
 
 import { 
   Grid,
@@ -37,7 +36,7 @@ class Login extends Component {
     const state = 'abc';
     const scope = 'read';
     const url = `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}&scope=${scope}`
-    console.log('authCall - GET ', url);
+    console.log('authCall - GET ', encodeURIComponent(url));
 
     const authHeader = new Headers();
     authHeader.append('Access-Control-Allow-Origin', '*')
@@ -55,7 +54,6 @@ class Login extends Component {
       })
       .catch(error => console.error('Error:', error))
       .then((jres) => {
-        localStorage.setItem("testingres", jres);
       });
 
     // fetch(url, {
@@ -65,7 +63,6 @@ class Login extends Component {
     //   console.log('res', res);
     //   debugger;
     // })
-    localStorage.setItem("token_url", window.location.hash);
     this.setState({
       oauthURL: url,
     });

@@ -7,8 +7,19 @@ import './index.css';
 import App from './App';
 import reducers from './store/reducers';
 import registerServiceWorker from './registerServiceWorker';
+import { loadState, saveState } from './helpers/localStorage';
 
-export const store = createStore(reducers, applyMiddleware(thunk));
+export const store = createStore(
+  reducers,
+  loadState(),
+  applyMiddleware(thunk),
+);
+
+store.subscribe(() => {
+  if (store.getState().isAuthenticated) {
+    saveState(store.getState());
+  }
+});
 
 const rootElement = document.getElementById('root');
 

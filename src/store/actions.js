@@ -66,7 +66,11 @@ export const loginUser = (token) => {
         dispatch(loginError(user.detail));
         history.replace('/login');
       } else {
-        localStorage.setItem("access_token", token);
+        try {
+          localStorage.setItem("access_token", token);
+        } catch(e) {
+          //
+        }
         dispatch(receiveLogin(user));
         history.replace('/');
       }
@@ -77,6 +81,7 @@ export const loginUser = (token) => {
 export const logoutUser = () => {
   return dispatch => {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('state');
     dispatch(receiveLogout());
   }
 }
