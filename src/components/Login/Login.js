@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { history } from '../../helpers/history';
 
 import { 
   Grid,
@@ -17,6 +18,13 @@ class Login extends Component {
     this.state = {
       show: false,
     };
+  }
+
+  componentWillMount() {
+    const { userInfo } = this.props.global;
+    if (userInfo) {
+      history.replace('/');
+    }
   }
 
   onLoginClick(creds, dispatch) {
