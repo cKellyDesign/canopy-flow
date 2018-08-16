@@ -1,8 +1,7 @@
 // There are three possible states for our login
 // process and we need actions for each of them
 import { Base64 } from 'js-base64'; 
-import { history } from '../helpers/history';
-import api from '../connectors/Ona/api';
+import { ONAoauth } from '../connectors/Ona/auth';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -52,6 +51,7 @@ export const receiveToken = (token) => {
   }
 }
 
+// todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
   const reqConfig = {
     token: token,
@@ -61,20 +61,7 @@ export const loginUser = (token) => {
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(token))
-    return api(reqConfig).then(({ user, res }) => {
-      if (!res.ok) {
-        dispatch(loginError(user.detail));
-        history.replace('/login');
-      } else {
-        try {
-          localStorage.setItem("access_token", token);
-        } catch(e) {
-          //
-        }
-        dispatch(receiveLogin(user));
-        history.replace('/');
-      }
-    }).catch(err => console.log("Error: ", err));
+    return ONAoauth(reqConfig, token, dispatch);
   }
 }
 
