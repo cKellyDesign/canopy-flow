@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import { 
+import {
   Grid,
   Row,
   Col,
   Button,
 } from 'react-bootstrap';
 import Header from './../Header/Header';
-
+import { mapStateToProps } from '../../helpers/mapStateToProps';
+import { getUserForms } from '../../store/actions';
 class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  componentWillMount() {
+    const { dispatch } = this.props;
+    const { user } = this.props.global;
+    dispatch(getUserForms(user));
+    console.log("globalllll", this.props.global);
+
+  }
   render() {
     return (
       <div id="HomePage">
@@ -30,4 +43,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default connect(mapStateToProps)(HomePage);

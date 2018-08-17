@@ -1,13 +1,15 @@
 // There are three possible states for our login
 // process and we need actions for each of them
-import { Base64 } from 'js-base64'; 
 import { ONAoauth } from '../connectors/Ona/auth';
+import { fetchAPIForms } from '../connectors/Ona/forms';
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAILURE = 'LOGIN_FAILURE'
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS'
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
+export const RECEIVE_FORMS = 'RECEIVE_FORMS';
+export const FETCH_FORMS_ERROR = 'FETCH_FORMS_ERROR';
 
 export const requestLogin = (creds) => {
   return {
@@ -51,6 +53,20 @@ export const receiveToken = (token) => {
   }
 }
 
+export const receiveForms = (forms) => {
+  return {
+    type: RECEIVE_FORMS,
+    forms
+  }
+}
+
+export const fetchFormsError = (message) => {
+  return {
+    type: FETCH_FORMS_ERROR,
+    message
+  }
+}
+
 // todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
   const reqConfig = {
@@ -65,11 +81,22 @@ export const loginUser = (token) => {
   }
 }
 
+export const getUserForms = (token) => {
+  const reqConfig = {
+    token: token,
+    endpoint: 'forms',
+  }
+  return (dispatch, getState) => {
+    return fetchAPIForms(reqConfig, dispatch);
+  }
+}
+
 export const logoutUser = () => {
   return dispatch => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('state');
     dispatch(receiveLogout());
+    window.location.reload();
   }
 }
 
@@ -80,5 +107,8 @@ export default {
   loginUser,
   receiveLogout,
   logoutUser,
-  receiveToken
+  receiveToken,
+  receiveForms,
+  fetchFormsError,
+  getUserForms,
 }

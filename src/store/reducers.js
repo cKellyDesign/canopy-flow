@@ -1,4 +1,5 @@
-import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN } from './actions';
+import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
+  RECEIVE_FORMS, FETCH_FORMS_ERROR } from './actions';
 
 const defaultState = {
   isFetching: false,
@@ -42,14 +43,30 @@ export default function AUTH(state = defaultState, action) {
       };
     }
 
-  case LOGOUT_SUCCESS: {
-    return {
-      ...state,
-      isFetching: true,
-      isAuthenticated: false,
-      userInfo: null,
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        isFetching: true,
+        isAuthenticated: false,
+        userInfo: null,
+      };
     }
-  }
+
+    case RECEIVE_FORMS: {
+      return {
+        ...state,
+        forms: [
+          ...action.forms
+        ],
+      };
+    }
+
+    case FETCH_FORMS_ERROR: {
+      return {
+        ...state,
+        formsError: action.message
+      };
+    }
 
     default:
       return state;

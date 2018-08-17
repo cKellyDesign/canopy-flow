@@ -1,6 +1,7 @@
 // Map of ONA API Endpoints
 var apiMap = {
-  user: 'https://api.ona.io/api/v1/user'
+  user: 'https://api.ona.io/api/v1/user',
+  forms: 'https://api.ona.io/api/v1/forms',
 };
 
 // Generate Headers for API Fetch

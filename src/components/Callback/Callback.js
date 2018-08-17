@@ -14,6 +14,7 @@ class Callback extends Component {
     const { dispatch } = this.props;
     const accessToken = this.getAccessToken();
     dispatch(loginUser(accessToken));
+    // dispatch(getUserForms(accessToken))
   }
 
   getParameterByName(name) {

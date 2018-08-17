@@ -2,6 +2,18 @@ import { history } from './../../helpers/history';
 import { loginError, receiveLogin } from './../../store/actions';
 import api from './api';
 
+// nonce random string to 
+// export const randomString = (length) => {
+//   var bytes = new Uint8Array(length);
+//   var random = window.crypto.getRandomValues(bytes);
+//   var result = [];
+//   var charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._~'
+//   random.forEach(function (c) {
+//       result.push(charset[c % charset.length]);
+//   });
+//   return result.join('');
+// }
+
 // URL Constructor Reference - can be imported and/or encrypted
 export const oauthURL = {
   apiBase: 'https://api.ona.io',
