@@ -86,7 +86,7 @@ export const getUserForms = (token) => {
     token: token,
     endpoint: 'forms',
   }
-  return (dispatch, getState) => {
+  return async dispatch  => {
     return fetchAPIForms(reqConfig, dispatch);
   }
 }

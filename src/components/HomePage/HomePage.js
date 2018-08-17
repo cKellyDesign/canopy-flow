@@ -16,14 +16,13 @@ class HomePage extends Component {
     super(props);
     this.state = {};
   }
-  componentWillMount() {
+  async componentWillMount() {
     const { dispatch } = this.props;
     const { user } = this.props.global;
-    dispatch(getUserForms(user));
-    console.log("globalllll", this.props.global);
-
+    await dispatch(getUserForms(user));
   }
   render() {
+    console.log("globalllll", this.props.global.forms);
     return (
       <div id="HomePage">
         <Header />
