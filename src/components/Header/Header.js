@@ -10,7 +10,7 @@ import {
 
 import Logout from './../Logout/Logout';
 import { mapStateToProps } from './../../helpers/mapStateToProps';
-import { logoutUser } from './../../store/actions';
+import ONA from './../../connectors/Ona/ona';
 
 class Header extends Component {
   render() {
@@ -24,7 +24,7 @@ class Header extends Component {
               </Link>
             </Col>
             <Col sm={2} >
-              <Logout onLogoutClick={() => this.props.dispatch(logoutUser())} />
+              <Logout onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }} />
             </Col>
           </Row>
         </Grid>

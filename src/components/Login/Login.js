@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { history } from '../../helpers/history';
 
 import { 
   Grid,
@@ -8,28 +7,28 @@ import {
   Alert,
 } from 'react-bootstrap';
 import { loginError } from './../../store/actions';
-import { oauthURL } from './../../connectors/Ona/auth';
+import ONA from './../../connectors/Ona/ona';
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    const {
-      apiBase, apiPath, client_id, response_type, redirect_uri, state, scope,
-    } = oauthURL;
+
     // todo - decrypt oauthUrl info?
+    const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
+    const redirect_uri = `${window.location.origin}/callback`;
 
     this.state = {
       show: false,
-      oauthURL: `${apiBase}${apiPath}?client_id=${client_id}&response_type=${response_type}&redirect_uri=${redirect_uri}&state=${state}&scope=${scope}`,
+      oauthURL: ONA.Oauth2.getOauthURL(client_id, redirect_uri),
     };
   }
 
-  componentWillMount() {
-    const { userInfo } = this.props.global;
-    if (userInfo) {
-      history.replace('/');
-    }
-  }
+  // componentWillMount() {
+  //   const { userInfo } = this.props.global;
+  //   if (userInfo) {
+  //     history.replace('/');
+  //   }
+  // }
 
   handleDismiss(e, dispatch) {
     e.preventDefault();

@@ -15,6 +15,9 @@ import { history } from './helpers/history';
 import { PrivateRoute } from './helpers/PrivateRoute';
 import { mapStateToProps } from './helpers/mapStateToProps';
 
+// Import connectors - to do: make these singletons?
+import ONA from './connectors/Ona/ona';
+
 // Import styling
 import './App.css';
 
@@ -35,18 +38,26 @@ class App extends Component {
       isLoggedIn: false,
     }
   }
+
   render() {
+    const { authorizeUser, isDefaultAuthZ } = ONA.Oauth2;
     return (
       <div className="App">
         <Router history={history}>
           <div>
-            <PrivateRoute exact path='/' component={connectedHomePage} />
-            <PrivateRoute path='/new' component={connectedNewFlowPage} />
-            <PrivateRoute path='/flow/:id' component={connectedFlowPage} />
+            <PrivateRoute exact path='/' component={connectedHomePage} auth={isDefaultAuthZ} />
+            <PrivateRoute path='/new' component={connectedNewFlowPage} auth={isDefaultAuthZ} />
+            <PrivateRoute path='/flow/:id' component={connectedFlowPage} auth={isDefaultAuthZ} />
             <Route path="/login" component={connectedLoginPage} />
             <Route
               path='/callback'
-              component={Callback}
+              render={() => (
+                <Callback 
+                  callback={authorizeUser}
+                  passURI='/'
+                  failURI='/login'
+                />
+              )}
             />
           </div>
         </Router>

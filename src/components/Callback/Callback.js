@@ -1,29 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { loginUser } from '../../store/actions';
 
 class Callback extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      didCallback: false,
+    };
   }
 
-  componentWillMount() {
-    const { dispatch } = this.props;
-    const accessToken = this.getAccessToken();
-    dispatch(loginUser(accessToken));
-    // dispatch(getUserForms(accessToken))
-  }
-
-  getParameterByName(name) {
-    var match = RegExp('[#&]' + name + '=([^&]*)').exec(window.location.hash);
-    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-  }
- 
-  getAccessToken() {
-    return this.getParameterByName('access_token');
+  componentDidMount() {
+    // to do: check for app loaded state before running callback function
+    if (this.props.ownProps.callback && !this.state.didCallback) {
+      const { dispatch, ownProps } = this.props;
+      const { callback, passURI, failURI } = ownProps;
+      this.setState({ didCallback: true }, () => {
+        callback(dispatch, passURI, failURI);
+      });
+    }
   }
 
   render() {
