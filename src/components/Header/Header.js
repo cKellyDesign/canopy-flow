@@ -7,6 +7,7 @@ import {
   Nav,
   NavDropdown,
   Glyphicon,
+  MenuItem,
 } from 'react-bootstrap';
 
 import Logout from './../Logout/Logout';
@@ -15,6 +16,7 @@ import ONA from './../../connectors/Ona/ona';
 
 class Header extends Component {
   render() {
+    const { userInfo } = this.props.global;
     return (
       <Navbar fluid>
         <Navbar.Header>
@@ -28,6 +30,7 @@ class Header extends Component {
             <NavDropdown eventKey={3} title={
               <Glyphicon glyph="user" />
             } id="basic-nav-dropdown">
+              <MenuItem eventKey={3.1}>{`Welcome, ${userInfo.name}`}</MenuItem>
               <Logout
                 onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }}
               />

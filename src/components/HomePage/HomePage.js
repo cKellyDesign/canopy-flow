@@ -9,6 +9,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import Header from './../Header/Header';
+import SideMenu from './../SideMenu/SideMenu';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 import { getUserForms } from '../../store/actions';
 class HomePage extends Component {
@@ -26,19 +27,20 @@ class HomePage extends Component {
     return (
       <div>
         <Header />
-      <div id="HomePage">
-        <Grid>
-          <Row className="main">
-            <Col sm={6} md={3}>
-              <h3>Flows</h3>
-            </Col>
-            <Col sm={6} md={9}>
-              <h3>Call to Actions</h3>
-              <Link to="/new"><Button>Create New Flow</Button></Link>
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+        <div id="HomePage">
+          <SideMenu />
+          <Grid>
+            <Row className="main">
+              <Col sm={6} md={3}>
+                <h3>Flows</h3>
+              </Col>
+              <Col sm={6} md={9}>
+                <h3>Call to Actions</h3>
+                <Link to="/new"><Button>Create New Flow</Button></Link>
+              </Col>
+            </Row>
+          </Grid>
+        </div>
       </div>
     );
   }
