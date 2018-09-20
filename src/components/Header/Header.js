@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import {
   Navbar,
   Nav,
-  NavDropdown
+  NavDropdown,
+  Glyphicon,
 } from 'react-bootstrap';
 
 import Logout from './../Logout/Logout';
@@ -24,7 +25,9 @@ class Header extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav pullRight>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+            <NavDropdown eventKey={3} title={
+              <Glyphicon glyph="user" />
+            } id="basic-nav-dropdown">
               <Logout
                 onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }}
               />
