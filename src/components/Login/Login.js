@@ -4,31 +4,31 @@ import {
   Grid,
   Row,
   Col,
-  FormGroup,
-  FormControl,
-  Button,
   Alert,
 } from 'react-bootstrap';
-import { loginUser, loginError } from './../../store/actions';
+import { loginError } from './../../store/actions';
+import ONA from './../../connectors/Ona/ona';
 
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    // todo - decrypt oauthUrl info?
+    const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
+    const redirect_uri = `${window.location.origin}/callback`;
+
     this.state = {
       show: false,
+      oauthURL: ONA.Oauth2.getOauthURL(client_id, redirect_uri),
     };
   }
 
-  onLoginClick(creds, dispatch) {
-    return dispatch(loginUser(creds));
-  }
-
-  handleClickEvent(e, dispatch) {
-    e.preventDefault();
-    const { username, password } = this;
-    const creds = { username: username.value.trim(), password: password.value.trim() }
-    this.onLoginClick(creds, dispatch);
-  }
+  // componentWillMount() {
+  //   const { userInfo } = this.props.global;
+  //   if (userInfo) {
+  //     history.replace('/');
+  //   }
+  // }
 
   handleDismiss(e, dispatch) {
     e.preventDefault();
@@ -59,32 +59,14 @@ class Login extends Component {
             </Col> : null}
               <Col sm={6} xsOffset={3}>
                 <form>
-                  <FormGroup>
-                    <FormControl
-                      id="username"
-                      inputRef={ref => { this.username = ref; }}
-                      type="text"
-                      label="Username"
-                      placeholder="Enter Username"
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <FormControl
-                      id="password"
-                      inputRef={ref => {this.password = ref; }}
-                      type="password"
-                      label="Password"
-                      placeholder="Enter Password"
-                    />
-                  </FormGroup>
-                  <Button
-                  bsStyle="primary"
-                  bsSize="lg"
-                  type="submit"
-                  onClick={(e) => this.handleClickEvent(e, dispatch)}>Sign In</Button>
+                  <a
+                    className="btn btn-lg btn-primary"
+                    href={this.state.oauthURL}>
+                  Sign In
+                  </a>
                   {this.props && this.props.errorMessage ? 
                   <p>{this.props.errorMessage}</p>
-                : null}
+                  : null}
                 </form>
               </Col>
             </Row>
