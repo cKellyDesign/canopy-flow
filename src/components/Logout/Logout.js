@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 
 class Logout extends Component {
   render() {
     const { onLogoutClick } = this.props;
     return (
-      <div>
-        <Button
-          bsStyle="primary"
-          bsSize="lg"
-          onClick={() => onLogoutClick()}
-          >Sign Out</Button>
-      </div>
+      <MenuItem eventKey={3.1} onClick={() => onLogoutClick()}>Logout</MenuItem>
     );
   }
 }

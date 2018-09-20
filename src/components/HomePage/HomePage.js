@@ -24,8 +24,9 @@ class HomePage extends Component {
   render() {
     console.log("globalllll", this.props.global.forms);
     return (
-      <div id="HomePage">
+      <div>
         <Header />
+      <div id="HomePage">
         <Grid>
           <Row className="main">
             <Col sm={6} md={3}>
@@ -37,6 +38,7 @@ class HomePage extends Component {
             </Col>
           </Row>
         </Grid>
+      </div>
       </div>
     );
   }

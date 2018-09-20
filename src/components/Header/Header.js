@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import {
-  Grid,
-  Row,
-  Col,
+  Navbar,
+  Nav,
+  NavDropdown
 } from 'react-bootstrap';
 
 import Logout from './../Logout/Logout';
@@ -15,20 +15,23 @@ import ONA from './../../connectors/Ona/ona';
 class Header extends Component {
   render() {
     return (
-      <div className="header-wrapper">
-        <Grid>
-          <Row className="header">
-            <Col sm={12} md={10}>
-              <Link to="/">
-                <h1 className="title">Canopy Flow</h1>
-              </Link>
-            </Col>
-            <Col sm={2} >
-              <Logout onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }} />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
+      <Navbar fluid>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <Link to='/'>Ingest</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav pullRight>
+            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+              <Logout
+                onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }}
+              />
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
