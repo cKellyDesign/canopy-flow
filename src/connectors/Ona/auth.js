@@ -73,6 +73,7 @@ export const defaultDeAuthZ = (dispatch) => {
 export const authorizeUser = async (dispatch, passURI, failURI) => {
   // 1) Get accessToken from URI
   const accessToken = utils.getAccessToken();
+  dispatch(Actions.receiveToken(accessToken));
 
   // 2) check API user call for authZ
   const user = await getUser(accessToken);

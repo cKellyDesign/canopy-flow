@@ -19,8 +19,8 @@ class HomePage extends Component {
   }
   async componentWillMount() {
     const { dispatch } = this.props;
+    const token = this.props.global.access_token;
     try {
-      const token = localStorage.getItem('access_token');
       await dispatch(getUserForms(token));
     } catch(e) {
       return false

@@ -52,27 +52,33 @@ export default (config, callback) => callback
   });
 
   export const apiFetch = async (config, callback) => fetchAPI(config).then((res) => {
-    // Define response parse method
-    let parse;
-    switch (config.mimeType) {
-      case 'text/csv':
-        parse = 'text';
-        break;
-      case 'image/jpeg':
-        parse = 'blob';
-        break;
-      default:
-        parse = 'json';
-    }
+    if (!res.ok) {
+      throw new Error(
+        `Request failed, HTTP status ${res.status}`
+      );
+    } else {
+      // Define response parse method
+      let parse;
+      switch (config.mimeType) {
+        case 'text/csv':
+          parse = 'text';
+          break;
+        case 'image/jpeg':
+          parse = 'blob';
+          break;
+        default:
+          parse = 'json';
+      }
 
-    // Return parsed Response
-    // todo - Change "user" to "body"
-    return res[parse]().then((parsed) => {
-      // if parsed text is CSV then return Papaparse via parseCSV
-      if (config.mimeType === 'text/csv') return { user: parseCSV(parsed) };
-      return parsed;
-    }, (callback || (user => ({ res, user }))));
-  });
+      // Return parsed Response
+      // todo - Change "user" to "body"
+      return res[parse]().then((parsed) => {
+        // if parsed text is CSV then return Papaparse via parseCSV
+        if (config.mimeType === 'text/csv') return { user: parseCSV(parsed) };
+        return parsed;
+      }).catch((e) => console.error("Error: ", e));
+    }
+  }).then((callback || (user => user))).catch((e) => console.error("Error: ", e));
 
   export class API {
     constructor() {
