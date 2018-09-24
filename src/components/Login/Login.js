@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { history } from './../../helpers/history';
 import { 
   Grid,
   Row,
@@ -23,12 +23,12 @@ class Login extends Component {
     };
   }
 
-  // componentWillMount() {
-  //   const { userInfo } = this.props.global;
-  //   if (userInfo) {
-  //     history.replace('/');
-  //   }
-  // }
+  componentWillMount() {
+    const { userInfo } = this.props.global;
+    if (userInfo) {
+      history.replace('/');
+    }
+  }
 
   handleDismiss(e, dispatch) {
     e.preventDefault();
