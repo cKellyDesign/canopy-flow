@@ -19,11 +19,14 @@ class HomePage extends Component {
   }
   async componentWillMount() {
     const { dispatch } = this.props;
-    const { user } = this.props.global;
-    await dispatch(getUserForms(user));
+    try {
+      const token = localStorage.getItem('access_token');
+      await dispatch(getUserForms(token));
+    } catch(e) {
+      return false
+    }
   }
   render() {
-    console.log("globalllll", this.props.global.forms);
     return (
       <div>
         <Header />

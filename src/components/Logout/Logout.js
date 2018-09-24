@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { MenuItem } from 'react-bootstrap';
+import { MenuItem, Glyphicon } from 'react-bootstrap';
 
 class Logout extends Component {
   render() {
     const { onLogoutClick } = this.props;
     return (
-      <MenuItem eventKey={3.1} onClick={() => onLogoutClick()}>Logout</MenuItem>
+      <MenuItem eventKey={3.1} onClick={() => onLogoutClick()}>
+      <Glyphicon glyph="log-out" />
+      Logout
+      </MenuItem>
     );
   }
 }

@@ -66,9 +66,7 @@ export const isDefaultAuthZ = () => {
 
 // Removes info from localStorage and dispatches logout action
 export const defaultDeAuthZ = (dispatch) => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('user');
-  dispatch(Actions.receiveLogout());
+  dispatch(Actions.logoutUser());
 }
 
 // authorizeUser checks user authorization and dispatches pass/fail actions

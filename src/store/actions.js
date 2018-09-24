@@ -87,7 +87,7 @@ export const getUserForms = (token) => {
     endpoint: 'forms',
   }
   return async dispatch  => {
-    return fetchAPIForms(reqConfig, dispatch);
+    return await fetchAPIForms(reqConfig, dispatch);
   }
 }
 
@@ -95,6 +95,7 @@ export const logoutUser = () => {
   return dispatch => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('state');
+    localStorage.removeItem('user');
     dispatch(receiveLogout());
     window.location.reload();
   }

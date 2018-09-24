@@ -31,6 +31,7 @@ class Header extends Component {
               <Glyphicon glyph="user" />
             } id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}>{`Welcome, ${userInfo.name}`}</MenuItem>
+              <MenuItem divider />
               <Logout
                 onLogoutClick={() => { ONA.Oauth2.defaultDeAuthZ(this.props.dispatch); }}
               />
