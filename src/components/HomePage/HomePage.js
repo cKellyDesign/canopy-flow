@@ -27,6 +27,7 @@ class HomePage extends Component {
     }
   }
   render() {
+    console.log("global", this.props.global)
     return (
       <div>
         <Header />

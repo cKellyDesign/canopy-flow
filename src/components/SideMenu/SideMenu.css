@@ -1,9 +1,12 @@
 .sidebar-wrapper {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
     z-index: 1000;
     position: fixed;
     width: 300px;
     height: 100%;
-    overflow-y: auto;
     background: white;
     border-right: 1px solid #ecf0f1;
     margin-top: 0;
@@ -33,13 +36,9 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
+    height: auto;
     font-size: 18px;
-    line-height: 60px;
-}
-.sidebar-nav .sidebar-brand:first-child {
-    height: 80px;
-    border-bottom: 1px solid #ccc;
+    line-height: inherit;
 }
 
 .sidebar-nav > .sidebar-brand a {
@@ -47,11 +46,37 @@
     text-decoration: none;
     height: 100%;
     text-align: center;
+    padding: 10px 10px;
 }
 
-.sidebar-nav > .sidebar-brand .new-flow {
+.sidebar-wrapper .flow-details .new-flow-section {
+    min-height: 90px;
+    margin: 0.4em 0;
+    border-bottom: 1px solid #e8e8e8;
+    line-height: 1.3;
+    padding: 0 10px;
+}
+
+.sidebar-wrapper .flow-details .flow-header {
+    min-height: 40px;
+    margin: 0.1em 0;
+    border-bottom: 1px solid #e8e8e8;
+    line-height: 1.3;
+    padding: 0 10px;
+}
+
+.sidebar-wrapper .flow-details .new-flow-section .new-flow {
     border-radius: initial;
     background-color: #eee;
     float: left;
-    margin: 16px 0px 10px 15px;
+    margin: 18px 0px 15px 15px;
+}
+
+.flow-header h4 {
+    padding-top: 5px;
+    padding-left: 18px;
+}
+
+.sidebar-wrapper .flow-detail-wrapper {
+    overflow-y: auto;
 }
