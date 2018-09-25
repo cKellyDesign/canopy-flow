@@ -49,6 +49,8 @@ export default function AUTH(state = defaultState, action) {
         isFetching: true,
         isAuthenticated: false,
         userInfo: null,
+        forms: null,
+        access_token: null,
       };
     }
 

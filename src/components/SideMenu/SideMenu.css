@@ -39,14 +39,33 @@
     height: auto;
     font-size: 18px;
     line-height: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-nav .sidebar-brand .flow-status {
+    margin-left: auto;
+    margin-right: 10px;
+    border-radius: 200px 200px 200px 200px;
+    -moz-border-radius: 200px 200px 200px 200px;
+    -webkit-border-radius: 200px 200px 200px 200px;
+}
+
+.flow-status.active {
+    border: 3px solid green;
+}
+
+.flow-status.inactive {
+    border: 3px solid red;
 }
 
 .sidebar-nav > .sidebar-brand a {
     display: block;
     text-decoration: none;
     height: 100%;
-    text-align: center;
-    padding: 10px 10px;
+    text-align: left;
+    padding: 10px 27px;
+    word-break: break-word;
 }
 
 .sidebar-wrapper .flow-details .new-flow-section {
@@ -70,6 +89,7 @@
     background-color: #eee;
     float: left;
     margin: 18px 0px 15px 15px;
+    outline: none;
 }
 
 .flow-header h4 {

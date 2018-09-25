@@ -44,12 +44,7 @@ const fetchAPI = (config) => {
 // callback        - (optional) Function to take JSON response, otherwise res is simply returned
 export default (config, callback) => callback
   ? fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(callback)
-  : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({user, res}) => {
-    return {
-      user,
-      res
-    }
-  });
+  : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({user, res}) => ({ user, res }));
 
   export const apiFetch = async (config, callback) => fetchAPI(config).then((res) => {
     if (!res.ok) {
