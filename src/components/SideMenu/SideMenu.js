@@ -8,16 +8,13 @@ import { mapStateToProps } from './../../helpers/mapStateToProps';
 import './SideMenu.css';
 
 class SideMenu extends Component {
-  // constructor(props) {
-
-  // }
   render() {
     const { forms } = this.props.global;
     return (
       <div className="sidebar-wrapper">
         <div className="flow-details">
           <div className="new-flow-section">
-            <Button outline color="secondary" size="lg" className="new-flow">New Flow</Button>{' '}
+            <Button onClick={this.props.toggle} outline color="secondary" size="lg" className="new-flow">New Flow</Button>{' '}
           </div>
           <div className="flow-header">
             <h4>

@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import {
   Grid,
   Row,
-  Col,
-  Button,
 } from 'react-bootstrap';
 import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
+import NewFlowPage from '../NewFlowPage/NewFlowPage';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 import { getUserForms } from '../../store/actions';
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      modal: false
+    };
+    this.toggle = this.toggle.bind(this);
+  }
+  toggle() {
+    this.setState({
+      modal: !this.state.modal,
+    });
   }
   async componentWillMount() {
     const { dispatch } = this.props;
@@ -27,21 +33,15 @@ class HomePage extends Component {
     }
   }
   render() {
-    console.log("global", this.props.global)
     return (
       <div>
-        <Header />
+        <Header
+        />
         <div id="HomePage">
-          <SideMenu />
+          <SideMenu toggle={this.toggle} />
           <Grid>
             <Row className="main">
-              <Col sm={6} md={3}>
-                <h3>Flows</h3>
-              </Col>
-              <Col sm={6} md={9}>
-                <h3>Call to Actions</h3>
-                <Link to="/new"><Button>Create New Flow</Button></Link>
-              </Col>
+            <NewFlowPage toggle={this.toggle} isOpen={this.state.modal}/>
             </Row>
           </Grid>
         </div>

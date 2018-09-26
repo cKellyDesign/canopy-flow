@@ -1,0 +1,82 @@
+.modal-content .selection-breadcrumb {
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.custom-modal {
+    width: 50%;
+}
+.selection-breadcrumb .horizontal-steps {
+    display: inline-block;
+    font-size: .9em;
+    margin: .4em auto 0;
+    min-width: 36em;
+    padding-left: 0;
+    width: 100%;
+}
+
+.horizontal-steps li {
+    display: inline;
+}
+
+.horizontal-steps li a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.horizontal-steps li a > span:first-child {
+    background: #ccc;
+    border-radius: 100%;
+    color: #fff;
+    padding: 5px 5px 1px 14px;
+    text-align: center;
+    width: 1.6em;
+}
+
+.horizontal-steps li.divider {
+    height: 0;
+    min-width: 12em;
+    top: -4px;
+    position: relative;
+    display: inline-block;
+    border: .5px solid #ddd;
+}
+
+.apps-section {
+    padding: 4px 5px 5px 50px;
+}
+
+.modal-footer button {
+    border-radius: initial;
+    background-color: #fff;
+}
+
+.modal-footer button:first-child {
+    float: left;
+}
+
+.apps-section .app-link .app-icon {
+    display: inline-block;
+    margin: 10px 12px 30px 13px;
+    text-align: center;
+    vertical-align: top;
+    width: 94px;
+}
+
+.apps-section .app-link .app-icon img {
+    width: 60px;
+    padding: 4px 3px;
+    border: 1px solid #ccc;
+}
+
+.apps-section .app-link .app-icon span {
+    display: block;
+    color: #333;
+    padding-top: 5px;
+}
+
+
+
+
+
