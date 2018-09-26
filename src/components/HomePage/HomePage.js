@@ -11,7 +11,7 @@ import {
 import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { getUserForms } from '../../store/actions';
+import { getUserForms, streamForms } from '../../store/actions';
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -21,6 +21,7 @@ class HomePage extends Component {
     const { dispatch } = this.props;
     const token = this.props.global.access_token;
     try {
+      await dispatch(streamForms(token));
       await dispatch(getUserForms(token));
     } catch(e) {
       return false

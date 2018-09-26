@@ -101,6 +101,47 @@ export const logoutUser = () => {
   }
 }
 
+export const streamForms = (token) => {
+  let config = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    }
+  }
+
+  return dispatch => {
+    // We dispatch requestLogin to kickoff the call to the API
+    return fetch(`https://api.ona.io/api/v1/forms`, config)
+    .then(response => {
+      const reader = response.body.getReader();
+      return new ReadableStream({
+        start(controller) {
+          return pump();
+          function pump() {
+            return reader.read().then(({ done, value }) => {
+              // When no more data needs to be consumed, close the stream
+              if (done) {
+                  controller.close();
+                  return;
+              }
+              // Enqueue the next data chunk into our target stream
+              controller.enqueue(value);
+              return pump();
+            });
+          }
+        }
+      })
+    })
+    .then(stream => new Response(stream))
+    .then(response => response.json())
+    .then(res => {
+      console.log("resss", res)
+    })
+  }
+}
+
+
 export default {
   requestLogin,
   receiveLogin,
@@ -112,4 +153,7 @@ export default {
   receiveForms,
   fetchFormsError,
   getUserForms,
+  streamForms,
 }
+
+
