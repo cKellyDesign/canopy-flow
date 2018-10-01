@@ -67,6 +67,9 @@
 .apps-section .app-link .app-icon img {
     width: 60px;
     padding: 4px 3px;
+}
+
+.apps-section .app-link .app-icon img.active {
     border: 1px solid #ccc;
 }
 
@@ -74,6 +77,37 @@
     display: block;
     color: #333;
     padding-top: 5px;
+}
+
+.data-section {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+}
+
+.fields-section {
+    float: right;
+    height: 50px;
+    position: relative;
+    top: -192px;
+    display: block;
+    margin-top: auto;
+}
+
+.fields-section table thead th {
+    border: none;
+    padding: 0;
+}
+
+.data-section .programs-list,
+.data-section .forms-list {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.data-section .programs-list select,
+.data-section .forms-list select {
+    width: 40%;
 }
 
 

@@ -1,5 +1,5 @@
 import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
-  RECEIVE_FORMS, FETCH_FORMS_ERROR } from './actions';
+  RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS } from './actions';
 
 const defaultState = {
   isFetching: false,
@@ -59,6 +59,21 @@ export default function AUTH(state = defaultState, action) {
         ...state,
         forms: [
           ...action.forms
+        ],
+      };
+    }
+
+    case RECEIVE_FORM_FIELDS: {
+      return {
+        ...state,
+        fields: [
+          ...action.fields.children.map(c => {
+            return {
+              name: c.name || '',
+              type: c.type || '',
+              label: c.label || ''
+            }
+          })
         ],
       };
     }

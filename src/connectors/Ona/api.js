@@ -4,6 +4,7 @@ import { parseCSV } from './../../helpers/utils';
 var apiMap = {
   user: 'https://api.ona.io/api/v1/user',
   forms: 'https://api.ona.io/api/v1/forms',
+  data: 'https://api.ona.io/api/v1/data',
 };
 
 // Generate Headers for API Fetch
