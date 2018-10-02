@@ -9,7 +9,7 @@ import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
 import NewFlowPage from '../NewFlowPage/NewFlowPage';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { getUserForms } from '../../store/actions';
+import { getUserForms, fetchFormsError, receiveFormFields } from '../../store/actions';
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +19,11 @@ class HomePage extends Component {
     this.toggle = this.toggle.bind(this);
   }
   toggle() {
+    const { dispatch } = this.props;
+    dispatch(fetchFormsError(''));
+    if (this.state.modal) {
+      dispatch(receiveFormFields(null));
+    }
     this.setState({
       modal: !this.state.modal,
     });
@@ -35,8 +40,7 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        <Header
-        />
+        <Header />
         <div id="HomePage">
           <SideMenu toggle={this.toggle} />
           <Grid>

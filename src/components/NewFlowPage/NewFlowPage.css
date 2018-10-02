@@ -94,9 +94,29 @@
     margin-top: auto;
 }
 
-.fields-section table thead th {
+.modal-body .container-fluid table thead th {
     border: none;
     padding: 0;
+    text-align: center;
+}
+
+.container-fluid .row select.programs,
+.container-fluid .row select.forms {
+    width: 100%;
+}
+
+.container-fluid .row .forms-column {
+    bottom: 130px;
+}
+
+.fields-wrapper {
+    height: 200px;
+    width: auto;
+    background: #eee;
+    text-align: center;
+    position: relative;
+    display: flex;
+    overflow: auto;
 }
 
 .data-section .programs-list,

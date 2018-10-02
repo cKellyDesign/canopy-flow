@@ -66,7 +66,7 @@ export default function AUTH(state = defaultState, action) {
     case RECEIVE_FORM_FIELDS: {
       return {
         ...state,
-        fields: [
+        fields: action.fields ? [
           ...action.fields.children.map(c => {
             return {
               name: c.name || '',
@@ -74,7 +74,7 @@ export default function AUTH(state = defaultState, action) {
               label: c.label || ''
             }
           })
-        ],
+        ] : null,
       };
     }
 

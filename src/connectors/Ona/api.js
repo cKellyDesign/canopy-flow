@@ -1,4 +1,5 @@
 import { parseCSV } from './../../helpers/utils';
+import { fetchFormsError } from '../../store/actions';
 
 // Map of ONA API Endpoints
 var apiMap = {
@@ -49,6 +50,10 @@ export default (config, callback) => callback
 
   export const apiFetch = async (config, callback) => fetchAPI(config).then((res) => {
     if (!res.ok) {
+      const { dispatch } = config;
+      if (dispatch && (config.endpoint === 'forms' || config.endpoint === 'data')) {
+        dispatch(fetchFormsError(`Failed To Fetch data, status ${res.status}`))
+      }
       throw new Error(
         `Request failed, HTTP status ${res.status}`
       );

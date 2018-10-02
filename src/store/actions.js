@@ -94,7 +94,7 @@ export const getUserForms = (token) => {
     token: token,
     endpoint: 'forms',
   }
-  return dispatch  => {
+  return dispatch  => { 
     return fetchAPIForms(reqConfig, dispatch);
   }
 }
@@ -106,6 +106,7 @@ export const getFormFields = (token, formID) => {
     extraPath: `${formID}/form.json`
   };
   return dispatch => {
+    reqConfig.dispatch = dispatch;
     return fetchFormFields(reqConfig, dispatch);
   }
 }
