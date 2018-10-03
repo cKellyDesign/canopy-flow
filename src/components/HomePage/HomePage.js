@@ -9,7 +9,7 @@ import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
 import NewFlowPage from '../NewFlowPage/NewFlowPage';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { getUserForms, fetchFormsError, receiveFormFields } from '../../store/actions';
+import { getUserForms, fetchFormsError } from '../../store/actions';
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -21,9 +21,6 @@ class HomePage extends Component {
   toggle() {
     const { dispatch } = this.props;
     dispatch(fetchFormsError(''));
-    if (this.state.modal) {
-      dispatch(receiveFormFields(null));
-    }
     this.setState({
       modal: !this.state.modal,
     });

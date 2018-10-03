@@ -98,6 +98,27 @@
     border: none;
     padding: 0;
     text-align: center;
+    vertical-align: middle;
+}
+
+.stage-description-row {
+    padding-top: 10px;
+    padding-left: 44px;
+    padding-right: 44px;
+}
+
+.stage-description-row div {
+    text-align: center;
+}
+
+
+.modal-body .container-fluid table tbody tr td {
+    border: none;
+}
+
+.modal-body .container-fluid table thead th:last-child,
+.modal-body .container-fluid table tbody tr td:last-child {
+    text-align: left;
 }
 
 .container-fluid .row select.programs,
@@ -110,13 +131,30 @@
 }
 
 .fields-wrapper {
-    height: 200px;
+    height: 220px;
     width: auto;
     background: #eee;
     text-align: center;
     position: relative;
     display: flex;
     overflow: auto;
+}
+
+.fields-wrapper .data-type {
+    display: inline-block;
+    margin: 0px 4px 0px 0px;
+}
+
+.fields-wrapper .data-type div {
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 0 5px;
+    text-align: center;
+    min-width: 65px;
+    vertical-align: middle;
 }
 
 .data-section .programs-list,

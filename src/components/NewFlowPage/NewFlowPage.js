@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
-import { Button, Table, Container, Row, Col, Label, Alert } from 'reactstrap';
+import { Button, Table, Container, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getFormFields } from '../../store/actions';
+import AsyncSelect from "react-select/lib/Async";
+import Actions from '../../store/actions';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 import './NewFlowPage.css';
 
@@ -13,6 +14,15 @@ const APPS = [
   "Kobo",
   "CommCare",
   "Excel"
+]; // Move this to config file/constants file/default state
+
+const PROGRAMS = [
+  {label: "Program 1", value: "1"},
+  {label: "Program 2", value: "2"},
+  {label: "Program 3", value: "3"},
+  {label: "Program 4", value: "4"},
+  {label: "Program 5", value: "5"},
+  {label: "Program 6", value: "6"}
 ]; // Move this to config file/constants file/default state
 
 class NewFlowPage extends Component {
@@ -31,6 +41,9 @@ class NewFlowPage extends Component {
     this.handlePreviousButton = this.handlePreviousButton.bind(this);
     this.handleFormSelect = this.handleFormSelect.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.getFormOptions = this.getFormOptions.bind(this);
+    this.loadFormOptions = this.loadFormOptions.bind(this);
   }
 
   handleAppClick(e) {
@@ -43,6 +56,10 @@ class NewFlowPage extends Component {
       disabledPrevBtn: false,
       disabledNextBtn: false,
     });
+  }
+
+  handleBlur(e) {
+    e.preventDefault();
   }
 
   handlePreviousButton() {
@@ -78,26 +95,51 @@ class NewFlowPage extends Component {
     }
   }
 
+  getFormOptions() {
+    const { forms } = this.props.global;
+    return forms && forms.map(d => {
+      return {
+        label: d.title,
+        value: d.formid
+      }
+    });
+  }
+
+  loadFormOptions(inputValue, callback) {
+    const formOptions = this.getFormOptions();
+    setTimeout(() => {
+      callback(
+        formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase()))
+      )
+    });
+  }
+
   async handleFormSelect(e) {
     const { dispatch } = this.props;
-    const formid = e.target.value;
-    const selectedIndex = e.target.options.selectedIndex;
-    const formName = e.target.options[selectedIndex].getAttribute('data-form-name');
+    if (!e) {
+      dispatch(Actions.receiveFormFields(null));
+      this.setState({
+        selectedForm: null
+      });
+      return false
+    }
     this.setState({
-      selectedForm: formName,
+      selectedForm: {
+        label: e.label,
+        value: e.value,
+      },
     });
+    const formid = e.value;
     const token = this.props.global.access_token;
     try {
-      await dispatch(getFormFields(token, formid))
+      await dispatch(Actions.getFormFields(token, formid))
     } catch (e) {
       return false
     }
   }
 
   render() {
-    console.log("state", this.state)
-    console.log('props', this.props.global)
-    const { forms, fields } = this.props.global;
+    const { fields } = this.props.global;
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -107,20 +149,20 @@ class NewFlowPage extends Component {
       </Link>
     ));
 
-    const formsList = forms && forms.map((f, i) => (
-      <option key={i} data-form-name={f.title} value={f.formid}>{f.title}</option>
-    ));
-
     const fieldsList = fields && fields.map((f, i) => (
       <tr key={i}>
         <td>
           <input type="checkbox" />
         </td>
         <td>
-          {f.type}
+          <div className="data-type">
+            <div>
+            {f.type}
+            </div>
+          </div>
         </td>
         <td>
-          {f.name}
+          {typeof f.label === 'string' ? (f.label || f.name) : f.label.English}
         </td>
       </tr>
     ));
@@ -152,6 +194,17 @@ class NewFlowPage extends Component {
                 </li>
               </ul>
             </div>
+            <Row className="stage-description-row">
+              <Col md={{ size: 4 }}>
+                {`${this.state.selectSourceStage ? 'Select Source' : ''}`}
+              </Col>
+              <Col md={{ size: 4 }}>
+              {`${this.state.selectDataStage ? 'Select Data' : ''}`}
+              </Col>
+              <Col md={{ size: 4 }}>
+              {`${this.state.finalizeStage ? 'Finalize' : ''}`}
+              </Col>
+            </Row>
             <hr />
             {this.state.selectSourceStage ?
               <div className="apps-section">
@@ -169,15 +222,11 @@ class NewFlowPage extends Component {
                   <Row>
                     <Col md="6">
                       <Label>Programs</Label><br />
-                      <select className="programs">
-                        `<option value="" disabled selected>Select Program</option>
-                        <option>test</option>
-                        <option>test</option>
-                        <option>test</option>
-                        <option>test</option>
-                        <option>test</option>
-                        <option>test</option>
-                      </select>
+                      <AsyncSelect
+                        name="programs"
+                        placeholder="Select Porgram"
+                        isClearable
+                      />
                     </Col>
                     <Col md="6">
                       <Label>Fields</Label><br />
@@ -200,10 +249,17 @@ class NewFlowPage extends Component {
                   <Row>
                     <Col md="6" className="forms-column">
                       <Label>Forms</Label><br />
-                      <select onChange={(e) => this.handleFormSelect(e)} className="forms">
-                        <option value="" disabled selected>Select Form</option>
-                        {formsList}
-                      </select>
+                      <AsyncSelect
+                        name="forms"
+                        placeholder="Select Form"
+                        value={this.state.selectedForm || ''}
+                        defaultOptions={this.getFormOptions()}
+                        isClearable
+                        cacheOptions
+                        onChange={(e) => this.handleFormSelect(e)}
+                        handleBlur={(e) => this.handleBlur(e)}
+                        loadOptions={this.loadFormOptions}
+                      />
                     </Col>
                   </Row>
                 </Container> : ''}
