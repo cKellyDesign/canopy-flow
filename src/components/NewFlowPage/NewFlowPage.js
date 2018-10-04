@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Glyphicon } from 'react-bootstrap';
 import { Button, Table, Container, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -44,6 +44,18 @@ class NewFlowPage extends Component {
     this.handleBlur = this.handleBlur.bind(this);
     this.getFormOptions = this.getFormOptions.bind(this);
     this.loadFormOptions = this.loadFormOptions.bind(this);
+    this.loadProgramOptions = this.loadProgramOptions.bind(this);
+    this.buildFormFieldsMap = this.buildFormFieldsMap.bind(this);
+    this.onFieldClick = this.onFieldClick.bind(this);
+    this.toggleAllFields = this.toggleAllFields.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.global && nextProps.global.fields) {
+      this.setState({
+        fields: this.buildFormFieldsMap(nextProps.global.fields)
+      });
+    }
   }
 
   handleAppClick(e) {
@@ -62,35 +74,110 @@ class NewFlowPage extends Component {
     e.preventDefault();
   }
 
+  buildFormFieldsMap(fields) {
+    let fieldsMap;
+    const fieldsOptionsMap = {};
+    let field;
+    let fieldName;
+
+    for(let x = 0; x < fields.length; x += 1) {
+      field = fields[x];
+      fieldName = field.name;
+      if (!fieldsOptionsMap[fieldName]) {
+        fieldsOptionsMap[fieldName] = {
+          ...field,
+          enabled: false
+        };
+      }
+    }
+    fieldsMap = {
+      toggleAllOn: false,
+      options: {
+        ...fieldsOptionsMap
+      }
+    };
+    return fieldsMap;
+  }
+
+  buildNextFields(nextOptions, nextFields, fieldKey, isResetable = true) {
+    const { toggleAllOn } = nextFields;
+  }
+
+  onFieldClick(e) {
+    e.stopPropagation();
+    const { fields } = this.state;
+    const nextFields = fields;
+    nextFields.options[e.target.value].enabled = !fields.options[e.target.value].enabled;
+    this.setState({
+      fields: nextFields,
+    });
+  }
+
+  toggleAllFields(e) {
+    e.stopPropagation();
+    const { fields } = this.state;
+    const nextFields = fields;
+    const fieldKeys = Object.keys(fields.options);
+    let field;
+    for (let x = 0; x < fieldKeys.length; x += 1) {
+      field = fields.options[fieldKeys[x]];
+      nextFields.options[fieldKeys[x]].enabled = !field.enabled;
+    }
+    this.setState({
+      fields: nextFields
+    });
+  }
+
   handlePreviousButton() {
+    // TO DO: move this logic to redux state
     if (this.state.selectSourceStage && !this.state.selectDataStage) {
       this.setState({
         disabledPrevBtn: true,
         selectDataStage: false,
         selectSourceStage: true,
+        finalizeStage: false,
       });
     } else if (!this.state.selectSourceStage && this.state.selectDataStage) {
       this.setState({
         disabledPrevBtn: true,
         selectDataStage: false,
         selectSourceStage: true,
+        finalizeStage: false
+      });
+    } else if (this.state.finalizeStage && (!this.state.selectDataStage && !this.state.selectSourceStage)) {
+      this.setState({
+        disabledPrevBtn: false,
+        disabledNextBtn: false,
+        selectDataStage: true,
+        selectSourceStage: false,
+        finalizeStage: false
       });
     } else {
       this.setState({
         disabledPrevBtn: true,
         selectDataStage: false,
-        selectSourceStage: true
+        selectSourceStage: true,
+        finalizeStage: false,
       });
     }
   }
 
   handleNextButton() {
+    // TO DO: move this logic to redux state
     if (this.state.selectSourceStage && !this.state.selectDataStage) {
       this.setState({
         disabledNextBtn: false,
         disabledPrevBtn: !this.state.selectSourceStage && this.state.selectDataStage,
         selectDataStage: true,
         selectSourceStage: false,
+      });
+    } else if (!this.state.selectSourceStage && this.state.selectDataStage) {
+      this.setState({
+        disabledNextBtn: true,
+        disabledPrevBtn: !this.state.selectSourceStage && !this.state.selectDataStage,
+        selectDataStage: false,
+        selectSourceStage: false,
+        finalizeStage: true,
       });
     }
   }
@@ -111,7 +198,15 @@ class NewFlowPage extends Component {
       callback(
         formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase()))
       )
-    });
+    }, 10);
+  }
+
+  loadProgramOptions(inputValue, callback) {
+    setTimeout(() => {
+      callback(
+        PROGRAMS.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
+      )
+    }, 10);
   }
 
   async handleFormSelect(e) {
@@ -119,7 +214,8 @@ class NewFlowPage extends Component {
     if (!e) {
       dispatch(Actions.receiveFormFields(null));
       this.setState({
-        selectedForm: null
+        selectedForm: null,
+        fields: null,
       });
       return false
     }
@@ -139,7 +235,9 @@ class NewFlowPage extends Component {
   }
 
   render() {
-    const { fields } = this.props.global;
+    const { fields } = this.state;
+    console.log("props", this.props.global)
+    console.log("state", this.state);
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -149,20 +247,25 @@ class NewFlowPage extends Component {
       </Link>
     ));
 
-    const fieldsList = fields && fields.map((f, i) => (
+    const fieldsList = fields && Object.keys(fields.options).map((f, i) => (
       <tr key={i}>
         <td>
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            value={fields.options[f].name}
+            checked={fields.options[f].enabled}
+            onChange={(e) => this.onFieldClick(e)}
+          />
         </td>
         <td>
           <div className="data-type">
             <div>
-            {f.type}
+            {fields.options[f].type}
             </div>
           </div>
         </td>
         <td>
-          {typeof f.label === 'string' ? (f.label || f.name) : f.label.English}
+          {typeof fields.options[f].label === 'string' ? (fields.options[f].label || fields.options[f].name) : fields.options[f].label.English}
         </td>
       </tr>
     ));
@@ -177,19 +280,23 @@ class NewFlowPage extends Component {
               <ul className="horizontal-steps">
                 <li>
                   <a>
-                    <span />
+                    <span className={`${this.state.selectDataStage || this.state.finalizeStage ? 'success' : this.state.selectSourceStage ? 'active' : ''}`}>
+                      {(this.state.selectDataStage || this.state.finalizeStage) && <Glyphicon glyph='ok'/>}
+                    </span>
                   </a>
                 </li>
                 <li className="divider"></li>
                 <li>
                   <a>
-                    <span />
+                  <span className={`${this.state.finalizeStage ? 'success' : this.state.selectDataStage ? 'active' : ''}`}>
+                      {this.state.finalizeStage && <Glyphicon glyph='ok'/>}
+                    </span>
                   </a>
                 </li>
                 <li className="divider"></li>
                 <li>
                   <a>
-                    <span />
+                    <span className={`${this.state.finalizeStage ? 'active' : ''}`}/>
                   </a>
                 </li>
               </ul>
@@ -226,6 +333,10 @@ class NewFlowPage extends Component {
                         name="programs"
                         placeholder="Select Porgram"
                         isClearable
+                        cacheOptions
+                        handleBlur={(e) => this.handleBlur(e)}
+                        loadOptions={this.loadProgramOptions}
+                        defaultOptions={PROGRAMS}
                       />
                     </Col>
                     <Col md="6">
@@ -234,7 +345,12 @@ class NewFlowPage extends Component {
                         <Table borderless>
                           <thead>
                             <tr>
-                              <th><input type="checkbox" /></th>
+                              <th>
+                                <input
+                                  type="checkbox"
+                                  onChange={(e) => this.toggleAllFields(e)}
+                                />
+                              </th>
                               <th>Type</th>
                               <th>Field Name</th>
                             </tr>
@@ -262,7 +378,11 @@ class NewFlowPage extends Component {
                       />
                     </Col>
                   </Row>
-                </Container> : ''}
+                </Container> : this.state.finalizeStage ?
+                <Container fluid>
+                    <Row>Final Stage</Row>
+                </Container>
+                : ''}
           </Modal.Body>
           <Modal.Footer>
             <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>

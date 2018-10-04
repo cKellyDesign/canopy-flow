@@ -34,6 +34,16 @@
     width: 1.6em;
 }
 
+.horizontal-steps li a > span.success:first-child {
+    padding: 4px 6px 3px 5px;
+}
+
+.horizontal-steps li a > span.active:first-child {
+    background: #fff;
+    border: 6px solid #ccc;
+    padding: 0px 13px 0px 1px;
+}
+
 .horizontal-steps li.divider {
     height: 0;
     min-width: 12em;
@@ -47,7 +57,13 @@
     padding: 4px 5px 5px 50px;
 }
 
-.modal-footer button {
+.modal-header {
+    background: #f7f7f7;
+}
+
+.modal-footer button,
+.modal-footer button:active {
+    outline: none;
     border-radius: initial;
     background-color: #fff;
 }
