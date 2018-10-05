@@ -35,7 +35,8 @@ class NewFlowPage extends Component {
       finalizeStage: false,
       disabledPrevBtn: true,
       disabledNextBtn: false,
-      selectedForm: null
+      selectedForm: null,
+      selectedProgram: null,
     };
     this.handleAppClick = this.handleAppClick.bind(this);
     this.handlePreviousButton = this.handlePreviousButton.bind(this);
@@ -48,6 +49,7 @@ class NewFlowPage extends Component {
     this.buildFormFieldsMap = this.buildFormFieldsMap.bind(this);
     this.onFieldClick = this.onFieldClick.bind(this);
     this.toggleAllFields = this.toggleAllFields.bind(this);
+    this.handleProgramSelect = this.handleProgramSelect.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -168,7 +170,7 @@ class NewFlowPage extends Component {
       });
     } else if (!this.state.selectSourceStage && this.state.selectDataStage) {
       this.setState({
-        disabledNextBtn: true,
+        disabledNextBtn: false,
         disabledPrevBtn: !this.state.selectSourceStage && !this.state.selectDataStage,
         selectDataStage: false,
         selectSourceStage: false,
@@ -229,10 +231,26 @@ class NewFlowPage extends Component {
     }
   }
 
+  handleProgramSelect(e) {
+    if (!e)  {
+      this.setState({
+        selectedProgram: null,
+      });
+      return false;
+    }
+    this.setState({
+      selectedProgram: {
+        label: e.label,
+        value: e.value
+      }
+    });
+    return true;
+  }
+
   render() {
     const { fields } = this.state;
-    console.log("props", this.props.global)
-    console.log("state", this.state);
+    console.log("state", this.state)
+    console.log("props", this.props);
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -264,6 +282,8 @@ class NewFlowPage extends Component {
         </td>
       </tr>
     ));
+    const buildFieldsStr = fields && Object.keys(fields.options).filter(f => fields.options[f].enabled).map(f => fields.options[f].name).join();
+    console.log("str", buildFieldsStr);
     return (
       <div className="static-modal">
         <Modal show={this.props.isOpen} onHide={this.props.toggle}>
@@ -326,12 +346,14 @@ class NewFlowPage extends Component {
                       <Label>Programs</Label><br />
                       <AsyncSelect
                         name="programs"
-                        placeholder="Select Porgram"
+                        placeholder="Select Program"
+                        value={this.state.selectedProgram || ''}
                         isClearable
                         cacheOptions
                         handleBlur={(e) => this.handleBlur(e)}
                         loadOptions={this.loadProgramOptions}
                         defaultOptions={PROGRAMS}
+                        onChange={(e) => this.handleProgramSelect(e)}
                       />
                     </Col>
                     <Col md="6">
@@ -343,7 +365,7 @@ class NewFlowPage extends Component {
                               <th>
                                 <input
                                   type="checkbox"
-                                  checked={fields.toggleAllOn}
+                                  checked={fields && (fields.toggleAllOn || false)}
                                   onChange={(e) => this.toggleAllFields(e)}
                                 />
                               </th>
@@ -376,14 +398,53 @@ class NewFlowPage extends Component {
                   </Row>
                 </Container> : this.state.finalizeStage ?
                 <Container fluid>
-                    <Row>Final Stage</Row>
+                    <Col sm="12" md={{ size: 10, offset: 2 }}>
+                      <Table borderless>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <Label>Program</Label>
+                            </td>
+                            <td>
+                              {this.state.selectedProgram && (this.state.selectedProgram.label || 'No program selected')}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <Label>Form</Label>
+                            </td>
+                            <td>
+                              {this.state.selectedForm && (this.state.selectedForm.label || 'No form selected')}
+                            </td>
+                          </tr>
+                          <tr>
+                          <td>
+                              <Label>Fields</Label>
+                            </td>
+                            <td>
+                              <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td className="kaznet-title-h1">Details</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </Col>
                 </Container>
                 : ''}
           </Modal.Body>
-          <Modal.Footer>
+          {this.state.finalizeStage ?
+          (<Modal.Footer>
+            <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+            <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>SAVE</Button>
+            <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
+          </Modal.Footer>) :
+          (<Modal.Footer>
             <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
             <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
-          </Modal.Footer>
+          </Modal.Footer>)
+          }
         </Modal>
       </div>
     );

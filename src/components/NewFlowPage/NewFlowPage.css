@@ -61,6 +61,11 @@
     background: #f7f7f7;
 }
 
+.modal-dialog .modal-content .modal-body hr {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
 .modal-footer button,
 .modal-footer button:active {
     outline: none;
@@ -68,9 +73,25 @@
     background-color: #fff;
 }
 
+.modal-footer button:focus,
+.modal-footer button:hover,
+.modal-footer button:visited,
+.modal-footer button:active:focus,
+.modal-footer button:focus-within {
+    outline: none;
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
 .modal-footer button:first-child {
     float: left;
 }
+
+.modal-footer .save-and-pull {
+    background: #ccc;
+}
+
 
 .apps-section .app-link .app-icon {
     display: inline-block;
@@ -115,6 +136,14 @@
     padding: 0;
     text-align: center;
     vertical-align: middle;
+}
+
+.container-fluid table tbody tr td .fields-string {
+    word-break: break-word;
+    white-space: nowrap;
+    width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .stage-description-row {
