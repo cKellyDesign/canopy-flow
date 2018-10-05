@@ -1,5 +1,5 @@
 import { parseCSV } from './../../helpers/utils';
-import { fetchFormsError } from '../../store/actions';
+import Actions from '../../store/actions';
 
 // Map of ONA API Endpoints
 var apiMap = {
@@ -49,10 +49,13 @@ export default (config, callback) => callback
   : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({user, res}) => ({ user, res }));
 
   export const apiFetch = async (config, callback) => fetchAPI(config).then((res) => {
+    const timeOfLogin = Number(localStorage.getItem('time_of_login'));
+    const getTokenExpiry = Number(localStorage.getItem('expires_in')) || null;
+    const expectedExpiryTime = timeOfLogin + getTokenExpiry;
     if (!res.ok) {
       const { dispatch } = config;
-      if (dispatch && (config.endpoint === 'forms' || config.endpoint === 'data')) {
-        dispatch(fetchFormsError(`Failed To Fetch data, status ${res.status}`))
+      if (res.status === 404 && getTokenExpiry && expectedExpiryTime === new Date().getTime()) {
+        dispatch(Actions.logoutUser());
       }
       throw new Error(
         `Request failed, HTTP status ${res.status}`

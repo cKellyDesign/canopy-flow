@@ -50,8 +50,10 @@ export const getUser = async (accessToken) => {
 }
 
 // Saves info into localStorage and dispatches login action
-export const defaultAuthZ = (accessToken, user, dispatch) => {
+export const defaultAuthZ = (accessToken, user, tokenExpiry, dispatch) => {
   localStorage.setItem('access_token', accessToken);
+  localStorage.setItem('expires_in', tokenExpiry);
+  localStorage.setItem('time_of_login', new Date().getTime());
   localStorage.setItem('user', JSON.stringify(user));
   dispatch(Actions.receiveLogin(user));
 }
@@ -73,6 +75,7 @@ export const defaultDeAuthZ = (dispatch) => {
 export const authorizeUser = async (dispatch, passURI, failURI) => {
   // 1) Get accessToken from URI
   const accessToken = utils.getAccessToken();
+  const tokenExpiry = utils.getTokenExpiry() * 1000; // convert to miliseconds
   dispatch(Actions.receiveToken(accessToken));
 
   // 2) check API user call for authZ
@@ -80,7 +83,7 @@ export const authorizeUser = async (dispatch, passURI, failURI) => {
 
   // 3) if pass, save authorized state, else deauthorize
   if (user) {
-    defaultAuthZ(accessToken, user, dispatch);
+    defaultAuthZ(accessToken, user, tokenExpiry, dispatch);
     // return history.push((passURI || '/'));
   } else {
     defaultDeAuthZ(dispatch);
