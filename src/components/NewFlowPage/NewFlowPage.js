@@ -99,15 +99,12 @@ class NewFlowPage extends Component {
     return fieldsMap;
   }
 
-  buildNextFields(nextOptions, nextFields, fieldKey, isResetable = true) {
-    const { toggleAllOn } = nextFields;
-  }
-
   onFieldClick(e) {
     e.stopPropagation();
     const { fields } = this.state;
     const nextFields = fields;
     nextFields.options[e.target.value].enabled = !fields.options[e.target.value].enabled;
+    nextFields.toggleAllOn = Object.keys(nextFields.options).every(e => nextFields.options[e].enabled)
     this.setState({
       fields: nextFields,
     });
@@ -117,12 +114,10 @@ class NewFlowPage extends Component {
     e.stopPropagation();
     const { fields } = this.state;
     const nextFields = fields;
-    const fieldKeys = Object.keys(fields.options);
-    let field;
-    for (let x = 0; x < fieldKeys.length; x += 1) {
-      field = fields.options[fieldKeys[x]];
-      nextFields.options[fieldKeys[x]].enabled = !field.enabled;
-    }
+    nextFields.toggleAllOn = !fields.toggleAllOn;
+    Object.keys(nextFields.options).forEach(d => {
+      nextFields.options[d].enabled = nextFields.toggleAllOn;
+    });
     this.setState({
       fields: nextFields
     });
@@ -348,6 +343,7 @@ class NewFlowPage extends Component {
                               <th>
                                 <input
                                   type="checkbox"
+                                  checked={fields.toggleAllOn}
                                   onChange={(e) => this.toggleAllFields(e)}
                                 />
                               </th>
