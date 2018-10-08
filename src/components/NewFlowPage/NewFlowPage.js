@@ -16,15 +16,6 @@ const APPS = [
   "Excel"
 ]; // Move this to config file/constants file/default state
 
-const PROGRAMS = [
-  {label: "Program 1", value: "1"},
-  {label: "Program 2", value: "2"},
-  {label: "Program 3", value: "3"},
-  {label: "Program 4", value: "4"},
-  {label: "Program 5", value: "5"},
-  {label: "Program 6", value: "6"}
-]; // Move this to config file/constants file/default state
-
 class NewFlowPage extends Component {
   constructor(props) {
     super(props);
@@ -180,11 +171,23 @@ class NewFlowPage extends Component {
   }
 
   getFormOptions() {
-    const { forms } = this.props.global;
-    return forms && forms.map(d => {
+    const { project } = this.props.global;
+    return project && project.forms && project.forms
+    .filter(d => d.downloadable)
+    .map(d => {
       return {
-        label: d.title,
+        label: d.name,
         value: d.formid
+      }
+    });
+  }
+
+  getProjectOptions() {
+    const { projects } = this.props.global;
+    return projects && projects.map(d => {
+      return {
+        label: d.name,
+        value: d.projectid
       }
     });
   }
@@ -199,9 +202,10 @@ class NewFlowPage extends Component {
   }
 
   loadProgramOptions(inputValue, callback) {
+    const programOptions = this.getProjectOptions();
     setTimeout(() => {
       callback(
-        PROGRAMS.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
+        programOptions.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
       )
     }, 10);
   }
@@ -231,7 +235,8 @@ class NewFlowPage extends Component {
     }
   }
 
-  handleProgramSelect(e) {
+  async handleProgramSelect(e) {
+    const { dispatch } = this.props;
     if (!e)  {
       this.setState({
         selectedProgram: null,
@@ -244,13 +249,19 @@ class NewFlowPage extends Component {
         value: e.value
       }
     });
+    const projectid = e.value;
+    const token = this.props.global.access_token;
+    try {
+      await dispatch(Actions.getProject(token, projectid))
+    } catch (e) {
+      return false
+    }
     return true;
   }
 
   render() {
     const { fields } = this.state;
-    console.log("state", this.state)
-    console.log("props", this.props);
+    console.log("global", this.props.global)
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -282,8 +293,8 @@ class NewFlowPage extends Component {
         </td>
       </tr>
     ));
+
     const buildFieldsStr = fields && Object.keys(fields.options).filter(f => fields.options[f].enabled).map(f => fields.options[f].name).join();
-    console.log("str", buildFieldsStr);
     return (
       <div className="static-modal">
         <Modal show={this.props.isOpen} onHide={this.props.toggle}>
@@ -352,7 +363,7 @@ class NewFlowPage extends Component {
                         cacheOptions
                         handleBlur={(e) => this.handleBlur(e)}
                         loadOptions={this.loadProgramOptions}
-                        defaultOptions={PROGRAMS}
+                        defaultOptions={this.getProjectOptions()}
                         onChange={(e) => this.handleProgramSelect(e)}
                       />
                     </Col>
@@ -398,6 +409,7 @@ class NewFlowPage extends Component {
                   </Row>
                 </Container> : this.state.finalizeStage ?
                 <Container fluid>
+                    <Row>
                     <Col sm="12" md={{ size: 10, offset: 2 }}>
                       <Table borderless>
                         <tbody>
@@ -406,7 +418,7 @@ class NewFlowPage extends Component {
                               <Label>Program</Label>
                             </td>
                             <td>
-                              {this.state.selectedProgram && (this.state.selectedProgram.label || 'No program selected')}
+                              <span>{this.state.selectedProgram && (this.state.selectedProgram.label || 'No program selected')}</span>
                             </td>
                           </tr>
                           <tr>
@@ -425,12 +437,29 @@ class NewFlowPage extends Component {
                               <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
                             </td>
                           </tr>
-                          <tr>
-                            <td className="kaznet-title-h1">Details</td>
-                          </tr>
                         </tbody>
                       </Table>
                     </Col>
+                    </Row>
+                    <Row>
+                      <hr/>
+                    </Row>
+                    <Row>
+                      <Col sm="12" md={{ size: 10, offset: 2 }}>
+                        <Table borderless>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <Label>Flow Name</Label>
+                              </td>
+                              <td>
+                                <input type="text" className="flow-name" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </Col>
+                    </Row>
                 </Container>
                 : ''}
           </Modal.Body>

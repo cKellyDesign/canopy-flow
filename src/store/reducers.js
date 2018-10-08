@@ -1,5 +1,8 @@
-import { LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
-  RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS } from './actions';
+import {
+  LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
+  RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
+  FETCH_PROJECT_ERROR
+} from './actions';
 
 const defaultState = {
   isFetching: false,
@@ -83,6 +86,38 @@ export default function AUTH(state = defaultState, action) {
         ...state,
         formsError: action.message
       };
+    }
+
+    case RECEIVE_PROJECTS: {
+      return {
+        ...state,
+        projects: [
+          ...action.projects
+        ]
+      };
+    }
+
+    case FETCH_PROJECTS_ERROR: {
+      return {
+        ...state,
+        projectsError: action.message,
+      }
+    }
+
+    case RECEIVE_PROJECT: {
+      return {
+        ...state,
+        project: {
+          ...action.project
+        }
+      };
+    }
+
+    case FETCH_PROJECT_ERROR: {
+      return {
+        ...state,
+        projectError: action.message,
+      }
     }
 
     default:

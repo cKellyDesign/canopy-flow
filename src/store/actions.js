@@ -2,6 +2,7 @@
 // process and we need actions for each of them
 import { ONAoauth } from '../connectors/Ona/auth';
 import { fetchAPIForms, fetchFormFields } from '../connectors/Ona/forms';
+import { fetchProjects, fetchProject } from '../connectors/Ona/projects';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -11,6 +12,10 @@ export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 export const RECEIVE_FORMS = 'RECEIVE_FORMS';
 export const FETCH_FORMS_ERROR = 'FETCH_FORMS_ERROR';
 export const RECEIVE_FORM_FIELDS = 'RECEIVE_FORM_FIELDS';
+export const RECEIVE_PROJECTS = 'RECEIVE_PROJECTS';
+export const RECEIVE_PROJECT = 'RECEIVE_PROJECT';
+export const FETCH_PROJECTS_ERROR = 'FETCH_PROJECTS_ERROR';
+export const FETCH_PROJECT_ERROR = 'FETCH_PROJECT_ERROR';
 
 export const requestLogin = (creds) => {
   return {
@@ -75,6 +80,34 @@ export const fetchFormsError = (message) => {
   }
 }
 
+export const fetchProjectError = (message) => {
+  return {
+    type: FETCH_PROJECT_ERROR,
+    message
+  }
+}
+
+export const receiveProjects = (projects) => {
+  return {
+    type: RECEIVE_PROJECTS,
+    projects
+  };
+}
+
+export const fetchProjectsError = (message) => {
+  return {
+    type: FETCH_PROJECTS_ERROR,
+    message
+  };
+}
+
+export const receiveProject = (project) => {
+  return {
+    type: RECEIVE_PROJECT,
+    project,
+  }
+}
+
 // todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
   const reqConfig = {
@@ -111,6 +144,29 @@ export const getFormFields = (token, formID) => {
   }
 }
 
+export const getProjects = (token) => {
+  const reqConfig = {
+    token: token,
+    endpoint: 'projects'
+  };
+
+  return dispatch => {
+    return fetchProjects(reqConfig, dispatch);
+  }
+}
+
+export const getProject = (token, projectID) => {
+  const reqConfig = {
+    token: token,
+    endpoint: 'projects',
+    extraPath: `${projectID}.json`
+  };
+
+  return dispatch => {
+    return fetchProject(reqConfig, dispatch);
+  }
+}
+
 export const logoutUser = () => {
   return dispatch => {
     localStorage.removeItem('access_token');
@@ -134,4 +190,10 @@ export default {
   getUserForms,
   receiveFormFields,
   getFormFields,
+  receiveProjects,
+  getProjects,
+  fetchProjectsError,
+  receiveProject,
+  getProject,
+  fetchProjectError
 }

@@ -9,7 +9,7 @@ import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
 import NewFlowPage from '../NewFlowPage/NewFlowPage';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
-import { getUserForms, fetchFormsError } from '../../store/actions';
+import { getUserForms, fetchFormsError, getProjects } from '../../store/actions';
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +30,7 @@ class HomePage extends Component {
     const token = this.props.global.access_token;
     try {
       await dispatch(getUserForms(token));
+      await dispatch(getProjects(token));
     } catch(e) {
       return false
     }

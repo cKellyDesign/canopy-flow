@@ -6,6 +6,7 @@ var apiMap = {
   user: 'https://api.ona.io/api/v1/user',
   forms: 'https://api.ona.io/api/v1/forms',
   data: 'https://api.ona.io/api/v1/data',
+  projects: 'https://api.ona.io/api/v1/projects',
 };
 
 // Generate Headers for API Fetch
@@ -54,7 +55,7 @@ export default (config, callback) => callback
     const expectedExpiryTime = timeOfLogin + getTokenExpiry;
     if (!res.ok) {
       const { dispatch } = config;
-      if (res.status === 404 && getTokenExpiry && expectedExpiryTime === new Date().getTime()) {
+      if (res.status === 404 && getTokenExpiry && expectedExpiryTime <= new Date().getTime()) {
         dispatch(Actions.logoutUser());
       }
       throw new Error(

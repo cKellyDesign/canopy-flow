@@ -146,6 +146,13 @@
     overflow: hidden;
 }
 
+.container-fluid table tbody tr td .flow-name {
+    background: #eee;
+    border: none;
+    padding: 5px 10px;
+    outline: none;
+}
+
 .stage-description-row {
     padding-top: 10px;
     padding-left: 44px;
