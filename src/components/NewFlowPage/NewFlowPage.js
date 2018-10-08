@@ -411,7 +411,7 @@ class NewFlowPage extends Component {
                 <Container fluid>
                     <Row>
                     <Col sm="12" md={{ size: 10, offset: 2 }}>
-                      <Table borderless>
+                      <Table borderless className="selected-items">
                         <tbody>
                           <tr>
                             <td>
@@ -446,7 +446,7 @@ class NewFlowPage extends Component {
                     </Row>
                     <Row>
                       <Col sm="12" md={{ size: 10, offset: 2 }}>
-                        <Table borderless>
+                        <Table borderless className="selected-items">
                           <tbody>
                             <tr>
                               <td>

@@ -138,6 +138,14 @@
     vertical-align: middle;
 }
 
+.modal-body .container-fluid table.selected-items tbody tr td:first-child {
+    width: 30%;
+}
+
+.modal-body .container-fluid table.selected-items tbody tr td:last-child {
+    width: 70%;
+}
+
 .container-fluid table tbody tr td .fields-string {
     word-break: break-word;
     white-space: nowrap;

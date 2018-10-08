@@ -60,9 +60,13 @@ export default function AUTH(state = defaultState, action) {
     case RECEIVE_FORMS: {
       return {
         ...state,
-        forms: [
-          ...action.forms
-        ],
+        forms: action.forms.map(f => {
+          return {
+            title: f.title,
+            formid: f.formid,
+            downloadable: f.downloadable
+          }
+        }),
       };
     }
 
