@@ -48,7 +48,6 @@ class HomePage extends Component {
       currentPage: 'first',
       activeGroupIndex: 0,
       eventsPerPage: 5,
-      itemsToShow: [],
       groupedEvents: HomePage.groupedArray(EVENTS, 5),
     };
     this.toggle = this.toggle.bind(this);
@@ -81,7 +80,12 @@ class HomePage extends Component {
     const id = e.target.id;
     this.setState({
       currentPage: id,
-      activeGroupIndex: id === 'first' ? 0 : id === 'next' ? activeGroupIndex + 1 : id === 'previous' ? activeGroupIndex - 1 : id === 'last' ? groupedEvents.length - 1 : 0
+      activeGroupIndex: id === 'first'
+        ? 0 : id === 'next'
+          ? activeGroupIndex + 1 : id === 'previous'
+            ? activeGroupIndex - 1 : id === 'last'
+              ? groupedEvents.length - 1
+              : 0
     });
   }
 
@@ -102,6 +106,7 @@ class HomePage extends Component {
         <Header />
         <div id="HomePage" className="homepage">
           <SideMenu toggle={this.toggle} />
+          {this.props.global.flow &&
           <Grid fluid>
             <Row className="main">
               <NewFlowPage toggle={this.toggle} isOpen={this.state.modal}/>
@@ -109,10 +114,10 @@ class HomePage extends Component {
             <Row>
               <Col md="3" sm="4">
                 <h4>
-                  Flow 3
+                  {this.props.global.flow.flowName}
                 </h4>
                 <p>Last update 9:11am, 29th Jul</p>
-                <p>Live status: On</p>
+                <p>{`Live status: ${JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
               </Col>
               <Col md="9" className="activity-toolbars" style={{ textAlign: 'right' }}>
                 <h4>
@@ -198,7 +203,7 @@ class HomePage extends Component {
                 </div>
               </Col>
             </Row>
-          </Grid>
+          </Grid>}
         </div>
       </div>
     );

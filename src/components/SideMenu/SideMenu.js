@@ -3,11 +3,20 @@ import { connect } from 'react-redux';
 import { Button } from 'reactstrap';
 import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import Actions from '../../store/actions';
 import { mapStateToProps } from './../../helpers/mapStateToProps';
 import './SideMenu.css';
 
 class SideMenu extends Component {
+  handleFlowClick(e) {
+    const { dispatch } = this.props;
+    const flowName = e.currentTarget.getAttribute('data-key');
+    const status = e.currentTarget.getAttribute('data-downloadable');
+    dispatch(Actions.selectedFlow({
+      flowName,
+      status,
+    }));
+  }
   render() {
     const { forms } = this.props.global;
     return (
@@ -27,7 +36,7 @@ class SideMenu extends Component {
           <ul className="sidebar-nav">
           {this.props.global && this.props.global.forms ?
             forms.map((f, i) => (
-              <li key={i} className="sidebar-brand">
+              <li key={i} data-key={f.title} data-downloadable={f.downloadable} className={`sidebar-brand ${f.title === this.props.global.flow.flowName ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
                 <Link to="">{f.title}</Link>
                 <span className={`flow-status ${f.downloadable ? 'active' : 'inactive'}`}/>
               </li>

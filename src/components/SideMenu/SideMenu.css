@@ -28,6 +28,10 @@
     margin-bottom: 60px;
 }
 
+.sidebar-wrapper .sidebar-nav li.sidebar-brand.active {
+    background: #eee;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 18px;

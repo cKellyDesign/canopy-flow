@@ -16,6 +16,7 @@ export const RECEIVE_PROJECTS = 'RECEIVE_PROJECTS';
 export const RECEIVE_PROJECT = 'RECEIVE_PROJECT';
 export const FETCH_PROJECTS_ERROR = 'FETCH_PROJECTS_ERROR';
 export const FETCH_PROJECT_ERROR = 'FETCH_PROJECT_ERROR';
+export const SELECTED_FLOW = 'SELECTED_FLOW';
 
 export const requestLogin = (creds) => {
   return {
@@ -63,6 +64,13 @@ export const receiveForms = (forms) => {
   return {
     type: RECEIVE_FORMS,
     forms
+  }
+}
+
+export const selectedFlow = (flow) => {
+  return {
+    type: SELECTED_FLOW,
+    flow,
   }
 }
 
@@ -196,5 +204,6 @@ export default {
   fetchProjectsError,
   receiveProject,
   getProject,
-  fetchProjectError
+  fetchProjectError,
+  selectedFlow
 }

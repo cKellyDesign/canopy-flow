@@ -1,7 +1,8 @@
 import {
   LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
-  FETCH_PROJECT_ERROR
+  FETCH_PROJECT_ERROR,
+  SELECTED_FLOW
 } from './actions';
 
 const defaultState = {
@@ -122,6 +123,15 @@ export default function AUTH(state = defaultState, action) {
       return {
         ...state,
         projectError: action.message,
+      }
+    }
+
+    case SELECTED_FLOW: {
+      return {
+        ...state,
+        flow: {
+          ...action.flow
+        },
       }
     }
 
