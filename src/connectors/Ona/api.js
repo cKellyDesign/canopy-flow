@@ -57,10 +57,21 @@ export default (config, callback) => callback
       const { dispatch } = config;
       if (res.status === 404 && getTokenExpiry && expectedExpiryTime <= new Date().getTime()) {
         dispatch(Actions.logoutUser());
+      } else {
+        switch(config.endpoint) {
+          case 'forms':
+            dispatch(Actions.fetchFormsError('Unable to fetch form'));
+            break;
+          case 'projects':
+            dispatch(Actions.fetchProjectsError('Unable to fetch projects'));
+            break;
+          default:
+            ///
+        }
+        throw new Error(
+          `Request failed, HTTP status ${res.status}`
+        );
       }
-      throw new Error(
-        `Request failed, HTTP status ${res.status}`
-      );
     } else {
       // Define response parse method
       let parse;

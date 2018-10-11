@@ -111,9 +111,10 @@ export default function AUTH(state = defaultState, action) {
     case RECEIVE_PROJECT: {
       return {
         ...state,
-        project: {
+        project: action.project ?
+        {
           ...action.project
-        }
+        } : null,
       };
     }
 

@@ -1,0 +1,129 @@
+.homepage {
+    display: block;
+}
+
+.homepage .container-fluid .activity-toolbars h4 span:last-child {
+    padding-left: 10px;
+}
+
+.homepage .container-fluid {
+    padding-left: 350px;
+    padding-right: 200px;
+}
+
+.homepage .container-fluid .row .activity-panel {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-shadow: 0 1px 5px 1px #ddd;
+    margin-bottom: 1.5em;
+    min-height: 10em;
+    font-family: proxima-nova, sans-serif;
+}
+
+.homepage .activity-panel .panel-heading {
+    padding: .6em 1em;
+}
+
+.panel-heading > h3 {
+    margin: 0;
+    font-weight: bold;
+    padding: 0;
+    font-size: 1.17em;
+}
+
+.activity-panel .panel-body {
+    padding: 0;
+}
+
+.activity-panel .panel-body .flow-activity-stats {
+    margin-bottom: 1.5em;
+}
+
+.activity-panel .panel-body .flow-activity-stats .stats-box {
+    border: 1px solid #ddd;
+    border-left: 0;
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 1em .2em;
+    text-align: center;
+    width: 33.3333%;
+}
+
+.stats-box h3 {
+    font-weight: bold;
+}
+
+.flow-activity-stats .stats-box:last-child {
+    border-right: 0;
+}
+
+.activity-panel .panel-body .events-graph {
+    max-width: 100%;
+}
+
+.events-graph > div {
+    margin: 0 1em;
+    padding-bottom: 1.5em;
+}
+
+.events-graph > div h4 {
+    margin: .6em 0;
+}
+
+.activity-panel .panel-body .events-table-container table {
+    border-top: 0;
+    border-bottom: 1px solid #e8e8e8;
+    border-left: 0 none;
+    border-right: 0 none;
+    border: 1px solid #e8e8e8;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 1.03em;
+    width: 100%;
+}
+
+.activity-panel .panel-body .events-table-container table thead {
+    background: #fff;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+
+.events-table-container table thead tr th {
+    width: 33.3333%;
+    text-align: center;
+}
+
+.events-table-container table td {
+    text-align: center;
+    border-left: 1px solid #cbcbcb;
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .5em 1em;
+}
+
+.events-table-container table tbody td {
+    border-bottom: 1px solid #e8e8e8;
+    border-width: 0 0 1px;
+}
+
+.events-table-container .pagination {
+    bottom: 0;
+    margin-top: 14px;
+    text-align: center;
+    width: 100%;
+}
+
+.events-table-container .pagination .pagination-buttons button {
+    padding: 5px 10px;
+    margin: 1px 2px;
+    border: 1px solid #dcdcdc;
+    background-color: #eee;
+}
+
+.events-table-container table td:first-child {
+    border-left-width: 0;
+}

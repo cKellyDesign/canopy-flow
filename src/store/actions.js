@@ -163,6 +163,7 @@ export const getProject = (token, projectID) => {
   };
 
   return dispatch => {
+    reqConfig.dispatch = dispatch;
     return fetchProject(reqConfig, dispatch);
   }
 }

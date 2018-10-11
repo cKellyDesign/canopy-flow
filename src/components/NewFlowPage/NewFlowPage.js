@@ -233,11 +233,13 @@ class NewFlowPage extends Component {
     } catch (e) {
       return false
     }
+    return true
   }
 
   async handleProgramSelect(e) {
     const { dispatch } = this.props;
     if (!e)  {
+      dispatch(Actions.receiveProject(null));
       this.setState({
         selectedProgram: null,
       });
@@ -261,7 +263,6 @@ class NewFlowPage extends Component {
 
   render() {
     const { fields } = this.state;
-    console.log("global", this.props.global)
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -418,7 +419,7 @@ class NewFlowPage extends Component {
                               <Label>Program</Label>
                             </td>
                             <td>
-                              <span>{this.state.selectedProgram && (this.state.selectedProgram.label || 'No program selected')}</span>
+                              <span>{(this.state.selectedProgram && this.state.selectedProgram.label) || 'No program selected'}</span>
                             </td>
                           </tr>
                           <tr>
@@ -426,7 +427,7 @@ class NewFlowPage extends Component {
                               <Label>Form</Label>
                             </td>
                             <td>
-                              {this.state.selectedForm && (this.state.selectedForm.label || 'No form selected')}
+                              {(this.state.selectedForm && this.state.selectedForm.label) || 'No form selected'}
                             </td>
                           </tr>
                           <tr>
