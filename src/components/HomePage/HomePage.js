@@ -163,10 +163,34 @@ class HomePage extends Component {
                       <div className="pagination">
                         <p>{`Page ${activeGroupIndex + 1} / ${groupedEvents.length}`}</p>
                         <div className="pagination-buttons">
-                          <button disabled={activeGroupIndex === 0} onClick={(e) => this.handlePagination(e)} id="first">{'|<<'}</button>
-                          <button disabled={activeGroupIndex === 0} onClick={(e) => this.handlePagination(e)} id="previous">{'<<'}</button>
-                          <button disabled={activeGroupIndex === groupedEvents.length - 1} onClick={(e) => this.handlePagination(e)} id="next">{'>>'}</button>
-                          <button disabled={activeGroupIndex === groupedEvents.length - 1} onClick={(e) => this.handlePagination(e)} id="last">{'|>>'}</button>
+                          <button
+                            className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
+                            disabled={activeGroupIndex === 0}
+                            onClick={(e) => this.handlePagination(e)}
+                            id="first">
+                            {'|<<'}
+                          </button>
+                          <button
+                            className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
+                            disabled={activeGroupIndex === 0}
+                            onClick={(e) => this.handlePagination(e)}
+                            id="previous">
+                            {'<<'}
+                          </button>
+                          <button
+                            className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
+                            disabled={activeGroupIndex === groupedEvents.length - 1}
+                            onClick={(e) => this.handlePagination(e)}
+                            id="next">
+                            {'>>'}
+                          </button>
+                          <button
+                            className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
+                            disabled={activeGroupIndex === groupedEvents.length - 1}
+                            onClick={(e) => this.handlePagination(e)}
+                            id="last">
+                            {'|>>'}
+                          </button>
                         </div>
                       </div>
                     </div>

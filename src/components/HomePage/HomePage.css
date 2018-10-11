@@ -124,6 +124,10 @@
     background-color: #eee;
 }
 
+.events-table-container .pagination .pagination-buttons button.inactive {
+    opacity: 0.7;
+}
+
 .events-table-container table td:first-child {
     border-left-width: 0;
 }
