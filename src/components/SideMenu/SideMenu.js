@@ -8,6 +8,13 @@ import { mapStateToProps } from './../../helpers/mapStateToProps';
 import './SideMenu.css';
 
 class SideMenu extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.global.flow) {
+      this.setState({
+        flowName: nextProps.global.flow.flowName,
+      });
+    }
+  }
   handleFlowClick(e) {
     const { dispatch } = this.props;
     const flowName = e.currentTarget.getAttribute('data-key');
@@ -19,6 +26,7 @@ class SideMenu extends Component {
   }
   render() {
     const { forms } = this.props.global;
+    console.log("props", this.props.global.flow && this.props.global.flow.flowName  )
     return (
       <div className="sidebar-wrapper">
         <div className="flow-details">
@@ -36,7 +44,7 @@ class SideMenu extends Component {
           <ul className="sidebar-nav">
           {this.props.global && this.props.global.forms ?
             forms.map((f, i) => (
-              <li key={i} data-key={f.title} data-downloadable={f.downloadable} className={`sidebar-brand ${f.title === this.props.global.flow.flowName ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
+              <li key={i} data-key={f.title} data-downloadable={f.downloadable} className={`sidebar-brand ${f.title === (this.state && this.state.flowName) ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
                 <Link to="">{f.title}</Link>
                 <span className={`flow-status ${f.downloadable ? 'active' : 'inactive'}`}/>
               </li>

@@ -106,11 +106,12 @@ class HomePage extends Component {
         <Header />
         <div id="HomePage" className="homepage">
           <SideMenu toggle={this.toggle} />
-          {this.props.global.flow &&
           <Grid fluid>
             <Row className="main">
               <NewFlowPage toggle={this.toggle} isOpen={this.state.modal}/>
             </Row>
+            {this.props.global.flow &&
+            <div>
             <Row>
               <Col md="3" sm="4">
                 <h4>
@@ -203,7 +204,8 @@ class HomePage extends Component {
                 </div>
               </Col>
             </Row>
-          </Grid>}
+            </div>}
+          </Grid>
         </div>
       </div>
     );
