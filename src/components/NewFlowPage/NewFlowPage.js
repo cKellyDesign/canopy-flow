@@ -41,6 +41,7 @@ class NewFlowPage extends Component {
     this.onFieldClick = this.onFieldClick.bind(this);
     this.toggleAllFields = this.toggleAllFields.bind(this);
     this.handleProgramSelect = this.handleProgramSelect.bind(this);
+    this.handleSaveFlow = this.handleSaveFlow.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,6 +66,29 @@ class NewFlowPage extends Component {
 
   handleBlur(e) {
     e.preventDefault();
+  }
+
+  handleSaveFlow(e) {
+    const { dispatch } = this.props;
+    const { fields, project } = this.props.global;
+    const flowDets = {
+      fields: [...fields] || [],
+      project: project || null,
+      form: (this.state.selectedForm && this.state.selectedForm.label) || null
+    }
+    dispatch(Actions.saveFlow(flowDets));
+    this.setState({
+      selectedApp: 'ONA',
+      selectSourceStage: true,
+      selectDataStage: false,
+      finalizeStage: false,
+      disabledPrevBtn: true,
+      disabledNextBtn: false,
+      selectedForm: null,
+      selectedProgram: null,
+    }, () => {
+      this.props.toggle();
+    });
   }
 
   buildFormFieldsMap(fields) {
@@ -263,6 +287,7 @@ class NewFlowPage extends Component {
 
   render() {
     const { fields } = this.state;
+    console.log("props", this.props);
     const appBuilder = APPS.map(a => (
       <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
         <span className="app-icon">
@@ -467,7 +492,7 @@ class NewFlowPage extends Component {
           {this.state.finalizeStage ?
           (<Modal.Footer>
             <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-            <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>SAVE</Button>
+            <Button disabled={this.state.disabledNextBtn} onClick={(e) => this.handleSaveFlow(e)}>SAVE</Button>
             <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
           </Modal.Footer>) :
           (<Modal.Footer>

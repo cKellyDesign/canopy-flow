@@ -18,15 +18,13 @@ class SideMenu extends Component {
   handleFlowClick(e) {
     const { dispatch } = this.props;
     const flowName = e.currentTarget.getAttribute('data-key');
-    const status = e.currentTarget.getAttribute('data-downloadable');
     dispatch(Actions.selectedFlow({
       flowName,
-      status,
+      status: true,
     }));
   }
   render() {
-    const { forms } = this.props.global;
-    console.log("props", this.props.global.flow && this.props.global.flow.flowName  )
+    const { flows } = this.props.global;
     return (
       <div className="sidebar-wrapper">
         <div className="flow-details">
@@ -36,17 +34,17 @@ class SideMenu extends Component {
           <div className="flow-header">
             <h4>
               {`Flows `}
-              <Badge>{`${(!this.props.global || !this.props.global.forms) ? '0' : this.props.global.forms.length}`}</Badge>
+              <Badge>{`${(!this.props.global || JSON.stringify(this.props.global.flows) === '{}') ? '0' : Object.keys(flows).length}`}</Badge>
             </h4>
           </div>
         </div>
         <div className="flow-detail-wrapper">
           <ul className="sidebar-nav">
-          {this.props.global && this.props.global.forms ?
-            forms.map((f, i) => (
-              <li key={i} data-key={f.title} data-downloadable={f.downloadable} className={`sidebar-brand ${f.title === (this.state && this.state.flowName) ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
-                <Link to="">{f.title}</Link>
-                <span className={`flow-status ${f.downloadable ? 'active' : 'inactive'}`}/>
+          {this.props.global && JSON.stringify(this.props.global.flows) !== '{}' ?
+            Object.keys(flows).map((f, i) => (
+              <li key={i} data-key={flows[f].form} className={`sidebar-brand ${flows[f].form === (this.state && this.state.flowName) ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
+                <Link to="">{flows[f].form}</Link>
+                <span className={`flow-status ${true ? 'active' : 'inactive'}`}/>
               </li>
             ))
           : <img alt="loading..." src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />}

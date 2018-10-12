@@ -2,12 +2,14 @@ import {
   LOGIN_SUCCESS, LOGIN_REQUEST, LOGIN_FAILURE, LOGOUT_SUCCESS, RECEIVE_TOKEN,
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
   FETCH_PROJECT_ERROR,
-  SELECTED_FLOW
+  SELECTED_FLOW,
+  SAVE_FLOW
 } from './actions';
 
 const defaultState = {
   isFetching: false,
-  isAuthenticated: localStorage.getItem('access-token') ? true : false,
+  isAuthenticated: !!localStorage.getItem('access-token'),
+  flows: {}
 };
 
 export default function AUTH(state = defaultState, action) {
@@ -132,6 +134,24 @@ export default function AUTH(state = defaultState, action) {
         flow: {
           ...action.flow
         },
+      }
+    }
+
+    case SAVE_FLOW: {
+      const keyedFlows = {
+        ...state.flows
+      };
+      if (!keyedFlows[action.flow.form]) {
+        keyedFlows[action.flow.form] = {}
+      }
+      keyedFlows[action.flow.form] = {
+        ...action.flow,
+      }
+      return {
+        ...state,
+        flows: {
+          ...keyedFlows
+        }
       }
     }
 
