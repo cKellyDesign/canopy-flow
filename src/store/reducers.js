@@ -141,11 +141,14 @@ export default function AUTH(state = defaultState, action) {
       const keyedFlows = {
         ...state.flows
       };
-      if (!keyedFlows[action.flow.form]) {
-        keyedFlows[action.flow.form] = {}
-      }
-      keyedFlows[action.flow.form] = {
-        ...action.flow,
+      if (action.flow.form) {
+        if (!keyedFlows[action.flow.form]) {
+          keyedFlows[action.flow.form] = {}
+        }
+
+        keyedFlows[action.flow.form] = {
+          ...action.flow,
+        }
       }
       return {
         ...state,
