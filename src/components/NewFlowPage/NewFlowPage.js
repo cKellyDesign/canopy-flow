@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Glyphicon } from 'react-bootstrap';
 import { Button, Table, Container, Row, Col, Label } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AsyncSelect from "react-select/lib/Async";
 import Actions from '../../store/actions';
@@ -9,11 +8,11 @@ import { mapStateToProps } from '../../helpers/mapStateToProps';
 import './NewFlowPage.css';
 
 const APPS = [
-  "ONA",
-  "OpenSRP",
-  "Kobo",
-  "CommCare",
-  "Excel"
+  {appName: "ONA", disabled: false},
+  {appName: "OpenSRP", disabled: true},
+  {appName: "Kobo", disabled: true},
+  {appName: "CommCare", disabled: true},
+  {appName: "Excel", disabled: true}
 ]; // Move this to config file/constants file/default state
 
 class NewFlowPage extends Component {
@@ -288,12 +287,12 @@ class NewFlowPage extends Component {
   render() {
     const { fields } = this.state;
     const appBuilder = APPS.map(a => (
-      <Link key={a} data-key={a} onClick={(e) => this.handleAppClick(e)} to="" className="app-link">
+      <Button key={a.appName} data-key={a.appName} onClick={(e) => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
         <span className="app-icon">
-          <img alt="Loading..." src="img/rapidpro_ona.png" className={`${this.state.selectedApp === a ? 'active' : ''}`} />
-          <span>{a}</span>
+          <img alt="Loading..." src="img/rapidpro_ona.png" className={`${this.state.selectedApp === a.appName ? 'active' : ''}`} />
+          <span>{a.appName}</span>
         </span>
-      </Link>
+      </Button>
     ));
 
     const fieldsList = fields && Object.keys(fields.options).map((f, i) => (

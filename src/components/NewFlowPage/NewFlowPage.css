@@ -77,7 +77,8 @@
 .modal-footer button:hover,
 .modal-footer button:visited,
 .modal-footer button:active:focus,
-.modal-footer button:focus-within {
+.modal-footer button:focus-within,
+.apps-section .app-link:active:focus {
     outline: none;
     -webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -92,6 +93,14 @@
     background: #ddd;
 }
 
+.apps-section .app-link.disabled {
+    opacity: 0.7;
+}
+
+.apps-section .app-link {
+    background: none;
+    outline: none;
+}
 
 .apps-section .app-link .app-icon {
     display: inline-block;
