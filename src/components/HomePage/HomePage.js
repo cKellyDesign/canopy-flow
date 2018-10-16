@@ -84,7 +84,7 @@ class HomePage extends Component {
   }
 
   handleKeyPress(e) {
-    if (e.charCode === 13) {
+    if (e.key === 'Enter') {
       this.handleFormSubmit(e);
     }
   }
