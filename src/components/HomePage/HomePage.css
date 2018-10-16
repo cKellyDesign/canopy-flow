@@ -21,6 +21,27 @@
     font-family: proxima-nova, sans-serif;
 }
 
+.homepage .container-fluid .flow-name-section {
+    display: flex;
+    flex-flow: row
+}
+
+.homepage .container-fluid .flow-name-section .edit-controls {
+    display: inherit;
+    z-index: 2000;
+}
+
+.homepage .container-fluid .flow-name-section .edit-controls button {
+    margin: 0 4px;
+}
+
+.homepage .container-fluid .flow-name-section span {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
 .homepage .activity-panel .panel-heading {
     padding: .6em 1em;
 }

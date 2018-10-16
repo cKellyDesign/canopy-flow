@@ -8,10 +8,20 @@ import { mapStateToProps } from './../../helpers/mapStateToProps';
 import './SideMenu.css';
 
 class SideMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      flowName: (this.props.global.flow && this.props.global.flow.flowName) || null,
+      flow: this.props.global.flow,
+      flows: this.props.global.flows,
+    }
+  }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.global.flow) {
+    if (nextProps.global) {
       this.setState({
-        flowName: nextProps.global.flow.flowName,
+        flowName: nextProps.global.flow && nextProps.global.flow.flowName,
+        flow: nextProps.global.flow,
+        flows: nextProps.global.flows
       });
     }
   }
@@ -24,7 +34,7 @@ class SideMenu extends Component {
     }));
   }
   render() {
-    const { flows } = this.props.global;
+    const { flows } = this.state;
     return (
       <div className="sidebar-wrapper">
         <div className="flow-details">

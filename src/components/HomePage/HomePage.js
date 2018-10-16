@@ -5,7 +5,7 @@ import {
   Grid,
   Row,
 } from 'react-bootstrap';
-import { Col } from 'reactstrap';
+import { Col, Button } from 'reactstrap';
 import Header from './../Header/Header';
 import SideMenu from './../SideMenu/SideMenu';
 import NewFlowPage from '../NewFlowPage/NewFlowPage';
@@ -49,10 +49,22 @@ class HomePage extends Component {
       activeGroupIndex: 0,
       eventsPerPage: 5,
       groupedEvents: HomePage.groupedArray(EVENTS, 5),
+      isEditing: false,
+      flowName: (this.props.global.flow && this.props.global.flow.flowName) || null,
+      newFlowName: null,
     };
     this.toggle = this.toggle.bind(this);
     this.handlePagination = this.handlePagination.bind(this);
     this.renderEventRows = this.renderEventRows.bind(this);
+    this.handleEditButton = this.handleEditButton.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      flowName: (nextProps.global.flow && nextProps.global.flow.flowName) || null
+    });
   }
 
   toggle() {
@@ -62,6 +74,37 @@ class HomePage extends Component {
     this.setState({
       modal: !this.state.modal,
     });
+  }
+
+  handleInputChange(e) {
+    this.setState({
+      newFlowName: e.target.value
+    });
+  }
+
+  handleEditButton() {
+    this.setState({
+      isEditing: true
+    });
+  }
+
+  handleFormSubmit(e) {
+    const { dispatch } = this.props;
+    this.setState({
+      ...this.state,
+      isEditing: false,
+      flowName: e.target.id === 'save' && this.state.newFlowName ? this.state.newFlowName : this.state.flowName,
+    });
+    const currentFlow = this.props.global.flow.flowName;
+    const currentFlowDets = this.props.global.flows[currentFlow];
+    currentFlowDets.form = e.target.id === 'save' && this.state.newFlowName ? this.state.newFlowName : this.state.flowName;
+    currentFlowDets.oldForm = this.state.flowName;
+    dispatch(Actions.saveFlow(currentFlowDets));
+    dispatch(Actions.selectedFlow({
+      ...this.props.global.flow,
+      flowName: currentFlowDets.form,
+    }));
+    return true
   }
 
   renderEventRows() {
@@ -114,9 +157,22 @@ class HomePage extends Component {
             <div>
             <Row>
               <Col md="3" sm="4">
+                <div className="flow-name-section">
+                {!this.state.isEditing ?
                 <h4>
-                  {this.props.global.flow.flowName}
-                </h4>
+                  {this.state.flowName}
+                </h4> : <input type="text" defaultValue={this.props.global.flow.flowName} onChange={(e) => this.handleInputChange(e)} />}
+                {!this.state.isEditing ?
+                <span className="glyphicon glyphicon-pencil" onClick={() => this.handleEditButton()}/>
+                : (
+                  <div className="edit-controls">
+                    <Button id="save" type="submit" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>
+                    Save Changes
+                    </Button>
+                    <Button id="cancel" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>Cancel</Button>
+                  </div>
+                )}
+                </div>
                 <p>Last update 9:11am, 29th Jul</p>
                 <p>{`Live status: ${JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
               </Col>

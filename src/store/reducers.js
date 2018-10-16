@@ -142,7 +142,10 @@ export default function AUTH(state = defaultState, action) {
         ...state.flows
       };
       if (action.flow.form) {
-        if (!keyedFlows[action.flow.form]) {
+        if (action.flow.oldForm && keyedFlows[action.flow.oldForm]) {
+          delete keyedFlows[action.flow.oldForm];
+        }
+        if (!keyedFlows[action.flow.form]) {  
           keyedFlows[action.flow.form] = {}
         }
 
