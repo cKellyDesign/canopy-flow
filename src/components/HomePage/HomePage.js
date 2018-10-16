@@ -59,6 +59,7 @@ class HomePage extends Component {
     this.handleEditButton = this.handleEditButton.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,6 +83,12 @@ class HomePage extends Component {
     });
   }
 
+  handleKeyPress(e) {
+    if (e.charCode === 13) {
+      this.handleFormSubmit(e);
+    }
+  }
+
   handleEditButton() {
     this.setState({
       isEditing: true
@@ -93,11 +100,11 @@ class HomePage extends Component {
     this.setState({
       ...this.state,
       isEditing: false,
-      flowName: e.target.id === 'save' && this.state.newFlowName ? this.state.newFlowName : this.state.flowName,
+      flowName: (e.target.id === 'save' || e.charCode === 13) && this.state.newFlowName ? this.state.newFlowName : this.state.flowName,
     });
     const currentFlow = this.props.global.flow.flowName;
     const currentFlowDets = this.props.global.flows[currentFlow];
-    currentFlowDets.form = e.target.id === 'save' && this.state.newFlowName ? this.state.newFlowName : this.state.flowName;
+    currentFlowDets.form = (e.target.id === 'save' || e.charCode === 13) && this.state.newFlowName ? this.state.newFlowName : this.state.flowName;
     currentFlowDets.oldForm = this.state.flowName;
     dispatch(Actions.saveFlow(currentFlowDets));
     dispatch(Actions.selectedFlow({
@@ -161,7 +168,7 @@ class HomePage extends Component {
                 {!this.state.isEditing ?
                 <h4>
                   {this.state.flowName}
-                </h4> : <input type="text" defaultValue={this.props.global.flow.flowName} onChange={(e) => this.handleInputChange(e)} />}
+                </h4> : <input type="text" defaultValue={this.props.global.flow.flowName} onChange={(e) => this.handleInputChange(e)} onKeyPress={(e) => this.handleKeyPress(e)}/>}
                 {!this.state.isEditing ?
                 <span className="glyphicon glyphicon-pencil" onClick={() => this.handleEditButton()}/>
                 : (
