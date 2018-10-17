@@ -15,6 +15,15 @@ import { mapStateToProps } from './../../helpers/mapStateToProps';
 import ONA from './../../connectors/Ona/ona';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.handleToggle = this.handleToggle.bind(this);
+  }
+  handleToggle() {
+    this.setState(() => {
+      this.props.toggle()
+    });
+  }
   render() {
     const { userInfo } = this.props.global;
     return (

@@ -18,6 +18,7 @@ export const FETCH_PROJECTS_ERROR = 'FETCH_PROJECTS_ERROR';
 export const FETCH_PROJECT_ERROR = 'FETCH_PROJECT_ERROR';
 export const SELECTED_FLOW = 'SELECTED_FLOW';
 export const SAVE_FLOW = 'SAVE_FLOW';
+export const DELETE_FLOW = 'DELETE_FLOW';
 
 export const requestLogin = (creds) => {
   return {
@@ -124,6 +125,13 @@ export const saveFlow = (flow) => {
   }
 }
 
+export const deleteFlow = (flowName) => {
+  return {
+    type: DELETE_FLOW,
+    flowName
+  }
+}
+
 // todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
   const reqConfig = {
@@ -215,4 +223,5 @@ export default {
   fetchProjectError,
   selectedFlow,
   saveFlow,
+  deleteFlow
 }

@@ -3,7 +3,7 @@ import {
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
   FETCH_PROJECT_ERROR,
   SELECTED_FLOW,
-  SAVE_FLOW
+  SAVE_FLOW, DELETE_FLOW
 } from './actions';
 
 const defaultState = {
@@ -158,6 +158,28 @@ export default function AUTH(state = defaultState, action) {
         flows: {
           ...keyedFlows
         }
+      }
+    }
+
+    case DELETE_FLOW: {
+      const flows = {
+        ...state.flows
+      }
+      if (action.flowName) {
+        delete flows[action.flowName]
+      }
+
+      const prevFlow = flows[Object.keys(flows)[Object.keys(flows).length - 1]];
+
+      return {
+        ...state,
+        flows: {
+          ...flows
+        },
+        flow: prevFlow ? {
+          flowName: prevFlow.form,
+          status: true
+        } : {}
       }
     }
 

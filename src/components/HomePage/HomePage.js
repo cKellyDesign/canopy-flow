@@ -60,6 +60,7 @@ class HomePage extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleFlowDeletion = this.handleFlowDeletion.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -87,6 +88,12 @@ class HomePage extends Component {
     if (e.key === 'Enter') {
       this.handleFormSubmit(e);
     }
+  }
+
+  handleFlowDeletion(e) {
+    const { dispatch } = this.props;
+    const { flow } = this.props.global;
+    dispatch(Actions.deleteFlow(flow.flowName))
   }
 
   handleEditButton() {
@@ -160,7 +167,7 @@ class HomePage extends Component {
             <Row className="main">
               <NewFlowPage toggle={this.toggle} isOpen={this.state.modal}/>
             </Row>
-            {this.props.global.flow &&
+            {this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' &&
             <div>
             <Row>
               <Col md="3" sm="4">
@@ -181,10 +188,11 @@ class HomePage extends Component {
                 )}
                 </div>
                 <p>Last update 9:11am, 29th Jul</p>
-                <p>{`Live status: ${JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
+                <p>{`Live status: ${this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' && this.props.global.flow.status && JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
               </Col>
               <Col md="9" className="activity-toolbars" style={{ textAlign: 'right' }}>
                 <h4>
+                  <span className="glyphicon glyphicon-trash" onClick={(e) => this.handleFlowDeletion(e)} />
                   <span className="glyphicon glyphicon-refresh" />
                   <span className="glyphicon glyphicon-cog" />
                 </h4>

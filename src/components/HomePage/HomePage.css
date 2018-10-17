@@ -2,8 +2,9 @@
     display: block;
 }
 
-.homepage .container-fluid .activity-toolbars h4 span:last-child {
-    padding-left: 10px;
+.homepage .container-fluid .activity-toolbars h4 span {
+    padding: 0 5px;
+    cursor: pointer;
 }
 
 .homepage .container-fluid {
