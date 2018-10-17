@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   Grid,
   Row,
+  Modal
 } from 'react-bootstrap';
 import { Col, Button } from 'reactstrap';
 import Header from './../Header/Header';
@@ -52,6 +53,7 @@ class HomePage extends Component {
       isEditing: false,
       flowName: (this.props.global.flow && this.props.global.flow.flowName) || null,
       newFlowName: null,
+      show: false
     };
     this.toggle = this.toggle.bind(this);
     this.handlePagination = this.handlePagination.bind(this);
@@ -61,6 +63,7 @@ class HomePage extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleFlowDeletion = this.handleFlowDeletion.bind(this);
+    this.handleModalHide = this.handleModalHide.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,6 +87,12 @@ class HomePage extends Component {
     });
   }
 
+  handleModalHide() {
+    this.setState({
+      show: !this.state.show,
+    });
+  }
+
   handleKeyPress(e) {
     if (e.key === 'Enter') {
       this.handleFormSubmit(e);
@@ -93,6 +102,9 @@ class HomePage extends Component {
   handleFlowDeletion(e) {
     const { dispatch } = this.props;
     const { flow } = this.props.global;
+    this.setState({
+      show: false,
+    });
     dispatch(Actions.deleteFlow(flow.flowName))
   }
 
@@ -167,6 +179,21 @@ class HomePage extends Component {
             <Row className="main">
               <NewFlowPage toggle={this.toggle} isOpen={this.state.modal}/>
             </Row>
+            <Row className="main">
+              <Modal show={this.state.show} onHide={this.handleModalHide}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Delete Flow</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {'Are you sure you want to delete '}
+                  <strong>{this.props.global.flow && this.props.global.flow.flowName} ?</strong>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button onClick={() => this.handleFlowDeletion()}>Yes</Button>
+                  <Button onClick={() => this.handleModalHide()}>No</Button>
+                </Modal.Footer>
+              </Modal>
+            </Row>
             {this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' &&
             <div>
             <Row>
@@ -192,7 +219,7 @@ class HomePage extends Component {
               </Col>
               <Col md="9" className="activity-toolbars" style={{ textAlign: 'right' }}>
                 <h4>
-                  <span className="glyphicon glyphicon-trash" onClick={(e) => this.handleFlowDeletion(e)} />
+                  <span className="glyphicon glyphicon-trash" onClick={(e) => this.handleModalHide(e)} />
                   <span className="glyphicon glyphicon-refresh" />
                   <span className="glyphicon glyphicon-cog" />
                 </h4>
