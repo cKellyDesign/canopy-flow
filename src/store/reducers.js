@@ -169,7 +169,8 @@ export default function AUTH(state = defaultState, action) {
         delete flows[action.flowName]
       }
 
-      const prevFlow = flows[Object.keys(flows)[Object.keys(flows).length - 1]];
+      const flowKeys = Object.keys(flows);
+      const prevFlow = flows[flowKeys[flowKeys.length - 1]];
 
       return {
         ...state,

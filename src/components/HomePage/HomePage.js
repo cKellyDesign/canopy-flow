@@ -96,6 +96,8 @@ class HomePage extends Component {
   handleKeyPress(e) {
     if (e.key === 'Enter') {
       this.handleFormSubmit(e);
+    } else {
+      e.stopPropagation();
     }
   }
 

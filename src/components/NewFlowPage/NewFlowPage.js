@@ -221,7 +221,7 @@ class NewFlowPage extends Component {
       callback(
         formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase()))
       )
-    }, 10);
+    }, 1000);
   }
 
   loadProgramOptions(inputValue, callback) {
@@ -230,7 +230,7 @@ class NewFlowPage extends Component {
       callback(
         programOptions.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
       )
-    }, 10);
+    }, 1000);
   }
 
   async handleFormSelect(e) {

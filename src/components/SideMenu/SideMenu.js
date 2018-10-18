@@ -50,7 +50,7 @@ class SideMenu extends Component {
         </div>
         <div className="flow-detail-wrapper">
           <ul className="sidebar-nav">
-          {this.props.global && this.props.global.flow && JSON.stringify(this.props.global.flows) !== '{}' ?
+          {this.props.global && JSON.stringify(this.props.global.flows) !== '{}' ?
             Object.keys(flows).map((f, i) => (
               <li key={i} data-key={flows[f].form} className={`sidebar-brand ${flows[f].form === (this.state && this.state.flowName) ? 'active' : ''}`} onClick={(e) => this.handleFlowClick(e)}>
                 <Link to="">{flows[f].form}</Link>
