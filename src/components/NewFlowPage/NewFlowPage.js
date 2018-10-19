@@ -43,6 +43,7 @@ class NewFlowPage extends Component {
     this.handleProgramSelect = this.handleProgramSelect.bind(this);
     this.handleSaveFlow = this.handleSaveFlow.bind(this);
     this.handleFlowNameInput = this.handleFlowNameInput.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,6 +64,12 @@ class NewFlowPage extends Component {
       disabledPrevBtn: false,
       disabledNextBtn: false,
     });
+  }
+
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.handleSaveFlow();
+    }
   }
 
   handleBlur(e) {
@@ -487,7 +494,7 @@ class NewFlowPage extends Component {
                                 <Label>Flow Name</Label>
                               </td>
                               <td>
-                                <input type="text" className="flow-name" onChange={(e) => this.handleFlowNameInput(e)}/>
+                                <input type="text" className="flow-name" onChange={(e) => this.handleFlowNameInput(e)} onKeyPress={(e) => this.handleKeyPress(e)}/>
                               </td>
                             </tr>
                           </tbody>
