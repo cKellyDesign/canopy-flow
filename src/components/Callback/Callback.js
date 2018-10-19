@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 
-class Callback extends Component {
-
+class Callback extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

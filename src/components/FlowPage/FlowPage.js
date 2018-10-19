@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { 
+import {
   Grid,
   Row,
   Col,
 } from 'react-bootstrap';
-import Header from './../Header/Header';
+import Header from '../Header/Header';
 
-class FlowPage extends Component {
+class FlowPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +31,10 @@ class FlowPage extends Component {
               <h3>Flows</h3>
             </Col>
             <Col sm={6} md={9}>
-              <h3>Flow View: {this.state.flowId}</h3>
+              <h3>
+Flow View:
+                {this.state.flowId}
+              </h3>
             </Col>
           </Row>
         </Grid>

@@ -1,8 +1,8 @@
-import { parseCSV } from './../../helpers/utils';
+import { parseCSV } from '../../helpers/utils';
 import Actions from '../../store/actions';
 
 // Map of ONA API Endpoints
-var apiMap = {
+const apiMap = {
   user: 'https://api.ona.io/api/v1/user',
   forms: 'https://api.ona.io/api/v1/forms',
   data: 'https://api.ona.io/api/v1/data',
@@ -10,7 +10,7 @@ var apiMap = {
 };
 
 // Generate Headers for API Fetch
-var apiHeaders = (config) => {
+const apiHeaders = (config) => {
   const headers = new Headers();
 
   if (config && config.mimeType) headers.append('Content-Type', config.mimeType);
@@ -21,7 +21,7 @@ var apiHeaders = (config) => {
 };
 
 // Generate Request for API Fetch
-var apiRequest = (config, headers) => {
+const apiRequest = (config, headers) => {
   const reqConfig = { method: config.method || 'GET' };
   if (headers) reqConfig.headers = headers;
 
@@ -33,9 +33,7 @@ var apiRequest = (config, headers) => {
 };
 
 // Generate API Fetch Promise
-const fetchAPI = (config) => {
-  return fetch(apiRequest(config, apiHeaders(config)));
-};
+const fetchAPI = config => fetch(apiRequest(config, apiHeaders(config)));
 
 // Resolve API Fetch Promise, convert to JSON, handle with callback/resolve as JSON
 // config          - (required) Object contaig options / credentials
@@ -45,9 +43,9 @@ const fetchAPI = (config) => {
 // config.params   - (optional) Additional parameters to be appeneded to API Path
 // config.mimeType - (optional) Specify mimeType for Request Headers
 // callback        - (optional) Function to take JSON response, otherwise res is simply returned
-export default (config, callback) => callback
+export default (config, callback) => (callback
   ? fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(callback)
-  : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({user, res}) => ({ user, res }));
+  : fetchAPI(config).then(res => res.json().then(user => ({ user, res }))).then(({ user, res }) => ({ user, res })));
 
 export const apiFetch = async (config, callback) => fetchAPI(config).then((res) => {
   const timeOfLogin = Number(localStorage.getItem('time_of_login'));
@@ -58,7 +56,7 @@ export const apiFetch = async (config, callback) => fetchAPI(config).then((res) 
     if (res.status === 404 && getTokenExpiry && expectedExpiryTime <= new Date().getTime()) {
       dispatch(Actions.logoutUser());
     } else {
-      switch(config.endpoint) {
+      switch (config.endpoint) {
       case 'forms':
         dispatch(Actions.fetchFormsError('Unable to fetch form'));
         break;
@@ -66,10 +64,10 @@ export const apiFetch = async (config, callback) => fetchAPI(config).then((res) 
         dispatch(Actions.fetchProjectsError('Unable to fetch projects'));
         break;
       default:
-            ///
+            // /
       }
       throw new Error(
-        `Request failed, HTTP status ${res.status}`
+        `Request failed, HTTP status ${res.status}`,
       );
     }
   } else {
@@ -92,9 +90,9 @@ export const apiFetch = async (config, callback) => fetchAPI(config).then((res) 
       // if parsed text is CSV then return Papaparse via parseCSV
       if (config.mimeType === 'text/csv') return { user: parseCSV(parsed) };
       return parsed;
-    }).catch((e) => console.error('Error: ', e));
+    }).catch(e => console.error('Error: ', e));
   }
-}).then((callback || (user => user))).catch((e) => console.error('Error: ', e));
+}).then((callback || (user => user))).catch(e => console.error('Error: ', e));
 
 export class API {
   constructor() {

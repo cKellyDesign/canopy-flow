@@ -1,6 +1,6 @@
-import { history } from './../../helpers/history';
-import Actions from './../../store/actions';
-import utils from './../../helpers/utils';
+import { history } from '../../helpers/history';
+import Actions from '../../store/actions';
+import utils from '../../helpers/utils';
 import api, { apiFetch } from './api';
 
 // URL Constructor Reference - can be imported and/or encrypted
@@ -14,24 +14,22 @@ export const oauthURL = (clientID, callback) => {
 };
 
 // Deprecated? Call /user API Endpoint to confirm ONA Oauth2 AuthZ
-export const ONAoauth = (reqConfig, token, dispatch) => {
-  return api(reqConfig).then(({ user, res }) => {
-    if (!res.ok) {
-      dispatch(Actions.loginError(user.detail));
-      console.log('!res.ok', user);
-      window.authRes = res;
-      history.replace('/login');
-    } else {
-      try {
-        localStorage.setItem('access_token', token);
-      } catch(e) {
-        //
-      }
-      dispatch(Actions.receiveLogin(user));
-      history.replace('/');
+export const ONAoauth = (reqConfig, token, dispatch) => api(reqConfig).then(({ user, res }) => {
+  if (!res.ok) {
+    dispatch(Actions.loginError(user.detail));
+    console.log('!res.ok', user);
+    window.authRes = res;
+    history.replace('/login');
+  } else {
+    try {
+      localStorage.setItem('access_token', token);
+    } catch (e) {
+      //
     }
-  }).catch(err => console.log('Error: ', err));
-};
+    dispatch(Actions.receiveLogin(user));
+    history.replace('/');
+  }
+}).catch(err => console.log('Error: ', err));
 
 // USER API request used for Authorization
 export const getUser = async (accessToken) => {
@@ -40,7 +38,7 @@ export const getUser = async (accessToken) => {
   return apiFetch({
     token: accessToken,
     endpoint: 'user',
-  }, user => {
+  }, (user) => {
     try {
       return user;
     } catch (e) {

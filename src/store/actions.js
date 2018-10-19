@@ -20,126 +20,96 @@ export const SELECTED_FLOW = 'SELECTED_FLOW';
 export const SAVE_FLOW = 'SAVE_FLOW';
 export const DELETE_FLOW = 'DELETE_FLOW';
 
-export const requestLogin = (creds) => {
-  return {
-    type: LOGIN_REQUEST,
-    isFetching: true,
-    isAuthenticated: false,
-    creds
-  };
-};
+export const requestLogin = creds => ({
+  type: LOGIN_REQUEST,
+  isFetching: true,
+  isAuthenticated: false,
+  creds,
+});
 
-export const receiveLogin = (user) => {
-  return {
-    type: LOGIN_SUCCESS,
-    isFetching: false,
-    isAuthenticated: true,
-    user
-  };
-};
+export const receiveLogin = user => ({
+  type: LOGIN_SUCCESS,
+  isFetching: false,
+  isAuthenticated: true,
+  user,
+});
 
-export const loginError = (message) => {
-  return {
-    type: LOGIN_FAILURE,
-    isFetching: false,
-    isAuthenticated: false,
-    message
-  };
-};
+export const loginError = message => ({
+  type: LOGIN_FAILURE,
+  isFetching: false,
+  isAuthenticated: false,
+  message,
+});
 
-export const receiveLogout = () => {
-  return {
-    type: LOGOUT_SUCCESS,
-    isFetching: false,
-    isAuthenticated: false,
-  };
-};
+export const receiveLogout = () => ({
+  type: LOGOUT_SUCCESS,
+  isFetching: false,
+  isAuthenticated: false,
+});
 
-export const receiveToken = (token) => {
-  return {
-    type: RECEIVE_TOKEN,
-    token,
-  };
-};
+export const receiveToken = token => ({
+  type: RECEIVE_TOKEN,
+  token,
+});
 
-export const receiveForms = (forms) => {
-  return {
-    type: RECEIVE_FORMS,
-    forms
-  };
-};
+export const receiveForms = forms => ({
+  type: RECEIVE_FORMS,
+  forms,
+});
 
-export const selectedFlow = (flow) => {
-  return {
-    type: SELECTED_FLOW,
-    flow,
-  };
-};
+export const selectedFlow = flow => ({
+  type: SELECTED_FLOW,
+  flow,
+});
 
-export const receiveFormFields = (fields) => {
-  return {
-    type: RECEIVE_FORM_FIELDS,
-    fields,
-  };
-};
+export const receiveFormFields = fields => ({
+  type: RECEIVE_FORM_FIELDS,
+  fields,
+});
 
-export const fetchFormsError = (message) => {
-  return {
-    type: FETCH_FORMS_ERROR,
-    message
-  };
-};
+export const fetchFormsError = message => ({
+  type: FETCH_FORMS_ERROR,
+  message,
+});
 
-export const fetchProjectError = (message) => {
-  return {
-    type: FETCH_PROJECT_ERROR,
-    message
-  };
-};
+export const fetchProjectError = message => ({
+  type: FETCH_PROJECT_ERROR,
+  message,
+});
 
-export const receiveProjects = (projects) => {
-  return {
-    type: RECEIVE_PROJECTS,
-    projects
-  };
-};
+export const receiveProjects = projects => ({
+  type: RECEIVE_PROJECTS,
+  projects,
+});
 
-export const fetchProjectsError = (message) => {
-  return {
-    type: FETCH_PROJECTS_ERROR,
-    message
-  };
-};
+export const fetchProjectsError = message => ({
+  type: FETCH_PROJECTS_ERROR,
+  message,
+});
 
-export const receiveProject = (project) => {
-  return {
-    type: RECEIVE_PROJECT,
-    project,
-  };
-};
+export const receiveProject = project => ({
+  type: RECEIVE_PROJECT,
+  project,
+});
 
-export const saveFlow = (flow) => {
-  return {
-    type: SAVE_FLOW,
-    flow
-  };
-};
+export const saveFlow = flow => ({
+  type: SAVE_FLOW,
+  flow,
+});
 
-export const deleteFlow = (flowName) => {
-  return {
-    type: DELETE_FLOW,
-    flowName
-  };
-};
+export const deleteFlow = flowName => ({
+  type: DELETE_FLOW,
+  flowName,
+});
 
 // todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
   const reqConfig = {
-    token: token,
+    token,
     endpoint: 'user',
   };
 
-  return dispatch => {
+  return (dispatch) => {
     // We dispatch requestLogin to kickoff the call to the API
     dispatch(requestLogin(token));
     return ONAoauth(reqConfig, token, dispatch);
@@ -148,21 +118,19 @@ export const loginUser = (token) => {
 
 export const getUserForms = (token) => {
   const reqConfig = {
-    token: token,
+    token,
     endpoint: 'forms',
   };
-  return dispatch  => { 
-    return fetchAPIForms(reqConfig, dispatch);
-  };
+  return dispatch => fetchAPIForms(reqConfig, dispatch);
 };
 
 export const getFormFields = (token, formID) => {
   const reqConfig = {
-    token: token,
+    token,
     endpoint: 'forms',
-    extraPath: `${formID}/form.json`
+    extraPath: `${formID}/form.json`,
   };
-  return dispatch => {
+  return (dispatch) => {
     reqConfig.dispatch = dispatch;
     return fetchFormFields(reqConfig, dispatch);
   };
@@ -170,36 +138,32 @@ export const getFormFields = (token, formID) => {
 
 export const getProjects = (token) => {
   const reqConfig = {
-    token: token,
-    endpoint: 'projects'
+    token,
+    endpoint: 'projects',
   };
 
-  return dispatch => {
-    return fetchProjects(reqConfig, dispatch);
-  };
+  return dispatch => fetchProjects(reqConfig, dispatch);
 };
 
 export const getProject = (token, projectID) => {
   const reqConfig = {
-    token: token,
+    token,
     endpoint: 'projects',
-    extraPath: `${projectID}.json`
+    extraPath: `${projectID}.json`,
   };
 
-  return dispatch => {
+  return (dispatch) => {
     reqConfig.dispatch = dispatch;
     return fetchProject(reqConfig, dispatch);
   };
 };
 
-export const logoutUser = () => {
-  return dispatch => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('state');
-    localStorage.removeItem('user');
-    dispatch(receiveLogout());
-    window.location.reload();
-  };
+export const logoutUser = () => (dispatch) => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('state');
+  localStorage.removeItem('user');
+  dispatch(receiveLogout());
+  window.location.reload();
 };
 
 export default {
@@ -223,5 +187,5 @@ export default {
   fetchProjectError,
   selectedFlow,
   saveFlow,
-  deleteFlow
+  deleteFlow,
 };

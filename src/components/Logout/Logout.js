@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { MenuItem, Glyphicon } from 'react-bootstrap';
 
-class Logout extends Component {
+class Logout extends React.Component {
   render() {
     const { onLogoutClick } = this.props;
     return (

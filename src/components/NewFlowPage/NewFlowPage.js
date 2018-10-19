@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Modal, Glyphicon } from 'react-bootstrap';
-import { Button, Table, Container, Row, Col, Label } from 'reactstrap';
+import {
+  Button, Table, Container, Row, Col, Label,
+} from 'reactstrap';
 import { connect } from 'react-redux';
 import AsyncSelect from 'react-select/lib/Async';
 import Actions from '../../store/actions';
@@ -8,14 +10,14 @@ import { mapStateToProps } from '../../helpers/mapStateToProps';
 import './NewFlowPage.css';
 
 const APPS = [
-  {appName: 'ONA', disabled: false},
-  {appName: 'OpenSRP', disabled: true},
-  {appName: 'Kobo', disabled: true},
-  {appName: 'CommCare', disabled: true},
-  {appName: 'Excel', disabled: true}
+  { appName: 'ONA', disabled: false },
+  { appName: 'OpenSRP', disabled: true },
+  { appName: 'Kobo', disabled: true },
+  { appName: 'CommCare', disabled: true },
+  { appName: 'Excel', disabled: true },
 ]; // Move this to config file/constants file/default state
 
-class NewFlowPage extends Component {
+class NewFlowPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +51,7 @@ class NewFlowPage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.global && nextProps.global.fields) {
       this.setState({
-        fields: this.buildFormFieldsMap(nextProps.global.fields)
+        fields: this.buildFormFieldsMap(nextProps.global.fields),
       });
     }
   }
@@ -78,7 +80,7 @@ class NewFlowPage extends Component {
 
   handleFlowNameInput(e) {
     this.setState({
-      newFlowName: e.target.value
+      newFlowName: e.target.value,
     });
   }
 
@@ -89,7 +91,8 @@ class NewFlowPage extends Component {
     const flowDets = {
       fields: (fields && [...fields]) || [],
       project: project || null,
-      form: newFlowName && !!newFlowName.length ? newFlowName : ((this.state.selectedForm && this.state.selectedForm.label) || null)
+      form: newFlowName && !!newFlowName.length ? newFlowName : ((this.state.selectedForm && this.state.selectedForm.label) || null),
+      status: true,
     };
 
     dispatch(Actions.saveFlow(flowDets));
@@ -113,21 +116,21 @@ class NewFlowPage extends Component {
     let field;
     let fieldName;
 
-    for(let x = 0; x < fields.length; x += 1) {
+    for (let x = 0; x < fields.length; x += 1) {
       field = fields[x];
       fieldName = field.name;
       if (!fieldsOptionsMap[fieldName]) {
         fieldsOptionsMap[fieldName] = {
           ...field,
-          enabled: false
+          enabled: false,
         };
       }
     }
     fieldsMap = {
       toggleAllOn: false,
       options: {
-        ...fieldsOptionsMap
-      }
+        ...fieldsOptionsMap,
+      },
     };
     return fieldsMap;
   }
@@ -148,11 +151,11 @@ class NewFlowPage extends Component {
     const { fields } = this.state;
     const nextFields = fields;
     nextFields.toggleAllOn = !fields.toggleAllOn;
-    Object.keys(nextFields.options).forEach(d => {
+    Object.keys(nextFields.options).forEach((d) => {
       nextFields.options[d].enabled = nextFields.toggleAllOn;
     });
     this.setState({
-      fields: nextFields
+      fields: nextFields,
     });
   }
 
@@ -170,7 +173,7 @@ class NewFlowPage extends Component {
         disabledPrevBtn: true,
         selectDataStage: false,
         selectSourceStage: true,
-        finalizeStage: false
+        finalizeStage: false,
       });
     } else if (this.state.finalizeStage && (!this.state.selectDataStage && !this.state.selectSourceStage)) {
       this.setState({
@@ -178,7 +181,7 @@ class NewFlowPage extends Component {
         disabledNextBtn: false,
         selectDataStage: true,
         selectSourceStage: false,
-        finalizeStage: false
+        finalizeStage: false,
       });
     } else {
       this.setState({
@@ -214,29 +217,25 @@ class NewFlowPage extends Component {
     const { project } = this.props.global;
     return project && project.forms && project.forms
       .filter(d => d.downloadable)
-      .map(d => {
-        return {
-          label: d.name,
-          value: d.formid
-        };
-      });
+      .map(d => ({
+        label: d.name,
+        value: d.formid,
+      }));
   }
 
   getProjectOptions() {
     const { projects } = this.props.global;
-    return projects && projects.map(d => {
-      return {
-        label: d.name,
-        value: d.projectid
-      };
-    });
+    return projects && projects.map(d => ({
+      label: d.name,
+      value: d.projectid,
+    }));
   }
 
   loadFormOptions(inputValue, callback) {
     const formOptions = this.getFormOptions();
     setTimeout(() => {
       callback(
-        formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase()))
+        formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase())),
       );
     }, 1000);
   }
@@ -245,7 +244,7 @@ class NewFlowPage extends Component {
     const programOptions = this.getProjectOptions();
     setTimeout(() => {
       callback(
-        programOptions.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
+        programOptions.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase())),
       );
     }, 1000);
   }
@@ -278,7 +277,7 @@ class NewFlowPage extends Component {
 
   async handleProgramSelect(e) {
     const { dispatch } = this.props;
-    if (!e)  {
+    if (!e) {
       dispatch(Actions.receiveProject(null));
       this.setState({
         selectedProgram: null,
@@ -288,8 +287,8 @@ class NewFlowPage extends Component {
     this.setState({
       selectedProgram: {
         label: e.label,
-        value: e.value
-      }
+        value: e.value,
+      },
     });
     const projectid = e.value;
     const token = this.props.global.access_token;
@@ -304,7 +303,7 @@ class NewFlowPage extends Component {
   render() {
     const { fields } = this.state;
     const appBuilder = APPS.map(a => (
-      <Button key={a.appName} data-key={a.appName} onClick={(e) => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
+      <Button key={a.appName} data-key={a.appName} onClick={e => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
         <span className="app-icon">
           <img alt="Loading..." src="img/rapidpro_ona.png" className={`${this.state.selectedApp === a.appName ? 'active' : ''}`} />
           <span>{a.appName}</span>
@@ -319,7 +318,7 @@ class NewFlowPage extends Component {
             type="checkbox"
             value={fields.options[f].name}
             checked={fields.options[f].enabled}
-            onChange={(e) => this.onFieldClick(e)}
+            onChange={e => this.onFieldClick(e)}
           />
         </td>
         <td>
@@ -348,22 +347,22 @@ class NewFlowPage extends Component {
                 <li>
                   <a>
                     <span className={`${this.state.selectDataStage || this.state.finalizeStage ? 'success' : this.state.selectSourceStage ? 'active' : ''}`}>
-                      {(this.state.selectDataStage || this.state.finalizeStage) && <Glyphicon glyph='ok'/>}
+                      {(this.state.selectDataStage || this.state.finalizeStage) && <Glyphicon glyph="ok" />}
                     </span>
                   </a>
                 </li>
-                <li className="divider"></li>
+                <li className="divider" />
                 <li>
                   <a>
                     <span className={`${this.state.finalizeStage ? 'success' : this.state.selectDataStage ? 'active' : ''}`}>
-                      {this.state.finalizeStage && <Glyphicon glyph='ok'/>}
+                      {this.state.finalizeStage && <Glyphicon glyph="ok" />}
                     </span>
                   </a>
                 </li>
-                <li className="divider"></li>
+                <li className="divider" />
                 <li>
                   <a>
-                    <span className={`${this.state.finalizeStage ? 'active' : ''}`}/>
+                    <span className={`${this.state.finalizeStage ? 'active' : ''}`} />
                   </a>
                 </li>
               </ul>
@@ -380,140 +379,155 @@ class NewFlowPage extends Component {
               </Col>
             </Row>
             <hr />
-            {this.state.selectSourceStage ?
-              <div className="apps-section">
-                <div>
-                  {appBuilder}
+            {this.state.selectSourceStage
+              ? (
+                <div className="apps-section">
+                  <div>
+                    {appBuilder}
+                  </div>
                 </div>
-              </div> : this.state.selectDataStage ?
-                <Container fluid>
-                  {this.props.global.formsError.length > 0 &&
-                    <Row>
-                      <div className="alert alert-danger" role="alert">
-                        {this.props.global.formsError}
-                      </div>
-                    </Row>}
-                  <Row>
-                    <Col md="6">
-                      <Label>Programs</Label><br />
-                      <AsyncSelect
-                        name="programs"
-                        placeholder="Select Program"
-                        value={this.state.selectedProgram || ''}
-                        isClearable
-                        cacheOptions
-                        handleBlur={(e) => this.handleBlur(e)}
-                        loadOptions={this.loadProgramOptions}
-                        defaultOptions={this.getProjectOptions()}
-                        onChange={(e) => this.handleProgramSelect(e)}
-                      />
-                    </Col>
-                    <Col md="6">
-                      <Label>Fields</Label><br />
-                      <div className="fields-wrapper">
-                        <Table borderless>
-                          <thead>
-                            <tr>
-                              <th>
-                                <input
-                                  type="checkbox"
-                                  checked={fields && (fields.toggleAllOn || false)}
-                                  onChange={(e) => this.toggleAllFields(e)}
-                                />
-                              </th>
-                              <th>Type</th>
-                              <th>Field Name</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {fieldsList}
-                          </tbody>
-                        </Table>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="6" className="forms-column">
-                      <Label>Forms</Label><br />
-                      <AsyncSelect
-                        name="forms"
-                        placeholder="Select Form"
-                        value={this.state.selectedForm || ''}
-                        defaultOptions={this.getFormOptions()}
-                        isClearable
-                        cacheOptions
-                        onChange={(e) => this.handleFormSelect(e)}
-                        handleBlur={(e) => this.handleBlur(e)}
-                        loadOptions={this.loadFormOptions}
-                      />
-                    </Col>
-                  </Row>
-                </Container> : this.state.finalizeStage ?
+              ) : this.state.selectDataStage
+                ? (
                   <Container fluid>
+                    {this.props.global.formsError.length > 0
+                    && (
+                      <Row>
+                        <div className="alert alert-danger" role="alert">
+                          {this.props.global.formsError}
+                        </div>
+                      </Row>
+                    )}
                     <Row>
-                      <Col sm="12" md={{ size: 10, offset: 2 }}>
-                        <Table borderless className="selected-items">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <Label>Program</Label>
-                              </td>
-                              <td>
-                                <span>{(this.state.selectedProgram && this.state.selectedProgram.label) || 'No program selected'}</span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Label>Form</Label>
-                              </td>
-                              <td>
-                                {(this.state.selectedForm && this.state.selectedForm.label) || 'No form selected'}
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <Label>Fields</Label>
-                              </td>
-                              <td>
-                                <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </Table>
+                      <Col md="6">
+                        <Label>Programs</Label>
+                        <br />
+                        <AsyncSelect
+                          name="programs"
+                          placeholder="Select Program"
+                          value={this.state.selectedProgram || ''}
+                          isClearable
+                          cacheOptions
+                          handleBlur={e => this.handleBlur(e)}
+                          loadOptions={this.loadProgramOptions}
+                          defaultOptions={this.getProjectOptions()}
+                          onChange={e => this.handleProgramSelect(e)}
+                        />
+                      </Col>
+                      <Col md="6">
+                        <Label>Fields</Label>
+                        <br />
+                        <div className="fields-wrapper">
+                          <Table borderless>
+                            <thead>
+                              <tr>
+                                <th>
+                                  <input
+                                    type="checkbox"
+                                    checked={fields && (fields.toggleAllOn || false)}
+                                    onChange={e => this.toggleAllFields(e)}
+                                  />
+                                </th>
+                                <th>Type</th>
+                                <th>Field Name</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {fieldsList}
+                            </tbody>
+                          </Table>
+                        </div>
                       </Col>
                     </Row>
                     <Row>
-                      <hr/>
-                    </Row>
-                    <Row>
-                      <Col sm="12" md={{ size: 10, offset: 2 }}>
-                        <Table borderless className="selected-items">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <Label>Flow Name</Label>
-                              </td>
-                              <td>
-                                <input type="text" className="flow-name" onChange={(e) => this.handleFlowNameInput(e)} onKeyPress={(e) => this.handleKeyPress(e)}/>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </Table>
+                      <Col md="6" className="forms-column">
+                        <Label>Forms</Label>
+                        <br />
+                        <AsyncSelect
+                          name="forms"
+                          placeholder="Select Form"
+                          value={this.state.selectedForm || ''}
+                          defaultOptions={this.getFormOptions()}
+                          isClearable
+                          cacheOptions
+                          onChange={e => this.handleFormSelect(e)}
+                          handleBlur={e => this.handleBlur(e)}
+                          loadOptions={this.loadFormOptions}
+                        />
                       </Col>
                     </Row>
                   </Container>
+                ) : this.state.finalizeStage
+                  ? (
+                    <Container fluid>
+                      <Row>
+                        <Col sm="12" md={{ size: 10, offset: 2 }}>
+                          <Table borderless className="selected-items">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <Label>Program</Label>
+                                </td>
+                                <td>
+                                  <span>{(this.state.selectedProgram && this.state.selectedProgram.label) || 'No program selected'}</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Label>Form</Label>
+                                </td>
+                                <td>
+                                  {(this.state.selectedForm && this.state.selectedForm.label) || 'No form selected'}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Label>Fields</Label>
+                                </td>
+                                <td>
+                                  <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </Table>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <hr />
+                      </Row>
+                      <Row>
+                        <Col sm="12" md={{ size: 10, offset: 2 }}>
+                          <Table borderless className="selected-items">
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <Label>Flow Name</Label>
+                                </td>
+                                <td>
+                                  <input type="text" className="flow-name" onChange={e => this.handleFlowNameInput(e)} onKeyPress={e => this.handleKeyPress(e)} />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </Table>
+                        </Col>
+                      </Row>
+                    </Container>
+                  )
                   : ''}
           </Modal.Body>
-          {this.state.finalizeStage ?
-            (<Modal.Footer>
-              <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-              <Button disabled={this.state.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
-              <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
-            </Modal.Footer>) :
-            (<Modal.Footer>
-              <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-              <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
-            </Modal.Footer>)
+          {this.state.finalizeStage
+            ? (
+              <Modal.Footer>
+                <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+                <Button disabled={this.state.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
+                <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
+              </Modal.Footer>
+            )
+            : (
+              <Modal.Footer>
+                <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+                <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
+              </Modal.Footer>
+            )
           }
         </Modal>
       </div>

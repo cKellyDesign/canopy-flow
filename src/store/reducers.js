@@ -3,13 +3,13 @@ import {
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
   FETCH_PROJECT_ERROR,
   SELECTED_FLOW,
-  SAVE_FLOW, DELETE_FLOW
+  SAVE_FLOW, DELETE_FLOW,
 } from './actions';
 
 const defaultState = {
   isFetching: false,
   isAuthenticated: !!localStorage.getItem('access-token'),
-  flows: {}
+  flows: {},
 };
 
 export default function AUTH(state = defaultState, action) {
@@ -19,7 +19,7 @@ export default function AUTH(state = defaultState, action) {
       ...state,
       isFetching: true,
       isAuthenticated: false,
-      user: action.creds
+      user: action.creds,
     };
   }
 
@@ -63,13 +63,11 @@ export default function AUTH(state = defaultState, action) {
   case RECEIVE_FORMS: {
     return {
       ...state,
-      forms: action.forms.map(f => {
-        return {
-          title: f.title,
-          formid: f.formid,
-          downloadable: f.downloadable
-        };
-      }),
+      forms: action.forms.map(f => ({
+        title: f.title,
+        formid: f.formid,
+        downloadable: f.downloadable,
+      })),
     };
   }
 
@@ -77,13 +75,11 @@ export default function AUTH(state = defaultState, action) {
     return {
       ...state,
       fields: action.fields ? [
-        ...action.fields.children.map(c => {
-          return {
-            name: c.name || '',
-            type: c.type || '',
-            label: c.label || ''
-          };
-        })
+        ...action.fields.children.map(c => ({
+          name: c.name || '',
+          type: c.type || '',
+          label: c.label || '',
+        })),
       ] : null,
     };
   }
@@ -91,7 +87,7 @@ export default function AUTH(state = defaultState, action) {
   case FETCH_FORMS_ERROR: {
     return {
       ...state,
-      formsError: action.message
+      formsError: action.message,
     };
   }
 
@@ -99,8 +95,8 @@ export default function AUTH(state = defaultState, action) {
     return {
       ...state,
       projects: [
-        ...action.projects
-      ]
+        ...action.projects,
+      ],
     };
   }
 
@@ -114,9 +110,9 @@ export default function AUTH(state = defaultState, action) {
   case RECEIVE_PROJECT: {
     return {
       ...state,
-      project: action.project ?
-        {
-          ...action.project
+      project: action.project
+        ? {
+          ...action.project,
         } : null,
     };
   }
@@ -132,20 +128,20 @@ export default function AUTH(state = defaultState, action) {
     return {
       ...state,
       flow: {
-        ...action.flow
+        ...action.flow,
       },
     };
   }
 
   case SAVE_FLOW: {
     const keyedFlows = {
-      ...state.flows
+      ...state.flows,
     };
     if (action.flow.form) {
       if (action.flow.oldForm && keyedFlows[action.flow.oldForm]) {
         delete keyedFlows[action.flow.oldForm];
       }
-      if (!keyedFlows[action.flow.form]) {  
+      if (!keyedFlows[action.flow.form]) {
         keyedFlows[action.flow.form] = {};
       }
 
@@ -156,14 +152,14 @@ export default function AUTH(state = defaultState, action) {
     return {
       ...state,
       flows: {
-        ...keyedFlows
-      }
+        ...keyedFlows,
+      },
     };
   }
 
   case DELETE_FLOW: {
     const flows = {
-      ...state.flows
+      ...state.flows,
     };
     if (action.flowName) {
       delete flows[action.flowName];
@@ -175,12 +171,12 @@ export default function AUTH(state = defaultState, action) {
     return {
       ...state,
       flows: {
-        ...flows
+        ...flows,
       },
       flow: prevFlow ? {
         flowName: prevFlow.form,
-        status: true
-      } : {}
+        status: true,
+      } : {},
     };
   }
 
