@@ -27,6 +27,7 @@ class NewFlowPage extends Component {
       disabledNextBtn: false,
       selectedForm: null,
       selectedProgram: null,
+      newFlowName: null,
     };
     this.handleAppClick = this.handleAppClick.bind(this);
     this.handlePreviousButton = this.handlePreviousButton.bind(this);
@@ -41,6 +42,7 @@ class NewFlowPage extends Component {
     this.toggleAllFields = this.toggleAllFields.bind(this);
     this.handleProgramSelect = this.handleProgramSelect.bind(this);
     this.handleSaveFlow = this.handleSaveFlow.bind(this);
+    this.handleFlowNameInput = this.handleFlowNameInput.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,14 +69,22 @@ class NewFlowPage extends Component {
     e.preventDefault();
   }
 
+  handleFlowNameInput(e) {
+    this.setState({
+      newFlowName: e.target.value
+    });
+  }
+
   handleSaveFlow() {
     const { dispatch } = this.props;
+    const { newFlowName } = this.state;
     const { fields, project } = this.props.global;
     const flowDets = {
       fields: (fields && [...fields]) || [],
       project: project || null,
-      form: (this.state.selectedForm && this.state.selectedForm.label) || null
-    }
+      form: newFlowName && !!newFlowName.length ? newFlowName : ((this.state.selectedForm && this.state.selectedForm.label) || null)
+    };
+
     dispatch(Actions.saveFlow(flowDets));
     this.setState({
       selectedApp: 'ONA',
@@ -477,7 +487,7 @@ class NewFlowPage extends Component {
                                 <Label>Flow Name</Label>
                               </td>
                               <td>
-                                <input type="text" className="flow-name" />
+                                <input type="text" className="flow-name" onChange={(e) => this.handleFlowNameInput(e)}/>
                               </td>
                             </tr>
                           </tbody>
