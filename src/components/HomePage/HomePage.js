@@ -15,23 +15,23 @@ import Actions from '../../store/actions';
 import './HomePage.css';
 
 const EVENTS = [
-  { date: "July 23rd, 2018", 'event-type':"Event Type A", username: "Username x" },
-  { date: "July 23rd, 2019", 'event-type':"Event Type B", username: "Username x" },
-  { date: "July 23rd, 2020", 'event-type':"Event Type C", username: "Username x" },
-  { date: "July 23rd, 2021", 'event-type':"Event Type D", username: "Username x" },
-  { date: "July 23rd, 2022", 'event-type':"Event Type E", username: "Username x" },
-  { date: "July 23rd, 2023", 'event-type':"Event Type F", username: "Username x" },
-  { date: "July 23rd, 2024", 'event-type':"Event Type G", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
-  { date: "July 23rd, 2025", 'event-type':"Event Type H", username: "Username x" },
+  { date: 'July 23rd, 2018', 'event-type':'Event Type A', username: 'Username x' },
+  { date: 'July 23rd, 2019', 'event-type':'Event Type B', username: 'Username x' },
+  { date: 'July 23rd, 2020', 'event-type':'Event Type C', username: 'Username x' },
+  { date: 'July 23rd, 2021', 'event-type':'Event Type D', username: 'Username x' },
+  { date: 'July 23rd, 2022', 'event-type':'Event Type E', username: 'Username x' },
+  { date: 'July 23rd, 2023', 'event-type':'Event Type F', username: 'Username x' },
+  { date: 'July 23rd, 2024', 'event-type':'Event Type G', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
+  { date: 'July 23rd, 2025', 'event-type':'Event Type H', username: 'Username x' },
 ];
 class HomePage extends Component {
   static groupedArray(arr, chunkSize) {
@@ -107,7 +107,7 @@ class HomePage extends Component {
     this.setState({
       show: false,
     });
-    dispatch(Actions.deleteFlow(flow.flowName))
+    dispatch(Actions.deleteFlow(flow.flowName));
   }
 
   handleEditButton() {
@@ -132,7 +132,7 @@ class HomePage extends Component {
       ...this.props.global.flow,
       flowName: currentFlowDets.form,
     }));
-    return true
+    return true;
   }
 
   renderEventRows() {
@@ -167,7 +167,7 @@ class HomePage extends Component {
       await dispatch(Actions.getProjects(token));
       await dispatch(Actions.getUserForms(token));
     } catch(e) {
-      return false
+      return false;
     }
   }
   render() {
@@ -198,43 +198,43 @@ class HomePage extends Component {
             </Row>
             {this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' &&
             <div>
-            <Row>
-              <Col md="3" sm="4">
-                <div className="flow-name-section">
-                {!this.state.isEditing ?
-                <h4>
-                  {this.state.flowName}
-                </h4> : <input type="text" defaultValue={this.props.global.flow.flowName} onChange={(e) => this.handleInputChange(e)} onKeyPress={(e) => this.handleKeyPress(e)}/>}
-                {!this.state.isEditing ?
-                <span className="glyphicon glyphicon-pencil" onClick={() => this.handleEditButton()}/>
-                : (
-                  <div className="edit-controls">
-                    <Button id="save" type="submit" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>
+              <Row>
+                <Col md="3" sm="4">
+                  <div className="flow-name-section">
+                    {!this.state.isEditing ?
+                      <h4>
+                        {this.state.flowName}
+                      </h4> : <input type="text" defaultValue={this.props.global.flow.flowName} onChange={(e) => this.handleInputChange(e)} onKeyPress={(e) => this.handleKeyPress(e)}/>}
+                    {!this.state.isEditing ?
+                      <span className="glyphicon glyphicon-pencil" onClick={() => this.handleEditButton()}/>
+                      : (
+                        <div className="edit-controls">
+                          <Button id="save" type="submit" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>
                     Save Changes
-                    </Button>
-                    <Button id="cancel" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>Cancel</Button>
+                          </Button>
+                          <Button id="cancel" outline color="secondary" onClick={(e) => this.handleFormSubmit(e)}>Cancel</Button>
+                        </div>
+                      )}
                   </div>
-                )}
-                </div>
-                <p>Last update 9:11am, 29th Jul</p>
-                <p>{`Live status: ${this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' && this.props.global.flow.status && JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
-              </Col>
-              <Col md="9" className="activity-toolbars" style={{ textAlign: 'right' }}>
-                <h4>
-                  <span className="glyphicon glyphicon-trash" onClick={(e) => this.handleModalHide(e)} />
-                  <span className="glyphicon glyphicon-refresh" />
-                  <span className="glyphicon glyphicon-cog" />
-                </h4>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="12">
-                <div className="activity-panel">
-                  <div className="panel-heading">
-                    <h3>Activity</h3>
-                  </div>
-                  <div className="panel-body">
-                    <div className="flow-activity-stats clearfix">
+                  <p>Last update 9:11am, 29th Jul</p>
+                  <p>{`Live status: ${this.props.global.flow && JSON.stringify(this.props.global.flow) !== '{}' && this.props.global.flow.status && JSON.parse(this.props.global.flow.status) ? 'On' : 'Off'}`}</p>
+                </Col>
+                <Col md="9" className="activity-toolbars" style={{ textAlign: 'right' }}>
+                  <h4>
+                    <span className="glyphicon glyphicon-trash" onClick={(e) => this.handleModalHide(e)} />
+                    <span className="glyphicon glyphicon-refresh" />
+                    <span className="glyphicon glyphicon-cog" />
+                  </h4>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="12">
+                  <div className="activity-panel">
+                    <div className="panel-heading">
+                      <h3>Activity</h3>
+                    </div>
+                    <div className="panel-body">
+                      <div className="flow-activity-stats clearfix">
                         <div className="stats-box">
                           <h3>90</h3>
                           <span>Events</span>
@@ -247,63 +247,63 @@ class HomePage extends Component {
                           <h3>90</h3>
                           <span>Activated Users</span>
                         </div>  
-                    </div>
-                    <div className="events-graph">
-                      <div>
-                        <h4><span>Events</span></h4>
                       </div>
-                    </div>
-                    <div className="events-table-container">
-                      <table className="events-table">
-                        <thead>
-                          <tr>
-                            <th>Date</th>
-                            <th>Event Type</th>
-                            <th>Username</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {this.renderEventRows()}
-                        </tbody>
-                      </table>
-                      <div className="pagination">
-                        <p>{`Page ${activeGroupIndex + 1} / ${groupedEvents.length}`}</p>
-                        <div className="pagination-buttons">
-                          <button
-                            className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
-                            disabled={activeGroupIndex === 0}
-                            onClick={(e) => this.handlePagination(e)}
-                            id="first">
-                            {'|<<'}
-                          </button>
-                          <button
-                            className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
-                            disabled={activeGroupIndex === 0}
-                            onClick={(e) => this.handlePagination(e)}
-                            id="previous">
-                            {'<<'}
-                          </button>
-                          <button
-                            className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
-                            disabled={activeGroupIndex === groupedEvents.length - 1}
-                            onClick={(e) => this.handlePagination(e)}
-                            id="next">
-                            {'>>'}
-                          </button>
-                          <button
-                            className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
-                            disabled={activeGroupIndex === groupedEvents.length - 1}
-                            onClick={(e) => this.handlePagination(e)}
-                            id="last">
-                            {'|>>'}
-                          </button>
+                      <div className="events-graph">
+                        <div>
+                          <h4><span>Events</span></h4>
+                        </div>
+                      </div>
+                      <div className="events-table-container">
+                        <table className="events-table">
+                          <thead>
+                            <tr>
+                              <th>Date</th>
+                              <th>Event Type</th>
+                              <th>Username</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.renderEventRows()}
+                          </tbody>
+                        </table>
+                        <div className="pagination">
+                          <p>{`Page ${activeGroupIndex + 1} / ${groupedEvents.length}`}</p>
+                          <div className="pagination-buttons">
+                            <button
+                              className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
+                              disabled={activeGroupIndex === 0}
+                              onClick={(e) => this.handlePagination(e)}
+                              id="first">
+                              {'|<<'}
+                            </button>
+                            <button
+                              className={`${activeGroupIndex === 0 ? 'inactive' : ''}`}
+                              disabled={activeGroupIndex === 0}
+                              onClick={(e) => this.handlePagination(e)}
+                              id="previous">
+                              {'<<'}
+                            </button>
+                            <button
+                              className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
+                              disabled={activeGroupIndex === groupedEvents.length - 1}
+                              onClick={(e) => this.handlePagination(e)}
+                              id="next">
+                              {'>>'}
+                            </button>
+                            <button
+                              className={`${activeGroupIndex === groupedEvents.length - 1 ? 'inactive' : ''}`}
+                              disabled={activeGroupIndex === groupedEvents.length - 1}
+                              onClick={(e) => this.handlePagination(e)}
+                              id="last">
+                              {'|>>'}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
             </div>}
           </Grid>
         </div>

@@ -12,11 +12,11 @@ export const getParameterByName = (name) => {
  
 export const getAccessToken = () => {
   return getParameterByName('access_token');
-}
+};
 
 export const getTokenExpiry = () => {
   return getParameterByName('expires_in');
-}
+};
 
 export default {
   getAccessToken,

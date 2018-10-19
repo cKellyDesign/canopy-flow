@@ -14,177 +14,177 @@ const defaultState = {
 
 export default function AUTH(state = defaultState, action) {
   switch (action.type) {
-    case LOGIN_REQUEST: {
-      return {
-        ...state,
-        isFetching: true,
-        isAuthenticated: false,
-        user: action.creds
-      };
-    }
+  case LOGIN_REQUEST: {
+    return {
+      ...state,
+      isFetching: true,
+      isAuthenticated: false,
+      user: action.creds
+    };
+  }
 
-    case RECEIVE_TOKEN: {
-      return {
-        ...state,
-        access_token: action.token,
-      }
-    }
+  case RECEIVE_TOKEN: {
+    return {
+      ...state,
+      access_token: action.token,
+    };
+  }
 
-    case LOGIN_SUCCESS: {
-      return {
-        ...state,
-        isFetching: false,
-        isAuthenticated: true,
-        errorMessage: '',
-        userInfo: action.user,
-      };
-    }
+  case LOGIN_SUCCESS: {
+    return {
+      ...state,
+      isFetching: false,
+      isAuthenticated: true,
+      errorMessage: '',
+      userInfo: action.user,
+    };
+  }
 
-    case LOGIN_FAILURE: {
-      return {
-        ...state,
-        isFetching: false,
-        isAuthenticated: false,
-        errorMessage: action.message,
-      };
-    }
+  case LOGIN_FAILURE: {
+    return {
+      ...state,
+      isFetching: false,
+      isAuthenticated: false,
+      errorMessage: action.message,
+    };
+  }
 
-    case LOGOUT_SUCCESS: {
-      return {
-        ...state,
-        isFetching: true,
-        isAuthenticated: false,
-        userInfo: null,
-        forms: null,
-        access_token: null,
-      };
-    }
+  case LOGOUT_SUCCESS: {
+    return {
+      ...state,
+      isFetching: true,
+      isAuthenticated: false,
+      userInfo: null,
+      forms: null,
+      access_token: null,
+    };
+  }
 
-    case RECEIVE_FORMS: {
-      return {
-        ...state,
-        forms: action.forms.map(f => {
+  case RECEIVE_FORMS: {
+    return {
+      ...state,
+      forms: action.forms.map(f => {
+        return {
+          title: f.title,
+          formid: f.formid,
+          downloadable: f.downloadable
+        };
+      }),
+    };
+  }
+
+  case RECEIVE_FORM_FIELDS: {
+    return {
+      ...state,
+      fields: action.fields ? [
+        ...action.fields.children.map(c => {
           return {
-            title: f.title,
-            formid: f.formid,
-            downloadable: f.downloadable
-          }
-        }),
-      };
-    }
+            name: c.name || '',
+            type: c.type || '',
+            label: c.label || ''
+          };
+        })
+      ] : null,
+    };
+  }
 
-    case RECEIVE_FORM_FIELDS: {
-      return {
-        ...state,
-        fields: action.fields ? [
-          ...action.fields.children.map(c => {
-            return {
-              name: c.name || '',
-              type: c.type || '',
-              label: c.label || ''
-            }
-          })
-        ] : null,
-      };
-    }
+  case FETCH_FORMS_ERROR: {
+    return {
+      ...state,
+      formsError: action.message
+    };
+  }
 
-    case FETCH_FORMS_ERROR: {
-      return {
-        ...state,
-        formsError: action.message
-      };
-    }
+  case RECEIVE_PROJECTS: {
+    return {
+      ...state,
+      projects: [
+        ...action.projects
+      ]
+    };
+  }
 
-    case RECEIVE_PROJECTS: {
-      return {
-        ...state,
-        projects: [
-          ...action.projects
-        ]
-      };
-    }
+  case FETCH_PROJECTS_ERROR: {
+    return {
+      ...state,
+      projectsError: action.message,
+    };
+  }
 
-    case FETCH_PROJECTS_ERROR: {
-      return {
-        ...state,
-        projectsError: action.message,
-      }
-    }
-
-    case RECEIVE_PROJECT: {
-      return {
-        ...state,
-        project: action.project ?
+  case RECEIVE_PROJECT: {
+    return {
+      ...state,
+      project: action.project ?
         {
           ...action.project
         } : null,
+    };
+  }
+
+  case FETCH_PROJECT_ERROR: {
+    return {
+      ...state,
+      projectError: action.message,
+    };
+  }
+
+  case SELECTED_FLOW: {
+    return {
+      ...state,
+      flow: {
+        ...action.flow
+      },
+    };
+  }
+
+  case SAVE_FLOW: {
+    const keyedFlows = {
+      ...state.flows
+    };
+    if (action.flow.form) {
+      if (action.flow.oldForm && keyedFlows[action.flow.oldForm]) {
+        delete keyedFlows[action.flow.oldForm];
+      }
+      if (!keyedFlows[action.flow.form]) {  
+        keyedFlows[action.flow.form] = {};
+      }
+
+      keyedFlows[action.flow.form] = {
+        ...action.flow,
       };
     }
-
-    case FETCH_PROJECT_ERROR: {
-      return {
-        ...state,
-        projectError: action.message,
+    return {
+      ...state,
+      flows: {
+        ...keyedFlows
       }
+    };
+  }
+
+  case DELETE_FLOW: {
+    const flows = {
+      ...state.flows
+    };
+    if (action.flowName) {
+      delete flows[action.flowName];
     }
 
-    case SELECTED_FLOW: {
-      return {
-        ...state,
-        flow: {
-          ...action.flow
-        },
-      }
-    }
+    const flowKeys = Object.keys(flows);
+    const prevFlow = flows[flowKeys[flowKeys.length - 1]];
 
-    case SAVE_FLOW: {
-      const keyedFlows = {
-        ...state.flows
-      };
-      if (action.flow.form) {
-        if (action.flow.oldForm && keyedFlows[action.flow.oldForm]) {
-          delete keyedFlows[action.flow.oldForm];
-        }
-        if (!keyedFlows[action.flow.form]) {  
-          keyedFlows[action.flow.form] = {}
-        }
+    return {
+      ...state,
+      flows: {
+        ...flows
+      },
+      flow: prevFlow ? {
+        flowName: prevFlow.form,
+        status: true
+      } : {}
+    };
+  }
 
-        keyedFlows[action.flow.form] = {
-          ...action.flow,
-        }
-      }
-      return {
-        ...state,
-        flows: {
-          ...keyedFlows
-        }
-      }
-    }
-
-    case DELETE_FLOW: {
-      const flows = {
-        ...state.flows
-      }
-      if (action.flowName) {
-        delete flows[action.flowName]
-      }
-
-      const flowKeys = Object.keys(flows);
-      const prevFlow = flows[flowKeys[flowKeys.length - 1]];
-
-      return {
-        ...state,
-        flows: {
-          ...flows
-        },
-        flow: prevFlow ? {
-          flowName: prevFlow.form,
-          status: true
-        } : {}
-      }
-    }
-
-    default:
-      return state;
+  default:
+    return state;
   }
 }

@@ -26,8 +26,8 @@ export const requestLogin = (creds) => {
     isFetching: true,
     isAuthenticated: false,
     creds
-  }
-}
+  };
+};
 
 export const receiveLogin = (user) => {
   return {
@@ -35,8 +35,8 @@ export const receiveLogin = (user) => {
     isFetching: false,
     isAuthenticated: true,
     user
-  }
-}
+  };
+};
 
 export const loginError = (message) => {
   return {
@@ -44,93 +44,93 @@ export const loginError = (message) => {
     isFetching: false,
     isAuthenticated: false,
     message
-  }
-}
+  };
+};
 
 export const receiveLogout = () => {
   return {
     type: LOGOUT_SUCCESS,
     isFetching: false,
     isAuthenticated: false,
-  }
-}
+  };
+};
 
 export const receiveToken = (token) => {
   return {
     type: RECEIVE_TOKEN,
     token,
-  }
-}
+  };
+};
 
 export const receiveForms = (forms) => {
   return {
     type: RECEIVE_FORMS,
     forms
-  }
-}
+  };
+};
 
 export const selectedFlow = (flow) => {
   return {
     type: SELECTED_FLOW,
     flow,
-  }
-}
+  };
+};
 
 export const receiveFormFields = (fields) => {
   return {
     type: RECEIVE_FORM_FIELDS,
     fields,
-  }
-}
+  };
+};
 
 export const fetchFormsError = (message) => {
   return {
     type: FETCH_FORMS_ERROR,
     message
-  }
-}
+  };
+};
 
 export const fetchProjectError = (message) => {
   return {
     type: FETCH_PROJECT_ERROR,
     message
-  }
-}
+  };
+};
 
 export const receiveProjects = (projects) => {
   return {
     type: RECEIVE_PROJECTS,
     projects
   };
-}
+};
 
 export const fetchProjectsError = (message) => {
   return {
     type: FETCH_PROJECTS_ERROR,
     message
   };
-}
+};
 
 export const receiveProject = (project) => {
   return {
     type: RECEIVE_PROJECT,
     project,
-  }
-}
+  };
+};
 
 export const saveFlow = (flow) => {
   return {
     type: SAVE_FLOW,
     flow
-  }
-}
+  };
+};
 
 export const deleteFlow = (flowName) => {
   return {
     type: DELETE_FLOW,
     flowName
-  }
-}
+  };
+};
 
 // todo - Migrate to ONA Connector?
 export const loginUser = (token) => {
@@ -141,20 +141,20 @@ export const loginUser = (token) => {
 
   return dispatch => {
     // We dispatch requestLogin to kickoff the call to the API
-    dispatch(requestLogin(token))
+    dispatch(requestLogin(token));
     return ONAoauth(reqConfig, token, dispatch);
-  }
-}
+  };
+};
 
 export const getUserForms = (token) => {
   const reqConfig = {
     token: token,
     endpoint: 'forms',
-  }
+  };
   return dispatch  => { 
     return fetchAPIForms(reqConfig, dispatch);
-  }
-}
+  };
+};
 
 export const getFormFields = (token, formID) => {
   const reqConfig = {
@@ -165,8 +165,8 @@ export const getFormFields = (token, formID) => {
   return dispatch => {
     reqConfig.dispatch = dispatch;
     return fetchFormFields(reqConfig, dispatch);
-  }
-}
+  };
+};
 
 export const getProjects = (token) => {
   const reqConfig = {
@@ -176,8 +176,8 @@ export const getProjects = (token) => {
 
   return dispatch => {
     return fetchProjects(reqConfig, dispatch);
-  }
-}
+  };
+};
 
 export const getProject = (token, projectID) => {
   const reqConfig = {
@@ -189,8 +189,8 @@ export const getProject = (token, projectID) => {
   return dispatch => {
     reqConfig.dispatch = dispatch;
     return fetchProject(reqConfig, dispatch);
-  }
-}
+  };
+};
 
 export const logoutUser = () => {
   return dispatch => {
@@ -199,8 +199,8 @@ export const logoutUser = () => {
     localStorage.removeItem('user');
     dispatch(receiveLogout());
     window.location.reload();
-  }
-}
+  };
+};
 
 export default {
   requestLogin,
@@ -224,4 +224,4 @@ export default {
   selectedFlow,
   saveFlow,
   deleteFlow
-}
+};

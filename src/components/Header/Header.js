@@ -21,7 +21,7 @@ class Header extends Component {
   }
   handleToggle() {
     this.setState(() => {
-      this.props.toggle()
+      this.props.toggle();
     });
   }
   render() {

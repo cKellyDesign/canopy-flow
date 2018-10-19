@@ -36,7 +36,7 @@ class App extends Component {
         'login': {},
       },
       isLoggedIn: false,
-    }
+    };
   }
 
   render() {

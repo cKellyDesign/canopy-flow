@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { Modal, Glyphicon } from 'react-bootstrap';
 import { Button, Table, Container, Row, Col, Label } from 'reactstrap';
 import { connect } from 'react-redux';
-import AsyncSelect from "react-select/lib/Async";
+import AsyncSelect from 'react-select/lib/Async';
 import Actions from '../../store/actions';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 import './NewFlowPage.css';
 
 const APPS = [
-  {appName: "ONA", disabled: false},
-  {appName: "OpenSRP", disabled: true},
-  {appName: "Kobo", disabled: true},
-  {appName: "CommCare", disabled: true},
-  {appName: "Excel", disabled: true}
+  {appName: 'ONA', disabled: false},
+  {appName: 'OpenSRP', disabled: true},
+  {appName: 'Kobo', disabled: true},
+  {appName: 'CommCare', disabled: true},
+  {appName: 'Excel', disabled: true}
 ]; // Move this to config file/constants file/default state
 
 class NewFlowPage extends Component {
@@ -130,7 +130,7 @@ class NewFlowPage extends Component {
     const { fields } = this.state;
     const nextFields = fields;
     nextFields.options[e.target.value].enabled = !fields.options[e.target.value].enabled;
-    nextFields.toggleAllOn = Object.keys(nextFields.options).every(e => nextFields.options[e].enabled)
+    nextFields.toggleAllOn = Object.keys(nextFields.options).every(e => nextFields.options[e].enabled);
     this.setState({
       fields: nextFields,
     });
@@ -206,13 +206,13 @@ class NewFlowPage extends Component {
   getFormOptions() {
     const { project } = this.props.global;
     return project && project.forms && project.forms
-    .filter(d => d.downloadable)
-    .map(d => {
-      return {
-        label: d.name,
-        value: d.formid
-      }
-    });
+      .filter(d => d.downloadable)
+      .map(d => {
+        return {
+          label: d.name,
+          value: d.formid
+        };
+      });
   }
 
   getProjectOptions() {
@@ -221,7 +221,7 @@ class NewFlowPage extends Component {
       return {
         label: d.name,
         value: d.projectid
-      }
+      };
     });
   }
 
@@ -230,7 +230,7 @@ class NewFlowPage extends Component {
     setTimeout(() => {
       callback(
         formOptions.filter(f => f.label.toLowerCase().includes(inputValue.toLowerCase()))
-      )
+      );
     }, 1000);
   }
 
@@ -239,7 +239,7 @@ class NewFlowPage extends Component {
     setTimeout(() => {
       callback(
         programOptions.filter(p => p.label.toLowerCase().includes(inputValue.toLowerCase()))
-      )
+      );
     }, 1000);
   }
 
@@ -251,7 +251,7 @@ class NewFlowPage extends Component {
         selectedForm: null,
         fields: null,
       });
-      return false
+      return false;
     }
     this.setState({
       selectedForm: {
@@ -262,11 +262,11 @@ class NewFlowPage extends Component {
     const formid = e.value;
     const token = this.props.global.access_token;
     try {
-      await dispatch(Actions.getFormFields(token, formid))
+      await dispatch(Actions.getFormFields(token, formid));
     } catch (e) {
-      return false
+      return false;
     }
-    return true
+    return true;
   }
 
   async handleProgramSelect(e) {
@@ -287,9 +287,9 @@ class NewFlowPage extends Component {
     const projectid = e.value;
     const token = this.props.global.access_token;
     try {
-      await dispatch(Actions.getProject(token, projectid))
+      await dispatch(Actions.getProject(token, projectid));
     } catch (e) {
-      return false
+      return false;
     }
     return true;
   }
@@ -318,7 +318,7 @@ class NewFlowPage extends Component {
         <td>
           <div className="data-type">
             <div>
-            {fields.options[f].type}
+              {fields.options[f].type}
             </div>
           </div>
         </td>
@@ -348,7 +348,7 @@ class NewFlowPage extends Component {
                 <li className="divider"></li>
                 <li>
                   <a>
-                  <span className={`${this.state.finalizeStage ? 'success' : this.state.selectDataStage ? 'active' : ''}`}>
+                    <span className={`${this.state.finalizeStage ? 'success' : this.state.selectDataStage ? 'active' : ''}`}>
                       {this.state.finalizeStage && <Glyphicon glyph='ok'/>}
                     </span>
                   </a>
@@ -366,10 +366,10 @@ class NewFlowPage extends Component {
                 {`${this.state.selectSourceStage ? 'Select Source' : ''}`}
               </Col>
               <Col md={{ size: 4 }}>
-              {`${this.state.selectDataStage ? 'Select Data' : ''}`}
+                {`${this.state.selectDataStage ? 'Select Data' : ''}`}
               </Col>
               <Col md={{ size: 4 }}>
-              {`${this.state.finalizeStage ? 'Finalize' : ''}`}
+                {`${this.state.finalizeStage ? 'Finalize' : ''}`}
               </Col>
             </Row>
             <hr />
@@ -442,38 +442,38 @@ class NewFlowPage extends Component {
                     </Col>
                   </Row>
                 </Container> : this.state.finalizeStage ?
-                <Container fluid>
+                  <Container fluid>
                     <Row>
-                    <Col sm="12" md={{ size: 10, offset: 2 }}>
-                      <Table borderless className="selected-items">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <Label>Program</Label>
-                            </td>
-                            <td>
-                              <span>{(this.state.selectedProgram && this.state.selectedProgram.label) || 'No program selected'}</span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <Label>Form</Label>
-                            </td>
-                            <td>
-                              {(this.state.selectedForm && this.state.selectedForm.label) || 'No form selected'}
-                            </td>
-                          </tr>
-                          <tr>
-                          <td>
-                              <Label>Fields</Label>
-                            </td>
-                            <td>
-                              <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </Table>
-                    </Col>
+                      <Col sm="12" md={{ size: 10, offset: 2 }}>
+                        <Table borderless className="selected-items">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <Label>Program</Label>
+                              </td>
+                              <td>
+                                <span>{(this.state.selectedProgram && this.state.selectedProgram.label) || 'No program selected'}</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Label>Form</Label>
+                              </td>
+                              <td>
+                                {(this.state.selectedForm && this.state.selectedForm.label) || 'No form selected'}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <Label>Fields</Label>
+                              </td>
+                              <td>
+                                <div className="fields-string" title={buildFieldsStr || 'No fields selected'}>{buildFieldsStr || 'No fields selected'}</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </Col>
                     </Row>
                     <Row>
                       <hr/>
@@ -494,19 +494,19 @@ class NewFlowPage extends Component {
                         </Table>
                       </Col>
                     </Row>
-                </Container>
-                : ''}
+                  </Container>
+                  : ''}
           </Modal.Body>
           {this.state.finalizeStage ?
-          (<Modal.Footer>
-            <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-            <Button disabled={this.state.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
-            <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
-          </Modal.Footer>) :
-          (<Modal.Footer>
-            <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-            <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
-          </Modal.Footer>)
+            (<Modal.Footer>
+              <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+              <Button disabled={this.state.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
+              <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
+            </Modal.Footer>) :
+            (<Modal.Footer>
+              <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+              <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
+            </Modal.Footer>)
           }
         </Modal>
       </div>

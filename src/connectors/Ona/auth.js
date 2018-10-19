@@ -23,14 +23,14 @@ export const ONAoauth = (reqConfig, token, dispatch) => {
       history.replace('/login');
     } else {
       try {
-        localStorage.setItem("access_token", token);
+        localStorage.setItem('access_token', token);
       } catch(e) {
         //
       }
       dispatch(Actions.receiveLogin(user));
       history.replace('/');
     }
-  }).catch(err => console.log("Error: ", err));
+  }).catch(err => console.log('Error: ', err));
 };
 
 // USER API request used for Authorization
@@ -47,7 +47,7 @@ export const getUser = async (accessToken) => {
       return false;
     }
   });
-}
+};
 
 // Saves info into localStorage and dispatches login action
 export const defaultAuthZ = (accessToken, user, tokenExpiry, dispatch) => {
@@ -56,7 +56,7 @@ export const defaultAuthZ = (accessToken, user, tokenExpiry, dispatch) => {
   localStorage.setItem('time_of_login', new Date().getTime());
   localStorage.setItem('user', JSON.stringify(user));
   dispatch(Actions.receiveLogin(user));
-}
+};
 
 // Checks for saved info in localStorage and returns boolean
 export const isDefaultAuthZ = () => {
@@ -64,12 +64,12 @@ export const isDefaultAuthZ = () => {
   if (!localStorage.getItem('user')) return false;
   // todo - add session expry here
   return true;
-}
+};
 
 // Removes info from localStorage and dispatches logout action
 export const defaultDeAuthZ = (dispatch) => {
   dispatch(Actions.logoutUser());
-}
+};
 
 // authorizeUser checks user authorization and dispatches pass/fail actions
 export const authorizeUser = async (dispatch, passURI, failURI) => {
@@ -93,7 +93,7 @@ export const authorizeUser = async (dispatch, passURI, failURI) => {
   return user
     ? history.push((passURI || '/'))
     : history.push((failURI || '/login'));
-}
+};
 
 export class Oauth2 {
   constructor() {
