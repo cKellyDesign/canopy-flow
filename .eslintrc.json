@@ -3,7 +3,7 @@
         "browser": true,
         "es6": true
     },
-    "extends": "airbnb",
+    "extends": "eslint:recommended",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -19,8 +19,8 @@
             2,
             {
                 "ignoreRefs": false,
-                "allowArrowFunctions": false,
-                "allowBind": false
+                "allowArrowFunctions": true,
+                "allowBind": true
             }
         ],
         "indent": [

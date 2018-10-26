@@ -59,13 +59,11 @@ class NewFlowPage extends React.Component {
 
   handleAppClick(e) {
     const appName = e.currentTarget.getAttribute('data-key');
+    const { dispatch } = this.props;
+    dispatch(Actions.handleNextStep(false, false, true, false, false));
     this.setState({
       ...this.state,
       selectedApp: appName,
-      selectSourceStage: false,
-      selectDataStage: true,
-      disabledPrevBtn: false,
-      disabledNextBtn: false,
     });
   }
 
@@ -99,13 +97,9 @@ class NewFlowPage extends React.Component {
     };
 
     dispatch(Actions.saveFlow(flowDets));
+    dispatch(Actions.handleNextStep(true, true, false, false, false));
     this.setState({
       selectedApp: 'ONA',
-      selectSourceStage: true,
-      selectDataStage: false,
-      finalizeStage: false,
-      disabledPrevBtn: true,
-      disabledNextBtn: false,
       selectedForm: null,
       selectedProgram: null,
     }, () => {
@@ -145,7 +139,7 @@ class NewFlowPage extends React.Component {
     nextFields.options[e.target.value].enabled = !fields.options[e.target.value].enabled;
     nextFields.toggleAllOn = Object.keys(nextFields.options).every(e => nextFields.options[e].enabled);
     this.setState({
-      fields: nextFields,
+      nextFields,
     });
   }
 
@@ -158,61 +152,31 @@ class NewFlowPage extends React.Component {
       nextFields.options[d].enabled = nextFields.toggleAllOn;
     });
     this.setState({
-      fields: nextFields,
+      nextFields,
     });
   }
 
   handlePreviousButton() {
-    // TO DO: move this logic to redux state
-    if (this.state.selectSourceStage && !this.state.selectDataStage) {
-      this.setState({
-        disabledPrevBtn: true,
-        selectDataStage: false,
-        selectSourceStage: true,
-        finalizeStage: false,
-      });
-    } else if (!this.state.selectSourceStage && this.state.selectDataStage) {
-      this.setState({
-        disabledPrevBtn: true,
-        selectDataStage: false,
-        selectSourceStage: true,
-        finalizeStage: false,
-      });
-    } else if (this.state.finalizeStage && (!this.state.selectDataStage && !this.state.selectSourceStage)) {
-      this.setState({
-        disabledPrevBtn: false,
-        disabledNextBtn: false,
-        selectDataStage: true,
-        selectSourceStage: false,
-        finalizeStage: false,
-      });
+    const { dispatch } = this.props;
+    const { stepsState } = this.props.global;
+    if (stepsState.selectSourceStage && !stepsState.selectDataStage) {
+      dispatch(Actions.handleNextStep(true, true, false, false, false));
+    } else if (!stepsState.selectSourceStage && stepsState.selectDataStage) {
+      dispatch(Actions.handleNextStep(true, true, false, false, false));
+    } else if (stepsState.finalizeStage && (!stepsState.selectDataStage && !stepsState.selectSourceStage)) {
+      dispatch(Actions.handleNextStep(false, false, true, false, false));
     } else {
-      this.setState({
-        disabledPrevBtn: true,
-        selectDataStage: false,
-        selectSourceStage: true,
-        finalizeStage: false,
-      });
+      dispatch(Actions.handleNextStep(true, true, false, false, false));
     }
   }
 
   handleNextButton() {
-    // TO DO: move this logic to redux state
-    if (this.state.selectSourceStage && !this.state.selectDataStage) {
-      this.setState({
-        disabledNextBtn: false,
-        disabledPrevBtn: !this.state.selectSourceStage && this.state.selectDataStage,
-        selectDataStage: true,
-        selectSourceStage: false,
-      });
-    } else if (!this.state.selectSourceStage && this.state.selectDataStage) {
-      this.setState({
-        disabledNextBtn: false,
-        disabledPrevBtn: !this.state.selectSourceStage && !this.state.selectDataStage,
-        selectDataStage: false,
-        selectSourceStage: false,
-        finalizeStage: true,
-      });
+    const { dispatch } = this.props;
+    const { stepsState } = this.props.global;
+    if (stepsState.selectSourceStage && !stepsState.selectDataStage) {
+      dispatch(Actions.handleNextStep(false, false, true, false, false));
+    } else if (!stepsState.selectSourceStage && stepsState.selectDataStage) {
+      dispatch(Actions.handleNextStep(false, false, false, true, false));
     }
   }
 
@@ -308,8 +272,9 @@ class NewFlowPage extends React.Component {
   }
 
   render() {
-    const { fields } = this.state;
-    console.log('props', this.props.global);
+    const { nextFields } = this.state;
+    console.log("next fields", this.state);
+    const { stepsState } = this.props.global;
     const appBuilder = APPS.map(a => (
       <Button key={a.appName} data-key={a.appName} onClick={e => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
         <span className="app-icon">
@@ -319,30 +284,30 @@ class NewFlowPage extends React.Component {
       </Button>
     ));
 
-    const fieldsList = fields && Object.keys(fields.options).map((f, i) => (
+    const fieldsList = nextFields && Object.keys(nextFields.options).map((f, i) => (
       <tr key={i}>
         <td>
           <input
             type="checkbox"
-            value={fields.options[f].name}
-            checked={fields.options[f].enabled}
+            value={nextFields.options[f].name}
+            checked={nextFields.options[f].enabled}
             onChange={e => this.onFieldClick(e)}
           />
         </td>
         <td>
           <div className="data-type">
             <div>
-              {fields.options[f].type}
+              {nextFields.options[f].type}
             </div>
           </div>
         </td>
         <td>
-          {typeof fields.options[f].label === 'string' ? (fields.options[f].label || fields.options[f].name) : fields.options[f].label.English}
+          {typeof nextFields.options[f].label === 'string' ? (nextFields.options[f].label || nextFields.options[f].name) : nextFields.options[f].label.English}
         </td>
       </tr>
     ));
 
-    const buildFieldsStr = fields && Object.keys(fields.options).filter(f => fields.options[f].enabled).map(f => fields.options[f].name).join();
+    const buildFieldsStr = nextFields && Object.keys(nextFields.options).filter(f => nextFields.options[f].enabled).map(f => nextFields.options[f].name).join();
     return (
       <div className="static-modal">
         <Modal show={this.props.isOpen} onHide={this.props.toggle}>
@@ -354,47 +319,47 @@ class NewFlowPage extends React.Component {
               <ul className="horizontal-steps">
                 <li>
                   <a>
-                    <span className={`${this.state.selectDataStage || this.state.finalizeStage ? 'success' : this.state.selectSourceStage ? 'active' : ''}`}>
-                      {(this.state.selectDataStage || this.state.finalizeStage) && <Glyphicon glyph="ok" />}
+                    <span className={`${stepsState.selectDataStage || stepsState.finalizeStage ? 'success' : stepsState.selectSourceStage ? 'active' : ''}`}>
+                      {(stepsState.selectDataStage || stepsState.finalizeStage) && <Glyphicon glyph="ok" />}
                     </span>
                   </a>
                 </li>
                 <li className="divider" />
                 <li>
                   <a>
-                    <span className={`${this.state.finalizeStage ? 'success' : this.state.selectDataStage ? 'active' : ''}`}>
-                      {this.state.finalizeStage && <Glyphicon glyph="ok" />}
+                    <span className={`${stepsState.finalizeStage ? 'success' : stepsState.selectDataStage ? 'active' : ''}`}>
+                      {stepsState.finalizeStage && <Glyphicon glyph="ok" />}
                     </span>
                   </a>
                 </li>
                 <li className="divider" />
                 <li>
                   <a>
-                    <span className={`${this.state.finalizeStage ? 'active' : ''}`} />
+                    <span className={`${stepsState.finalizeStage ? 'active' : ''}`} />
                   </a>
                 </li>
               </ul>
             </div>
             <Row className="stage-description-row">
               <Col md={{ size: 4 }}>
-                {`${this.state.selectSourceStage ? 'Select Source' : ''}`}
+                {`${stepsState.selectSourceStage ? 'Select Source' : ''}`}
               </Col>
               <Col md={{ size: 4 }}>
-                {`${this.state.selectDataStage ? 'Select Data' : ''}`}
+                {`${stepsState.selectDataStage ? 'Select Data' : ''}`}
               </Col>
               <Col md={{ size: 4 }}>
-                {`${this.state.finalizeStage ? 'Finalize' : ''}`}
+                {`${stepsState.finalizeStage ? 'Finalize' : ''}`}
               </Col>
             </Row>
             <hr />
-            {this.state.selectSourceStage
+            {stepsState.selectSourceStage
               ? (
                 <div className="apps-section">
                   <div>
                     {appBuilder}
                   </div>
                 </div>
-              ) : this.state.selectDataStage
+              ) : stepsState.selectDataStage
                 ? (
                   <Container fluid>
                     {this.props.global.formsError.length > 0
@@ -431,7 +396,7 @@ class NewFlowPage extends React.Component {
                                 <th>
                                   <input
                                     type="checkbox"
-                                    checked={fields && (fields.toggleAllOn || false)}
+                                    checked={nextFields && (nextFields.toggleAllOn || false)}
                                     onChange={e => this.toggleAllFields(e)}
                                   />
                                 </th>
@@ -464,7 +429,7 @@ class NewFlowPage extends React.Component {
                       </Col>
                     </Row>
                   </Container>
-                ) : this.state.finalizeStage
+                ) : stepsState.finalizeStage
                   ? (
                     <Container fluid>
                       <Row>
@@ -522,18 +487,18 @@ class NewFlowPage extends React.Component {
                   )
                   : ''}
           </Modal.Body>
-          {this.state.finalizeStage
+          {stepsState.finalizeStage
             ? (
               <Modal.Footer>
-                <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-                <Button disabled={this.state.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
-                <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
+                <Button disabled={stepsState.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+                <Button disabled={stepsState.disabledNextBtn} onClick={this.handleSaveFlow}>SAVE</Button>
+                <Button disabled={stepsState.disabledNextBtn} onClick={this.handleNextButton} className="save-and-pull">SAVE & PULL</Button>
               </Modal.Footer>
             )
             : (
               <Modal.Footer>
-                <Button disabled={this.state.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
-                <Button disabled={this.state.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
+                <Button disabled={stepsState.disabledPrevBtn} onClick={this.handlePreviousButton}>PREVIOUS</Button>
+                <Button disabled={stepsState.disabledNextBtn} onClick={this.handleNextButton}>NEXT</Button>
               </Modal.Footer>
             )
           }

@@ -3,13 +3,20 @@ import {
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
   FETCH_PROJECT_ERROR,
   SELECTED_FLOW,
-  SAVE_FLOW, DELETE_FLOW,
+  SAVE_FLOW, DELETE_FLOW, HANDLE_NEXT_STEP,
 } from './actions';
 
 const defaultState = {
   isFetching: false,
   isAuthenticated: !!localStorage.getItem('access-token'),
   flows: {},
+  stepsState: {
+    selectSourceStage: true,
+    selectDataStage: false,
+    finalizeStage: false,
+    disabledPrevBtn: true,
+    disabledNextBtn: false,
+  }
 };
 
 export default function AUTH(state = defaultState, action) {
@@ -114,6 +121,20 @@ export default function AUTH(state = defaultState, action) {
         ? {
           ...action.project,
         } : null,
+    };
+  }
+
+  case HANDLE_NEXT_STEP: {
+    return {
+      ...state,
+      stepsState: {
+        ...state.stepsState,
+        disabledPrevBtn: action.disabledPrevBtn,
+        selectSourceStage: action.selectSourceStage,
+        selectDataStage: action.selectDataStage,
+        finalizeStage: action.finalizeStage,
+        disabledNextBtn: action.disabledNextBtn
+      }
     };
   }
 

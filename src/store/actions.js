@@ -19,6 +19,9 @@ export const FETCH_PROJECT_ERROR = 'FETCH_PROJECT_ERROR';
 export const SELECTED_FLOW = 'SELECTED_FLOW';
 export const SAVE_FLOW = 'SAVE_FLOW';
 export const DELETE_FLOW = 'DELETE_FLOW';
+export const HANDLE_NEXT_STEP = 'HANDLE_NEXT_STEP';
+export const HANDLE_PREVIOUS_STEP = 'HANDLE_PREVIOUS_STEP';
+
 
 export const requestLogin = creds => ({
   type: LOGIN_REQUEST,
@@ -100,6 +103,21 @@ export const saveFlow = flow => ({
 export const deleteFlow = flowName => ({
   type: DELETE_FLOW,
   flowName,
+});
+
+export const handleNextStep = (
+  disabledPrevBtn,
+  selectSourceStage,
+  selectDataStage,
+  finalizeStage,
+  disabledNextBtn
+) => ({
+  type: HANDLE_NEXT_STEP,
+  disabledPrevBtn,
+  disabledNextBtn,
+  selectSourceStage,
+  selectDataStage,
+  finalizeStage,
 });
 
 // todo - Migrate to ONA Connector?
@@ -188,4 +206,5 @@ export default {
   selectedFlow,
   saveFlow,
   deleteFlow,
+  handleNextStep,
 };
