@@ -311,7 +311,9 @@ class NewFlowPage extends React.Component {
       </tr>
     ));
 
-    const buildFieldsStr = nextFields && Object.keys(nextFields.options).filter(f => nextFields.options[f].enabled).map(f => nextFields.options[f].name).join();
+    const buildFieldsStr = (nextFields || fields) && Object.keys((nextFields && nextFields.options) || (fields && fields.options))
+      .filter(f => ((nextFields && nextFields.options) || (fields && fields.options))[f].enabled)
+      .map(f => ((nextFields && nextFields.options) || (fields || fields.options))[f].name).join();
     return (
       <div className="static-modal">
         <Modal show={this.props.isOpen} onHide={this.props.toggle}>
@@ -400,7 +402,7 @@ class NewFlowPage extends React.Component {
                                 <th>
                                   <input
                                     type="checkbox"
-                                    checked={nextFields && (nextFields.toggleAllOn || false)}
+                                    checked={(nextFields || fields) && ((nextFields || fields).toggleAllOn || false)}
                                     onChange={e => this.toggleAllFields(e)}
                                   />
                                 </th>
