@@ -38,7 +38,6 @@ class SideMenu extends React.Component {
 
   render() {
     const { flows } = this.state;
-    console.log('floes', flows);
     return (
       <div className="sidebar-wrapper">
         <div className="flow-details">

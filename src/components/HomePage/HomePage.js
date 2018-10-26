@@ -173,6 +173,7 @@ class HomePage extends React.Component {
 
   render() {
     const { activeGroupIndex, groupedEvents } = this.state;
+    const { flow, flows } = this.props.global;
     return (
       <div>
         <Header />
@@ -190,7 +191,7 @@ class HomePage extends React.Component {
                 <Modal.Body>
                   {'Are you sure you want to delete '}
                   <strong>
-                    {this.props.global.flow && this.props.global.flow.flowName}
+                    {flow && flow.flowName}
                     {' '}
 ?
                   </strong>
@@ -244,11 +245,11 @@ class HomePage extends React.Component {
                       <div className="panel-body">
                         <div className="flow-activity-stats clearfix">
                           <div className="stats-box">
-                            <h3>90</h3>
+                            <h3>{flows[flow.flowName].no_of_submissions}</h3>
                             <span>Events</span>
                           </div>
                           <div className="stats-box">
-                            <h3>90</h3>
+                            <h3>{flows[flow.flowName].last_submission_time}</h3>
                             <span>Last Event</span>
                           </div>
                           <div className="stats-box">

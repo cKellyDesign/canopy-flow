@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { Modal, Glyphicon } from 'react-bootstrap';
 import {
   Button, Table, Container, Row, Col, Label,
@@ -93,6 +94,8 @@ class NewFlowPage extends React.Component {
       project: project || null,
       form: newFlowName && !!newFlowName.length ? newFlowName : ((this.state.selectedForm && this.state.selectedForm.label) || null),
       status: true,
+      no_of_submissions: (this.state.selectedForm && this.state.selectedForm.no_of_submissions),
+      last_submission_time: (this.state.selectedForm && this.state.selectedForm.last_submission_time),
     };
 
     dispatch(Actions.saveFlow(flowDets));
@@ -220,6 +223,8 @@ class NewFlowPage extends React.Component {
       .map(d => ({
         label: d.name,
         value: d.formid,
+        no_of_submissions: d.num_of_submissions,
+        last_submission_time: d.last_submission_time,
       }));
   }
 
@@ -263,6 +268,8 @@ class NewFlowPage extends React.Component {
       selectedForm: {
         label: e.label,
         value: e.value,
+        no_of_submissions: e.no_of_submissions,
+        last_submission_time: moment(new Date(e.last_submission_time).getTime()).fromNow(),
       },
     });
     const formid = e.value;
@@ -302,6 +309,7 @@ class NewFlowPage extends React.Component {
 
   render() {
     const { fields } = this.state;
+    console.log('props', this.props.global);
     const appBuilder = APPS.map(a => (
       <Button key={a.appName} data-key={a.appName} onClick={e => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
         <span className="app-icon">
