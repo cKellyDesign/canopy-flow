@@ -272,8 +272,7 @@ class NewFlowPage extends React.Component {
   }
 
   render() {
-    const { nextFields } = this.state;
-    console.log("next fields", this.state);
+    const { nextFields, fields } = this.state;
     const { stepsState } = this.props.global;
     const appBuilder = APPS.map(a => (
       <Button key={a.appName} data-key={a.appName} onClick={e => this.handleAppClick(e)} className={`app-link ${a.disabled ? 'disabled' : ''}`} disabled={a.disabled}>
@@ -284,25 +283,30 @@ class NewFlowPage extends React.Component {
       </Button>
     ));
 
-    const fieldsList = nextFields && Object.keys(nextFields.options).map((f, i) => (
+    const fieldsList = (nextFields || fields) && Object.keys((nextFields && nextFields.options) || (fields && fields.options)).map((f, i) => (
       <tr key={i}>
         <td>
           <input
             type="checkbox"
-            value={nextFields.options[f].name}
-            checked={nextFields.options[f].enabled}
+            value={((nextFields && nextFields.options) || (fields && fields.options))[f].name}
+            checked={((nextFields && nextFields.options) || (fields && fields.options))[f].enabled}
             onChange={e => this.onFieldClick(e)}
           />
         </td>
         <td>
           <div className="data-type">
             <div>
-              {nextFields.options[f].type}
+              {((nextFields && nextFields.options) || (fields && fields.options))[f].type}
             </div>
           </div>
         </td>
         <td>
-          {typeof nextFields.options[f].label === 'string' ? (nextFields.options[f].label || nextFields.options[f].name) : nextFields.options[f].label.English}
+          {
+            typeof ((nextFields && nextFields.options) || (fields && fields.options))[f].label === 'string'
+              ? (((nextFields && nextFields.options) || (fields && fields.options))[f].label
+                || ((nextFields && nextFields.options) || (fields && fields.options))[f].name)
+              : ((nextFields && nextFields.options) || (fields && fields.options))[f].label.English
+          }
         </td>
       </tr>
     ));
