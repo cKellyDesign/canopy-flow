@@ -3,7 +3,7 @@ import {
   RECEIVE_FORMS, FETCH_FORMS_ERROR, RECEIVE_FORM_FIELDS, FETCH_PROJECTS_ERROR, RECEIVE_PROJECTS, RECEIVE_PROJECT,
   FETCH_PROJECT_ERROR,
   SELECTED_FLOW,
-  SAVE_FLOW, DELETE_FLOW, HANDLE_NEXT_STEP,
+  SAVE_FLOW, DELETE_FLOW, HANDLE_FLOW_CREATION,
 } from './actions';
 
 const defaultState = {
@@ -124,7 +124,7 @@ export default function AUTH(state = defaultState, action) {
     };
   }
 
-  case HANDLE_NEXT_STEP: {
+  case HANDLE_FLOW_CREATION: {
     return {
       ...state,
       stepsState: {

@@ -19,8 +19,7 @@ export const FETCH_PROJECT_ERROR = 'FETCH_PROJECT_ERROR';
 export const SELECTED_FLOW = 'SELECTED_FLOW';
 export const SAVE_FLOW = 'SAVE_FLOW';
 export const DELETE_FLOW = 'DELETE_FLOW';
-export const HANDLE_NEXT_STEP = 'HANDLE_NEXT_STEP';
-export const HANDLE_PREVIOUS_STEP = 'HANDLE_PREVIOUS_STEP';
+export const HANDLE_FLOW_CREATION = 'HANDLE_FLOW_CREATION';
 
 
 export const requestLogin = creds => ({
@@ -105,14 +104,14 @@ export const deleteFlow = flowName => ({
   flowName,
 });
 
-export const handleNextStep = (
+export const handleFlowCreation = (
   disabledPrevBtn,
   selectSourceStage,
   selectDataStage,
   finalizeStage,
   disabledNextBtn
 ) => ({
-  type: HANDLE_NEXT_STEP,
+  type: HANDLE_FLOW_CREATION,
   disabledPrevBtn,
   disabledNextBtn,
   selectSourceStage,
@@ -206,5 +205,5 @@ export default {
   selectedFlow,
   saveFlow,
   deleteFlow,
-  handleNextStep,
+  handleFlowCreation,
 };

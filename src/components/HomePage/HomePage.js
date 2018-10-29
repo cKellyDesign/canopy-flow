@@ -75,7 +75,7 @@ class HomePage extends React.Component {
   toggle() {
     const { dispatch } = this.props;
     dispatch(Actions.fetchFormsError(''));
-    dispatch(Actions.handleNextStep(true, true, false, false, false));
+    dispatch(Actions.handleFlowCreation(true, true, false, false, false));
     dispatch(Actions.receiveFormFields(null));
 
     this.setState({

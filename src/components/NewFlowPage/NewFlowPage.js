@@ -49,6 +49,14 @@ class NewFlowPage extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
+  componentWillMount() {
+    if (this.props.global && this.props.global.fields) {
+      this.setState({
+        fields: this.buildFormFieldsMap(this.props.global.fields),
+      });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.global && nextProps.global.fields) {
       this.setState({
@@ -60,7 +68,7 @@ class NewFlowPage extends React.Component {
   handleAppClick(e) {
     const appName = e.currentTarget.getAttribute('data-key');
     const { dispatch } = this.props;
-    dispatch(Actions.handleNextStep(false, false, true, false, false));
+    dispatch(Actions.handleFlowCreation(false, false, true, false, false));
     this.setState({
       ...this.state,
       selectedApp: appName,
@@ -97,7 +105,7 @@ class NewFlowPage extends React.Component {
     };
 
     dispatch(Actions.saveFlow(flowDets));
-    dispatch(Actions.handleNextStep(true, true, false, false, false));
+    dispatch(Actions.handleFlowCreation(true, true, false, false, false));
     this.setState({
       selectedApp: 'ONA',
       selectedForm: null,
@@ -160,13 +168,13 @@ class NewFlowPage extends React.Component {
     const { dispatch } = this.props;
     const { stepsState } = this.props.global;
     if (stepsState.selectSourceStage && !stepsState.selectDataStage) {
-      dispatch(Actions.handleNextStep(true, true, false, false, false));
+      dispatch(Actions.handleFlowCreation(true, true, false, false, false));
     } else if (!stepsState.selectSourceStage && stepsState.selectDataStage) {
-      dispatch(Actions.handleNextStep(true, true, false, false, false));
+      dispatch(Actions.handleFlowCreation(true, true, false, false, false));
     } else if (stepsState.finalizeStage && (!stepsState.selectDataStage && !stepsState.selectSourceStage)) {
-      dispatch(Actions.handleNextStep(false, false, true, false, false));
+      dispatch(Actions.handleFlowCreation(false, false, true, false, false));
     } else {
-      dispatch(Actions.handleNextStep(true, true, false, false, false));
+      dispatch(Actions.handleFlowCreation(true, true, false, false, false));
     }
   }
 
@@ -174,9 +182,9 @@ class NewFlowPage extends React.Component {
     const { dispatch } = this.props;
     const { stepsState } = this.props.global;
     if (stepsState.selectSourceStage && !stepsState.selectDataStage) {
-      dispatch(Actions.handleNextStep(false, false, true, false, false));
+      dispatch(Actions.handleFlowCreation(false, false, true, false, false));
     } else if (!stepsState.selectSourceStage && stepsState.selectDataStage) {
-      dispatch(Actions.handleNextStep(false, false, false, true, false));
+      dispatch(Actions.handleFlowCreation(false, false, false, true, false));
     }
   }
 
