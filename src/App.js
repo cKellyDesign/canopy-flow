@@ -1,5 +1,5 @@
 // Import Frameworks
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Router, Route } from 'react-router-dom';
 
@@ -27,16 +27,16 @@ const connectedHomePage = connect(mapStateToProps)(HomePage);
 const connectedNewFlowPage = connect(mapStateToProps)(NewFlowPage);
 const connectedFlowPage = connect(mapStateToProps)(FlowPage);
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'login',
       views: {
-        'login': {},
+        login: {},
       },
       isLoggedIn: false,
-    }
+    };
   }
 
   render() {
@@ -45,17 +45,17 @@ class App extends Component {
       <div className="App">
         <Router history={history}>
           <div>
-            <PrivateRoute exact path='/' component={connectedHomePage} auth={isDefaultAuthZ} />
-            <PrivateRoute path='/new' component={connectedNewFlowPage} auth={isDefaultAuthZ} />
-            <PrivateRoute path='/flow/:id' component={connectedFlowPage} auth={isDefaultAuthZ} />
+            <PrivateRoute exact path="/" component={connectedHomePage} auth={isDefaultAuthZ} />
+            <PrivateRoute path="/new" component={connectedNewFlowPage} auth={isDefaultAuthZ} />
+            <PrivateRoute path="/flow/:id" component={connectedFlowPage} auth={isDefaultAuthZ} />
             <Route path="/login" component={connectedLoginPage} />
             <Route
-              path='/callback'
+              path="/callback"
               render={() => (
-                <Callback 
+                <Callback
                   callback={authorizeUser}
-                  passURI='/'
-                  failURI='/login'
+                  passURI="/"
+                  failURI="/login"
                 />
               )}
             />

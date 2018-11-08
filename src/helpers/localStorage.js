@@ -18,8 +18,7 @@ export const saveState = (state) => {
     } else {
       localStorage.removeItem('state');
     }
-  } catch(e) {
+  } catch (e) {
     //
   }
-}
-
+};

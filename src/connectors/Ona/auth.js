@@ -1,6 +1,6 @@
-import { history } from './../../helpers/history';
-import Actions from './../../store/actions';
-import utils from './../../helpers/utils';
+import { history } from '../../helpers/history';
+import Actions from '../../store/actions';
+import utils from '../../helpers/utils';
 import api, { apiFetch } from './api';
 
 // URL Constructor Reference - can be imported and/or encrypted
@@ -14,24 +14,22 @@ export const oauthURL = (clientID, callback) => {
 };
 
 // Deprecated? Call /user API Endpoint to confirm ONA Oauth2 AuthZ
-export const ONAoauth = (reqConfig, token, dispatch) => {
-  return api(reqConfig).then(({ user, res }) => {
-    if (!res.ok) {
-      dispatch(Actions.loginError(user.detail));
-      console.log('!res.ok', user);
-      window.authRes = res;
-      history.replace('/login');
-    } else {
-      try {
-        localStorage.setItem("access_token", token);
-      } catch(e) {
-        //
-      }
-      dispatch(Actions.receiveLogin(user));
-      history.replace('/');
+export const ONAoauth = (reqConfig, token, dispatch) => api(reqConfig).then(({ user, res }) => {
+  if (!res.ok) {
+    dispatch(Actions.loginError(user.detail));
+    console.log('!res.ok', user);
+    window.authRes = res;
+    history.replace('/login');
+  } else {
+    try {
+      localStorage.setItem('access_token', token);
+    } catch (e) {
+      //
     }
-  }).catch(err => console.log("Error: ", err));
-};
+    dispatch(Actions.receiveLogin(user));
+    history.replace('/');
+  }
+}).catch(err => console.log('Error: ', err));
 
 // USER API request used for Authorization
 export const getUser = async (accessToken) => {
@@ -40,21 +38,23 @@ export const getUser = async (accessToken) => {
   return apiFetch({
     token: accessToken,
     endpoint: 'user',
-  }, user => {
+  }, (user) => {
     try {
       return user;
     } catch (e) {
       return false;
     }
   });
-}
+};
 
 // Saves info into localStorage and dispatches login action
-export const defaultAuthZ = (accessToken, user, dispatch) => {
+export const defaultAuthZ = (accessToken, user, tokenExpiry, dispatch) => {
   localStorage.setItem('access_token', accessToken);
+  localStorage.setItem('expires_in', tokenExpiry);
+  localStorage.setItem('time_of_login', new Date().getTime());
   localStorage.setItem('user', JSON.stringify(user));
   dispatch(Actions.receiveLogin(user));
-}
+};
 
 // Checks for saved info in localStorage and returns boolean
 export const isDefaultAuthZ = () => {
@@ -62,26 +62,26 @@ export const isDefaultAuthZ = () => {
   if (!localStorage.getItem('user')) return false;
   // todo - add session expry here
   return true;
-}
+};
 
 // Removes info from localStorage and dispatches logout action
 export const defaultDeAuthZ = (dispatch) => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('user');
-  dispatch(Actions.receiveLogout());
-}
+  dispatch(Actions.logoutUser());
+};
 
 // authorizeUser checks user authorization and dispatches pass/fail actions
 export const authorizeUser = async (dispatch, passURI, failURI) => {
   // 1) Get accessToken from URI
   const accessToken = utils.getAccessToken();
+  const tokenExpiry = utils.getTokenExpiry() * 1000; // convert to miliseconds
+  dispatch(Actions.receiveToken(accessToken));
 
   // 2) check API user call for authZ
   const user = await getUser(accessToken);
 
   // 3) if pass, save authorized state, else deauthorize
   if (user) {
-    defaultAuthZ(accessToken, user, dispatch);
+    defaultAuthZ(accessToken, user, tokenExpiry, dispatch);
     // return history.push((passURI || '/'));
   } else {
     defaultDeAuthZ(dispatch);
@@ -91,7 +91,7 @@ export const authorizeUser = async (dispatch, passURI, failURI) => {
   return user
     ? history.push((passURI || '/'))
     : history.push((failURI || '/login'));
-}
+};
 
 export class Oauth2 {
   constructor() {

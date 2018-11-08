@@ -1,0 +1,243 @@
+.modal-content .selection-breadcrumb {
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.custom-modal {
+    width: 50%;
+}
+.selection-breadcrumb .horizontal-steps {
+    display: inline-block;
+    font-size: .9em;
+    margin: .4em auto 0;
+    min-width: 36em;
+    padding-left: 0;
+    width: 100%;
+}
+
+.horizontal-steps li {
+    display: inline;
+}
+
+.horizontal-steps li a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.horizontal-steps li a > span:first-child {
+    background: #ccc;
+    border-radius: 100%;
+    color: #fff;
+    padding: 5px 5px 1px 14px;
+    text-align: center;
+    width: 1.6em;
+}
+
+.horizontal-steps li a > span.success:first-child {
+    padding: 4px 6px 3px 5px;
+}
+
+.horizontal-steps li a > span.active:first-child {
+    background: #fff;
+    border: 6px solid #ccc;
+    padding: 0px 13px 0px 1px;
+}
+
+.horizontal-steps li.divider {
+    height: 0;
+    min-width: 12em;
+    top: -4px;
+    position: relative;
+    display: inline-block;
+    border: .5px solid #ddd;
+}
+
+.apps-section {
+    padding: 4px 5px 5px 50px;
+}
+
+.modal-header {
+    background: #f7f7f7;
+}
+
+.modal-dialog .modal-content .modal-body hr {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.modal-footer button,
+.modal-footer button:active {
+    outline: none;
+    border-radius: initial;
+    background-color: #fff;
+}
+
+.modal-footer button:focus,
+.modal-footer button:hover,
+.modal-footer button:visited,
+.modal-footer button:active:focus,
+.modal-footer button:focus-within,
+.apps-section .app-link:active:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+}
+
+.modal-footer button:first-child {
+    float: left;
+}
+
+.modal-footer .save-and-pull {
+    background: #ddd;
+}
+
+.apps-section .app-link.disabled {
+    opacity: 0.7;
+}
+
+.apps-section .app-link {
+    background: none;
+    outline: none;
+}
+
+.apps-section .app-link .app-icon {
+    display: inline-block;
+    margin: 10px 12px 30px 13px;
+    text-align: center;
+    vertical-align: top;
+    width: 94px;
+}
+
+.apps-section .app-link .app-icon img {
+    width: 60px;
+    padding: 4px 3px;
+}
+
+.apps-section .app-link .app-icon img.active {
+    border: 1px solid #ccc;
+}
+
+.apps-section .app-link .app-icon span {
+    display: block;
+    color: #333;
+    padding-top: 5px;
+}
+
+.data-section {
+    display: flex;
+    flex-direction: column;
+    padding-left: 30px;
+}
+
+.fields-section {
+    float: right;
+    height: 50px;
+    position: relative;
+    top: -192px;
+    display: block;
+    margin-top: auto;
+}
+
+.modal-body .container-fluid table thead th {
+    border: none;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.modal-body .container-fluid table.selected-items tbody tr td:first-child {
+    width: 30%;
+}
+
+.modal-body .container-fluid table.selected-items tbody tr td:last-child {
+    width: 70%;
+}
+
+.container-fluid table tbody tr td .fields-string {
+    word-break: break-word;
+    white-space: nowrap;
+    width: 300px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.container-fluid table tbody tr td .flow-name {
+    background: #eee;
+    border: none;
+    padding: 5px 10px;
+    outline: none;
+}
+
+.stage-description-row {
+    padding-top: 10px;
+    padding-left: 44px;
+    padding-right: 44px;
+}
+
+.stage-description-row div {
+    text-align: center;
+}
+
+
+.modal-body .container-fluid table tbody tr td {
+    border: none;
+}
+
+.modal-body .container-fluid table thead th:last-child,
+.modal-body .container-fluid table tbody tr td:last-child {
+    text-align: left;
+}
+
+.container-fluid .row select.programs,
+.container-fluid .row select.forms {
+    width: 100%;
+}
+
+.container-fluid .row .forms-column {
+    bottom: 130px;
+}
+
+.fields-wrapper {
+    height: 220px;
+    width: auto;
+    background: #eee;
+    text-align: center;
+    position: relative;
+    display: flex;
+    overflow: auto;
+}
+
+.fields-wrapper .data-type {
+    display: inline-block;
+    margin: 0px 4px 0px 0px;
+}
+
+.fields-wrapper .data-type div {
+    border-radius: 2px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 400;
+    padding: 0 5px;
+    text-align: center;
+    min-width: 65px;
+    vertical-align: middle;
+}
+
+.data-section .programs-list,
+.data-section .forms-list {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.data-section .programs-list select,
+.data-section .forms-list select {
+    width: 40%;
+}
+
+
+
+
+

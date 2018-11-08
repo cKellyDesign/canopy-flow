@@ -1,16 +1,31 @@
-import api from './api';
-import { receiveForms, fetchFormsError } from './../../store/actions';
+import ONA from './ona';
+import { receiveForms, fetchFormsError, receiveFormFields } from '../../store/actions';
 
-export const fetchAPIForms = (reqConfig, dispatch) => {
-  return api(reqConfig).then(({ user, res }) => {
-    if (!res.ok) {
+export const fetchAPIForms = (reqConfig, dispatch) => ONA.API.fetch(reqConfig, (user) => {
+  try {
+    if (user.detail) {
       dispatch(fetchFormsError(user.detail));
     } else {
       dispatch(receiveForms(user));
     }
-  }).catch(err => console.log("Error: ", err));
-};
+  } catch (e) {
+    return false;
+  }
+});
+
+export const fetchFormFields = (reqConfig, dispatch) => ONA.API.fetch(reqConfig, (user) => {
+  try {
+    if (user.detail) {
+      dispatch(fetchFormsError(user.detail));
+    } else {
+      dispatch(receiveFormFields(user));
+    }
+  } catch (e) {
+    return false;
+  }
+});
 
 export default {
   fetchAPIForms,
+  fetchFormFields,
 };
