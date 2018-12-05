@@ -18,14 +18,14 @@ const Flow = {
   auto_refresh: true,
   // Boolean - Flow should auto-refresh or requre manual pulls
 
-  created_at: new Date(),
-  updated_at: new Date(),
-  deleted_at: new Date(),
-  // Date - CrUD timestamps for FLOW table rows
-
   oauth_access_token: '',
   // String - ONA oAuth2 Access Token
 
   oauth_refresh_token: '',
   // String - ONA oAuth2 Refresh Token
+  
+  created_at: new Date(),
+  updated_at: new Date(),
+  deleted_at: new Date(),
+  // Date - CrUD timestamps for FLOWS table rows
 };
