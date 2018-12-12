@@ -104,14 +104,49 @@ class NewFlowPage extends React.Component {
       last_submission_time: (this.state.selectedForm && this.state.selectedForm.last_submission_time),
     };
 
-    dispatch(Actions.saveFlow(flowDets));
-    dispatch(Actions.handleFlowCreation(true, true, false, false, false));
-    this.setState({
-      selectedApp: 'ONA',
-      selectedForm: null,
-      selectedProgram: null,
-    }, () => {
-      this.props.toggle();
+    const self = this;
+    const onFlowSave = () => {
+      dispatch(Actions.saveFlow(flowDets));
+      dispatch(Actions.handleFlowCreation(true, true, false, false, false));
+      self.setState({
+        selectedApp: 'ONA',
+        selectedForm: null,
+        selectedProgram: null,
+      }, () => {
+        self.props.toggle()
+      });
+    }
+    
+    // todo modularize this into Tembo Connector Module
+    return fetch('//localhost:3030/flows/new', {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: {
+        // todo - pass in oauth creds
+        // 'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      body: JSON.stringify({
+        // config: flowDets,
+        name: flowDets.form,
+        // user_id,
+        // form_id,
+        auto_refresh: flowDets.status,
+        fields: flowDets.fields.map(f => f.name),
+      }),
+    })
+    // todo - check content-type for res parse function
+    .then(res => {
+      // console.log('raw res', res);
+      return res.json();
+    })
+    // todo - use Tembo response to confirm success/failure of flow creation
+    .then(onFlowSave)
+    .catch(err => {
+      // todo - update modal state with error alerts
+      console.error('/flows/new error', err);
+      onFlowSave();
     });
   }
 
