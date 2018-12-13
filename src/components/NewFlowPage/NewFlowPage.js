@@ -9,6 +9,7 @@ import AsyncSelect from 'react-select/lib/Async';
 import Actions from '../../store/actions';
 import { mapStateToProps } from '../../helpers/mapStateToProps';
 import './NewFlowPage.css';
+import Tembo from '../../connectors/Tembo';
 
 const APPS = [
   { appName: 'ONA', disabled: false },
@@ -105,7 +106,8 @@ class NewFlowPage extends React.Component {
     };
 
     const self = this;
-    const onFlowSave = () => {
+    const onFlowSave = (res) => {
+      console.log('onFlowSave', res);
       dispatch(Actions.saveFlow(flowDets));
       dispatch(Actions.handleFlowCreation(true, true, false, false, false));
       self.setState({
@@ -116,38 +118,33 @@ class NewFlowPage extends React.Component {
         self.props.toggle()
       });
     }
-    
-    // todo modularize this into Tembo Connector Module
-    return fetch('//localhost:3030/flows/new', {
+
+    // build config object for Tembo.API.fetch
+    // todo - include token, body.user_id, body.form_id
+    const temboAPIconfig = {
       method: 'POST',
+      endpoint: 'newFlow',
+      token: '', // todo - pass in oauth creds
+      mimeType: 'application/json; charset=utf-8',
       mode: 'cors',
       cache: 'no-cache',
-      headers: {
-        // todo - pass in oauth creds
-        // 'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json; charset=utf-8'
-      },
       body: JSON.stringify({
         // config: flowDets,
         name: flowDets.form,
         // user_id,
         // form_id,
         auto_refresh: flowDets.status,
-        fields: flowDets.fields.map(f => f.name),
-      }),
-    })
-    // todo - check content-type for res parse function
-    .then(res => {
-      // console.log('raw res', res);
-      return res.json();
-    })
-    // todo - use Tembo response to confirm success/failure of flow creation
-    .then(onFlowSave)
-    .catch(err => {
-      // todo - update modal state with error alerts
-      console.error('/flows/new error', err);
-      onFlowSave();
-    });
+        fields: flowDets.fields,
+      })
+    }
+
+    return Tembo.API.fetch(temboAPIconfig)
+      .then(onFlowSave)
+      .catch(err => {
+        // todo - update modal state with error alerts
+        console.error('/flows/new error', err);
+        onFlowSave();
+      });
   }
 
   buildFormFieldsMap(fields) {
