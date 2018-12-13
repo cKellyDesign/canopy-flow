@@ -13,7 +13,8 @@ class Login extends React.Component {
     super(props);
 
     // todo - decrypt oauthUrl info?
-    const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
+    // const client_id = 'CdJqBZYRVrbpnAu4JoYYFXFPQJa3xWi25oDPqnRY';
+    const client_id = 'iCBLHCnaEftvp6KzrjBjTEGgrMFlvFne9dnuGavY'; // cKellyDesign:Canopy Flow Heroku
     const redirect_uri = `${window.location.origin}/callback`;
 
     this.state = {
