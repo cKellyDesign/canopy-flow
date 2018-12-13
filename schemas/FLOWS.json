@@ -1,0 +1,39 @@
+[{
+  "UID": "1",
+  "name": "Spokes Visit Snapshot v1",
+  "user_id": "ckellydesign",
+  "form_id": "144730",
+  "fields": [
+    { "name": "visit_comment", "type": "text", "label": "Describe the purpose of the visit:" },
+    { "name": "focus_next_visit", "type": "select all that apply", "label": "Activity to be followed up on next visit:" },
+    { "name": "visit_general_comments", "type": "text", "label": "[Optional] General Comments on Visit:" }
+  ],
+  "auto_refresh": false,
+  "oauth_access_token": "",
+  "oauth_refresh_token": ""
+},{
+  "UID": "2",
+  "name": "Hub Monthly Report v2",
+  "user_id": "ckellydesign",
+  "form_id": "143101",
+  "fields": [
+    { "name": "past_events_held", "type": "select all that apply", "label": "List any events / meetings held at the centre this past month:" },
+    { "name": "past_major_activities", "type": "select all that apply", "label": "Select major activities held at the centre this past month:" },
+  ],
+  "auto_refresh": true,
+  "oauth_access_token": "",
+  "oauth_refresh_token": ""
+},{
+  "UID": "3",
+  "name": "Demographics Form",
+  "user_id": "nateMJ",
+  "form_id": "199531",
+  "fields": [
+    { "name": "session_date", "type": "today", "label": "" },
+    { "name": "demographics", "type": "group", "label": "" },
+    { "name": "ict_usage", "type": "group", "label": "" }
+  ],
+  "auto_refresh": true,
+  "oauth_access_token": "",
+  "oauth_refresh_token": ""
+}]

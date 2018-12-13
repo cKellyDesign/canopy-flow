@@ -8,6 +8,9 @@ const User = {
 
   user_id: '',
   // String - User's ONA User ID
+
+  access_token: '',
+  // String - User's permenant access_token
   
   created_at: new Date(),
   updated_at: new Date(),
